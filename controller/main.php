@@ -1,6 +1,6 @@
 <!-- Main content -->
-<main class="container-fluid flex-grow-1">
-    <!-- Navbar -->
+<!-- <main class="container-fluid flex-grow-1">
+    
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 d-none d-md-block">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Dashboard</a>
@@ -11,9 +11,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-3 mb-lg-0">
-                        <!-- <li class="nav-item mt-2">
-                    <a class="nav-link" href="#"><i class="fas fa-cog me-1"></i> Cài đặt</a>
-                </li> -->
                     <li class="nav-item mt-2">
                         <a class="nav-link" href="#"><i class="fas fa-bell me-1"></i> Thông báo</a>
                     </li>
@@ -34,7 +31,7 @@
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav> -->
 
 
     <!-- Dashboard cards -->
@@ -103,4 +100,4 @@
         </table>
     </div>
 
-</main>
+<!-- </main> -->

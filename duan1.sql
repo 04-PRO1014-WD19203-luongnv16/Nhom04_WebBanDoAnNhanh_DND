@@ -121,7 +121,10 @@ CREATE TABLE `users` (
   `password` varchar(255) DEFAULT NULL,
   `phone_number` varchar(20) DEFAULT NULL,
   `address` text,
-  `full_name` varchar(255) DEFAULT NULL
+  `full_name` varchar(255) DEFAULT NULL,
+  `avatar_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'ảnh user',
+  `role` VARCHAR(50) DEFAULT NULL COMMENT 'vai trò của người dùng',
+  `status` VARCHAR(20) DEFAULT NULL COMMENT 'trạng thái của người dùng';
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
