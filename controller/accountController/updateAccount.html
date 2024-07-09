@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container my-5">
+        <h2>Chỉnh Sửa Admin</h2>
+        <form>
+            <div class="mb-3">
+                <label for="name" class="form-label">Họ tên</label>
+                <input type="text" class="form-control" id="name" value="admin" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" value="admin@gmail.com" required>
+            </div>
+            <div class="mb-3">
+                <label for="phone" class="form-label">Số điện thoại</label>
+                <input type="text" class="form-control" id="phone" value="1247578578">
+            </div>
+            <div class="mb-3">
+                <label for="address" class="form-label">Địa chỉ</label>
+                <input type="text" class="form-control" id="address" value="gyjghjfgjgh Bình">
+            </div>
+            <div class="mb-3">
+                <label for="role" class="form-label">Quyền</label>
+                <select class="form-select" id="role" >
+                    <option value="">Subper admin</option>
+                    <!-- Add more roles if needed -->
+                </select>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="isVisible" checked>
+                <label for="isVisible" class="form-check-label">Hiển thị</label>
+            </div>
+            <div class="mb-3">
+                <label for="avatar" class="form-label">Ảnh đại diện</label>
+                <input type="file" class="form-control" id="avatar">
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+            <!-- <a href="listAccount.html"> <button class="btn btn-danger">Hủy</button></a> -->
+           
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
