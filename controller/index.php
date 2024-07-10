@@ -1,4 +1,7 @@
 <?php
+session_start();
+include_once('../model/PDO.php');
+include_once('../model/account.php');
 require_once("./header.php");
 // require_once("./main.php");
 
@@ -8,8 +11,9 @@ if (isset($_GET['act'])) {
     // if (isset($_SESSION['user']) && (is_array($_SESSION['user']))) {
     switch ($act) {
 
-        //User
+            //User
         case 'listAccount':
+            $listacc = select_acc();
             require_once("accountController/listAccount.php");
             break;
         case 'addAccount':
@@ -19,10 +23,10 @@ if (isset($_GET['act'])) {
             require_once("accountController/editAccount.php");
             break;
         case 'deleteAccount':
-            
+
             break;
 
-        //Category
+            //Category
         case 'listCategory':
             require_once("categoryController/listCategory.php");
             break;
@@ -33,7 +37,7 @@ if (isset($_GET['act'])) {
             require_once("categoryController/editCategory.php");
             break;
         case 'deleteCategory':
-            
+
             break;
 
         default:

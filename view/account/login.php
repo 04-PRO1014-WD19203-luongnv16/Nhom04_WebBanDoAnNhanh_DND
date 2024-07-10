@@ -20,7 +20,7 @@
                     </form>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="/signup">Bạn chưa có tài khoản? Đăng ký</a>
+                    <a href="index.php?act=accountSignUp">Bạn chưa có tài khoản? Đăng ký</a>
                 </div>
             </div>
         </div>
