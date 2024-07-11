@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost:3306
--- Thời gian đã tạo: Th7 09, 2024 lúc 05:16 PM
+-- Thời gian đã tạo: Th7 11, 2024 lúc 06:49 AM
 -- Phiên bản máy phục vụ: 8.0.30
 -- Phiên bản PHP: 8.1.10
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `duan1`
+-- Cơ sở dữ liệu: `duan01`
 --
 
 -- --------------------------------------------------------
@@ -117,55 +117,28 @@ CREATE TABLE `product` (
 
 CREATE TABLE `users` (
   `user_id` int NOT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `phone_number` varchar(20) DEFAULT NULL,
-  `address` text,
-  `full_name` varchar(255) DEFAULT NULL,
-  `avatar_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'ảnh user',
-  `role` VARCHAR(50) DEFAULT NULL COMMENT 'vai trò của người dùng',
-  `status` VARCHAR(20) DEFAULT NULL COMMENT 'trạng thái của người dùng';
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `phone_number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `full_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `avatar_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ảnh user',
+  `role` tinyint NOT NULL DEFAULT '0' COMMENT 'vai trò của người dùng',
+  `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'trạng thái của người dùng'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `users`
+--
+
+INSERT INTO `users` (`user_id`, `email`, `password`, `phone_number`, `address`, `full_name`, `avatar_url`, `role`, `status`) VALUES
+(1, 'nguyenphuongnam.intern@gmail.com', '12345', '0337412617', '123\r\nThanh Mỹ - Sơn Tây - Hà Nội', 'namnp1', 'image(692).png', 0, NULL),
+(2, 'nguyenphuongnam.intern@gmail.com', '12345', '0337412617', '123\r\nThanh Mỹ - Sơn Tây - Hà Nội', 'namnp1', 'image(692).png', 0, NULL),
+(3, 'nguyenphuongnam.intern@gmail.com', '12345', '0337412617', '123\r\nThanh Mỹ - Sơn Tây - Hà Nội', 'namnp1', 'image(692).png', 0, NULL);
 
 --
 -- Chỉ mục cho các bảng đã đổ
 --
-
---
--- Chỉ mục cho bảng `bill`
---
-ALTER TABLE `bill`
-  ADD PRIMARY KEY (`bill_id`),
-  ADD KEY `user_id` (`user_id`);
-
---
--- Chỉ mục cho bảng `bill_item`
---
-ALTER TABLE `bill_item`
-  ADD PRIMARY KEY (`bill_item_id`),
-  ADD KEY `bill_id` (`bill_id`),
-  ADD KEY `product_id` (`product_id`);
-
---
--- Chỉ mục cho bảng `cart`
---
-ALTER TABLE `cart`
-  ADD PRIMARY KEY (`cart_id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `product_id` (`product_id`);
-
---
--- Chỉ mục cho bảng `category`
---
-ALTER TABLE `category`
-  ADD PRIMARY KEY (`category_id`);
-
---
--- Chỉ mục cho bảng `product`
---
-ALTER TABLE `product`
-  ADD PRIMARY KEY (`product_id`),
-  ADD KEY `category_id` (`category_id`);
 
 --
 -- Chỉ mục cho bảng `users`
@@ -174,34 +147,14 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`);
 
 --
--- Các ràng buộc cho các bảng đã đổ
+-- AUTO_INCREMENT cho các bảng đã đổ
 --
 
 --
--- Các ràng buộc cho bảng `bill`
+-- AUTO_INCREMENT cho bảng `users`
 --
-ALTER TABLE `bill`
-  ADD CONSTRAINT `bill_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
-
---
--- Các ràng buộc cho bảng `bill_item`
---
-ALTER TABLE `bill_item`
-  ADD CONSTRAINT `bill_item_ibfk_1` FOREIGN KEY (`bill_id`) REFERENCES `bill` (`bill_id`),
-  ADD CONSTRAINT `bill_item_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`);
-
---
--- Các ràng buộc cho bảng `cart`
---
-ALTER TABLE `cart`
-  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`);
-
---
--- Các ràng buộc cho bảng `product`
---
-ALTER TABLE `product`
-  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `users`
+  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

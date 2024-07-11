@@ -1,11 +1,11 @@
-<div class="container">
+<div class="container mt-5">
     <h2 class="text-center">Quản Lý Danh Sách Quản Trị</h2>
     <div class="row mb-3">
         <div class="col-6">
             <h5 class="mb-0">Danh sách quản trị</h5>
         </div>
         <div class="col-6 text-end">
-            <a href="index.php?act=addAccount"><button class="btn btn-primary btn-sm">Thêm tài khoản</button></a>
+            <!-- <a href="../../view/account/signup.php"><button class="btn btn-primary btn-sm">Thêm tài khoản</button></a> -->
         </div>
     </div>
     <div class="table-responsive">
@@ -26,47 +26,51 @@
             </thead>
             <tbody>
                 <?php
-                if (isset($_SESSION['user']) && (is_array($_SESSION['user']))) {
+                if (isset($_SESSION['user']) && is_array($_SESSION['user'])) {
                     $user = $_SESSION['user'];
-                    $iduser = $user['id'];
+                    $iduser = $user['user_id'];
                 }
-                foreach ($listacc as $acc) {
-                    extract($acc);
-                    $suaacc = "index.php?vlt=suaacc&id=" . $id;
-                    $xoaacc = "index.php?vlt=xoaacc&id=" . $id;
-                    $imgpath = "../upload/" . $img;
-                    if ($iduser != $id) {
-                        $xoa = '<td><a href="' . $xoaacc . '"><i class="fa-solid fa-eraser"></i></a></td>';
-                    } else {
-                        $xoa = "";
+                if (isset($listAccount) && is_array($listAccount)) {
+                    foreach ($listAccount as $acc) {
+                        extract($acc);
+                        $editAccount = "index.php?act=editAccount&user_id=" . $user_id;
+                        $deleteAccount = "index.php?act=deleteAccount&user_id=" . $user_id;
+                        $imgpath = "../upload/" . $avatar_url;
+                        if ($iduser != $user_id) {
+                            $delete = '<a href="' . $deleteAccount . '" class="btn btn-danger btn-sm">Xóa</a>';
+                        } else {
+                            $delete = "";
+                        }
+                        if (is_file($imgpath)) {
+                            $imgs = '<img src="' . $imgpath . '" alt="Avatar" style="max-width: 50px;">';
+                        } else {
+                            $imgs = 'no image';
+                        }
+                        if ($role == '0') {
+                            $role_text = 'Khách hàng';
+                        } else {
+                            $role_text = 'Nhân viên';
+                        }
+                        echo "
+                        <tr>
+                            <th scope='row'>$user_id</th>
+                            <td>$imgs</td>
+                            <td>$full_name</td>
+                            <td>$email</td>
+                            <td>$phone_number</td>
+                            <td>$password</td>
+                            <td>$address</td>
+                            <td>$role_text</td>
+                            <td>$status</td>
+                            <td>
+                                <a href='$editAccount' class='btn btn-primary btn-sm'>Sửa</a>
+                                $delete
+                            </td>
+                        </tr>";
                     }
-                    if (is_file($imgpath)) {
-                        $imgs = '<img src="../upload/' . $imgpath . '" alt="" width="60px">';
-                    } else {
-                        $imgs = 'no image';
-                    }
-                    if ($vai_tro == 0) {
-                        $role = 'Khách hàng';
-                    } else {
-                        $role = 'Nhân viên';
-                    }
-                    echo "
-                    <tr>
-                <th scope='row'>'. $user_id . </th>
-                <td>'. $email .' </td>
-                <td>'. $full_name .' </td>
-                <td>'. $phone_number . '</td>
-                <td>'. $password .' </td>
-                <td>'. $address . '</td>
-                <td><img src='. $avatar_url . ' alt='Avatar' style='max-width: 50px;'></td>
-                <td>'. $role .' </td>
-                <td>'. $status . '</td>
-                <td>
-                    <a href='editAccount.php?id='. $user_id . ' class='btn btn-primary btn-sm'>Sửa</a>
-                    <a href='deleteAccount.php?id='. $user_id . ' class='btn btn-danger btn-sm'>Xóa</a>
-                </td>
-                </tr>";
-                };
+                } else {
+                    echo "<tr><td colspan='10' class='text-center'>Không có tài khoản nào</td></tr>";
+                }
                 ?>
             </tbody>
         </table>

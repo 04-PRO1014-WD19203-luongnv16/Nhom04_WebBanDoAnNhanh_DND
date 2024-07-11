@@ -2,28 +2,38 @@
         <div class="container ">
             <h1>Danh sách danh mục</h1>
             <a href="index.php?act=addCategory"><button type="submit" class="btn btn-primary mb-3 mt-1">Thêm mới</button></a>
+            <?php
+                if(isset($message)&&$message != ""){
+                    echo $message;
+                }
+            ?>
             <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th>Mã số</th>
                         <th>Name</th>
-                        <th>Title</th>
-                        <th>Id danh mục cha</th>
-                        <th>Status</th>
+                        <th>Danh Mục Cha</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Cơm Trưa</td>
-                        <td>com-trua</td>
-                        <td>Danh mục cha</td>
-                        <td><i class="bi bi-check-circle-fill text-success"></i></td>
-                        <td><a href="index.php?act=editCategory"><button class="btn btn-sm btn-warning">Edit</button></a></td>
-                        <td><a href="index.php?act=deleteCategory"><button class="btn btn-sm btn-danger">Delete</button></a></td>
-                    </tr>
+                <?php
+                foreach($listdm as $dm){
+                    extract($dm);
+                    $update = "index.php?act=editCategory&category_id=".$category_id;
+                    $delete = "index.php?act=deleteCategory&category_id=".$category_id;
+                    echo '
+                        <tr>
+                        <td>'.$category_id.'</td>            
+                        <td>'.$category_name.'</td>
+                        <td>'.$name_dm.'</td>
+                        <td><a href="'.$update.'"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                        <td><a href="'.$delete.'"><i class="fa-solid fa-eraser"></i></a></td>
+                        </tr> 
+                    ';
+                };
+            ?>
                 </tbody>
             </table>
         </div>

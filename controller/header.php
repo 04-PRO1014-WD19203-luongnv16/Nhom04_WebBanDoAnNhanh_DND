@@ -160,7 +160,7 @@
                                     <img src="https://via.placeholder.com/40" alt="User" width="40" height="40" class="rounded-circle me-1"> Tài khoản của bạn
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="#">Trang người dùng</a></li>
+                                    <li><a class="dropdown-item" href="../index.php">Trang người dùng</a></li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>

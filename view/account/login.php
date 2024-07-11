@@ -3,20 +3,22 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header text-center">
-                <h2 class="">Đăng nhập</h2>
+                    <h2 class="">Đăng nhập</h2>
                 </div>
                 <div class="card-body">
-                    <form action="/login" method="POST">
+                    <form action="index.php?act=accountLogin" method="POST">
                         <div class="mb-3">
                             <label for="loginEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="loginEmail" placeholder="Nhập địa chỉ email" required>
+                            <input name="email" type="email" class="form-control" id="loginEmail" placeholder="Nhập địa chỉ email">
                         </div>
                         <div class="mb-3">
                             <label for="loginPassword" class="form-label">Mật khẩu</label>
-                            <input type="password" class="form-control" id="loginPassword" placeholder="Nhập mật khẩu" required>
+                            <input name="password" type="password" class="form-control" id="loginPassword" placeholder="Nhập mật khẩu">
                         </div>
-                        <button type="submit" class="btn btn-primary">Đăng nhập</button>
-
+                        <div class="mb-3">
+                            <input type="submit" class="btn btn-primary" name="accountLogin" value="Đăng nhập">
+                            <input type="reset" class="btn btn-info" value="Nhập lại">
+                        </div>
                     </form>
                 </div>
                 <div class="card-footer text-center">
@@ -25,4 +27,16 @@
             </div>
         </div>
     </div>
+    <h3 class="text-danger">
+        <?php
+        if (isset($message) && $message != "") {
+            echo $message;
+        }
+        if (isset($err) && !empty($err)) {
+            foreach ($err as $e) {
+                echo $e;
+            }
+        }
+        ?>
+    </h3>
 </div>
