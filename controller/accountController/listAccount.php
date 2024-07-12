@@ -1,13 +1,5 @@
-<div class="container mt-5">
-    <h2 class="text-center">Quản Lý Danh Sách Quản Trị</h2>
-    <div class="row mb-3">
-        <div class="col-6">
-            <h5 class="mb-0">Danh sách quản trị</h5>
-        </div>
-        <div class="col-6 text-end">
-            <!-- <a href="../../view/account/signup.php"><button class="btn btn-primary btn-sm">Thêm tài khoản</button></a> -->
-        </div>
-    </div>
+<div class="container mt-3">
+    <h2 class="text-center mb-3">Quản lý tài khoản</h2>
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
@@ -37,7 +29,7 @@
                         $deleteAccount = "index.php?act=deleteAccount&user_id=" . $user_id;
                         $imgpath = "../upload/" . $avatar_url;
                         if ($iduser != $user_id) {
-                            $delete = '<a href="' . $deleteAccount . '" class="btn btn-danger btn-sm">Xóa</a>';
+                            $delete = '<button onclick="confirmDelete(\'' . $deleteAccount . '\')" class="btn btn-danger btn-sm">Xóa</button>';
                         } else {
                             $delete = "";
                         }
@@ -53,7 +45,7 @@
                         }
                         echo "
                         <tr>
-                            <th scope='row'>$user_id</th>
+                            <td>$user_id</td>
                             <td>$imgs</td>
                             <td>$full_name</td>
                             <td>$email</td>
@@ -63,8 +55,10 @@
                             <td>$role_text</td>
                             <td>$status</td>
                             <td>
-                                <a href='$editAccount' class='btn btn-primary btn-sm'>Sửa</a>
-                                $delete
+                                <div class='d-flex justify-content-start align-items-center'>
+                                    <a href='$editAccount' class='btn btn-primary btn-sm me-2'>Sửa</a>
+                                    $delete
+                                </div>
                             </td>
                         </tr>";
                     }
@@ -76,3 +70,11 @@
         </table>
     </div>
 </div>
+
+<script>
+function confirmDelete(url) {
+    if (confirm("Bạn có chắc chắn muốn xóa tài khoản này không?")) {
+        window.location.href = url;
+    }
+}
+</script>

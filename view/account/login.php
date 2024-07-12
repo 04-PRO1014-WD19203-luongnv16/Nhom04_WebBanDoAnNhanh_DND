@@ -10,33 +10,33 @@
                         <div class="mb-3">
                             <label for="loginEmail" class="form-label">Email</label>
                             <input name="email" type="email" class="form-control" id="loginEmail" placeholder="Nhập địa chỉ email">
+                            <?php if (isset($errors['email'])) echo $errors['email']; ?>
                         </div>
                         <div class="mb-3">
                             <label for="loginPassword" class="form-label">Mật khẩu</label>
                             <input name="password" type="password" class="form-control" id="loginPassword" placeholder="Nhập mật khẩu">
+                            <?php if (isset($errors['password'])) echo $errors['password']; ?>
                         </div>
+
+                        <h3 class="text-danger">
+        <?php
+        if (isset($message) && $message != "") {
+            echo $message;
+        }
+        ?>
+    </h3>
                         <div class="mb-3">
                             <input type="submit" class="btn btn-primary" name="accountLogin" value="Đăng nhập">
                             <input type="reset" class="btn btn-info" value="Nhập lại">
                         </div>
                     </form>
                 </div>
+                
                 <div class="card-footer text-center">
                     <a href="index.php?act=accountSignUp">Bạn chưa có tài khoản? Đăng ký</a>
                 </div>
             </div>
         </div>
     </div>
-    <h3 class="text-danger">
-        <?php
-        if (isset($message) && $message != "") {
-            echo $message;
-        }
-        if (isset($err) && !empty($err)) {
-            foreach ($err as $e) {
-                echo $e;
-            }
-        }
-        ?>
-    </h3>
+    
 </div>

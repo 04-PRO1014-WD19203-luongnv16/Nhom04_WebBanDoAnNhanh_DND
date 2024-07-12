@@ -2,102 +2,129 @@
 session_start();
 include_once('./model/PDO.php');
 include_once('./model/account.php');
+include_once('./model/category.php');
 require_once("./view/header.php");
-
-try {
-    $conn = pdo_get_connection();
-    echo "Kết nối thành công!<br>";
-} catch (PDOException $e) {
-    echo "Kết nối không thành công: " . $e->getMessage() . "<br>";
-}
-
+// try {
+//     $conn = pdo_get_connection();
+//     echo "Kết nối thành công!<br>";
+// } catch (PDOException $e) {
+//     echo "Kết nối không thành công: " . $e->getMessage() . "<br>";
+// }
 $message = '';
-$err = [];
-
+$errors = [];
 if (isset($_GET['act'])) {
     $act = $_GET['act'];
-
-    switch ($act) {
-        case 'accountSignUp':
-            if (isset($_POST['add_user']) && $_POST['add_user']) {
-                $full_name = $_POST['full_name'];
-                $email = $_POST['email'];
-                $password = $_POST['password'];
-                $importPassword = $_POST['importPassword'];
-                $phone_number = $_POST['phone_number'];
-                $address = $_POST['address'];
-                $avatar_url = $_FILES['avatar_url'];
-                $imgName = $avatar_url['name'];
-                $dir = './upload/';
-                $ext = pathinfo($imgName, PATHINFO_EXTENSION);
-                $imgs = ['jpg', 'jpeg', 'png'];
-                $target_file = $dir . basename($_FILES["avatar_url"]["name"]);
-
-                if (isset($email) && is_array($email)) {
-                    $emailUser = $email['email'];
-                } else {
-                    $emailUser = '';
-                }
-
-                // Validation
-                if (strlen($password) < 5 || strlen($password) > 16) {
-                    $err['password'] = '<p class="error">Mật khẩu phải có độ dài từ 5-16 ký tự</p>';
-                }
-                if (!preg_match('/^[a-zA-Z0-9 ]+$/', $full_name)) {
-                    $err['full_name'] = '<p class="error">Họ và tên không được chứa ký tự đặc biệt</p>';
-                }
-                if (!preg_match('/^[0-9]+$/', $phone_number)) {
-                    $err['phone_number'] = '<p class="error">Số điện thoại chỉ chứa các chữ số</p>';
-                }
-                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    $err['email'] = '<p class="error">Email không đúng định dạng</p>';
-                }
-                if ($avatar_url['size'] <= 0) {
-                    $err['file'] = '<p class="error">Bạn chưa tải ảnh lên</p>';
-                }
-                if ($avatar_url['size'] > 0) {
-                    if (!in_array(strtolower($ext), $imgs)) {
-                        $err['file'] = '<p class="error">File không đúng định dạng</p>';
-                    } else {
-                        move_uploaded_file($_FILES["avatar_url"]["tmp_name"], $target_file);
+    if (isset($_SESSION['user']) && (is_array($_SESSION['user']))) {
+        switch ($act) {
+            case 'accountSignUp':
+                if (isset($_POST['add_user'])) {
+                    $full_name = $_POST['full_name'];
+                    $email = $_POST['email'];
+                    $password = $_POST['password'];
+                    $importPassword = $_POST['importPassword'];
+                    $phone_number = $_POST['phone_number'];
+                    $address = $_POST['address'];
+                    $avatar_url = $_FILES['avatar_url'];
+                    $imgName = $avatar_url['name'];
+                    $dir = './upload/';
+                    $ext = pathinfo($imgName, PATHINFO_EXTENSION);
+                    $allowed_extensions = ['jpg', 'jpeg', 'png'];
+                    $target_file = $dir . basename($_FILES["avatar_url"]["name"]);
+                    // Validation
+                    if (strlen($password) < 5 || strlen($password) > 16) {
+                        $errors['password'] = '<p class="error text-danger">Mật khẩu phải có từ 5 đến 16 ký tự</p>';
+                    } elseif (!preg_match('/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+=\-{}\[\];:\'",.\/?]{6,}$/', $password)) {
+                        $errors['password'] = '<p class="error text-danger">Mật khẩu phải bao gồm ít nhất một chữ cái và một số</p>';
+                    } elseif (strpos($password, ' ') !== false) {
+                        $errors['password'] = '<p class="error text-danger">Mật khẩu không được chứa khoảng trắng</p>';
+                    }
+                    if ($password !== $importPassword) {
+                        $errors['importPassword'] = '<p class="error text-danger">Mật khẩu nhập lại không khớp</p>';
+                    }
+                    if (empty($full_name) || trim($full_name) === '') {
+                        $errors['full_name'] = '<p class="error text-danger">Họ và tên không được để trống</p>';
+                    } elseif (!preg_match('/^[\p{L} ]+$/u', $full_name)) {
+                        $errors['full_name'] = '<p class="error text-danger">Họ và tên không được chứa ký tự đặc biệt</p>';
+                    }
+                    if (!preg_match('/^[0-9]+$/', $phone_number)) {
+                        $errors['phone_number'] = '<p class="error text-danger">Số điện thoại chỉ chứa các chữ số</p>';
+                    } elseif (!preg_match('/^[0-9]+$/', $phone_number)) {
+                        $errors['phone_number'] = '<p class="error text-danger">Số điện thoại chỉ chứa các chữ số</p>';
+                    }
+                    if ($password !== $importPassword) {
+                        $errors['importPassword'] = '<p class="error text-danger">Mật khẩu nhập lại không khớp</p>';
+                    }
+                    if (empty(trim($email))) {
+                        $errors['email'] = '<p class="error text-danger">Vui lòng nhập địa chỉ email</p>';
+                    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        $errors['email'] = '<p class="error text-danger">Email không đúng định dạng</p>';
+                    } elseif (!preg_match('/^\S+@\S+\.\S+$/', $email)) {
+                        $errors['email'] = '<p class="error text-danger">Email không hợp lệ</p>';
+                    } elseif (email_exists($email)) {
+                        $errors['email'] = '<p class="error text-danger">Email đã được sử dụng</p>';
+                    }
+                    if (empty(trim($address))) {
+                        $errors['address'] = '<p class="error text-danger">Vui lòng nhập địa chỉ</p>';
+                    }
+                    if ($avatar_url['size'] <= 0) {
+                        $errors['avatar_url'] = '<p class="error text-danger">Bạn chưa tải ảnh lên</p>';
+                    } elseif (!in_array(strtolower($ext), $allowed_extensions)) {
+                        $errors['avatar_url'] = '<p class="error text-danger">File không đúng định dạng (chỉ chấp nhận JPG, JPEG, PNG)</p>';
+                    }
+                    if (empty($errors)) {
+                        insert_user($full_name, $email, $password, $phone_number, $address, $imgName);
+                        $message = 'Đăng ký thành công';
                     }
                 }
-                if ($email == $emailUser) {
-                    $err['email'] = '<p class="error">Email đã được sử dụng</p>';
+                require_once("view/account/signup.php");
+                break;
+            case 'accountLogin':
+                if (isset($_POST['accountLogin']) && $_POST['accountLogin']) {
+                    $email = $_POST['email'];
+                    $password = $_POST['password'];
+                    $user = select_user_login($email, $password);
+                    if (empty(trim($email))) {
+                        $errors['email'] = '<p class="error text-danger">Vui lòng nhập địa chỉ email</p>';
+                    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        $errors['email'] = '<p class="error text-danger">Email không đúng định dạng</p>';
+                    }
+                    if (empty($password)) {
+                        $errors['password'] = '<p class="error text-danger">Vui lòng nhập mật khẩu</p>';
+                    }
+                    if (empty($errors)) {
+                        $user = select_user_login($email, $password);
+                        if (is_array($user)) {
+                            $_SESSION['user'] = $user;
+                            header('Location: ../controller/index.php');
+                            exit;
+                        } else {
+                            $message = '<h6 class="error text-danger">Email hoặc mật khẩu không chính xác</h6>';
+                        }
+                        
+                    }
                 }
-
-                // If no errors, insert user
-                if (empty($err)) {
-                    insert_user($full_name, $email, $password, $phone_number, $address, $imgName);
-                    $message = 'Đăng ký thành công';
-                }
-            }
-            require_once("view/account/signup.php");
-            break;
-        case 'accountLogin':
-            if (isset($_POST['accountLogin']) && $_POST['accountLogin']) {
-                $email = $_POST['email'];
-                $password = $_POST['password'];
-                $user = select_user_login($email, $password);
-                if (is_array($user)) {
-                    $_SESSION['user'] = $user;
-                    header('Location: ./controller/index.php');
-                    exit;
-                } else {
-                    $message = '<p class="error">Email hoặc mật khẩu không chính xác</p>';
-                }
-            }
-            require_once("view/account/login.php");
-            break;
-        case 'editAccount':
-            require_once("accountController/editAccount.php");
-            break;
-        case 'deleteAccount':
-            break;
+                require_once("view/account/login.php");
+                break;
+            case 'products':
+                require_once("./view/products.php");
+                break;
+            case 'main':
+                require_once("view/main.php");
+                break;
+            case 'productDetails':
+                require_once("view/productDetails.php");
+                break;
+        }
+    } else {
+        header('Location: ./index.php');
+        exit();
     }
 } else {
-    require_once("./view/account/login.php");
+    if (isset($_SESSION['user']) && (is_array($_SESSION['user']))) {
+        require_once './view/main.php';
+    } else {
+        header('Location: ./index.php');
+        exit();  
+    }
 }
-
 require_once("./view/footer.php");
-?>

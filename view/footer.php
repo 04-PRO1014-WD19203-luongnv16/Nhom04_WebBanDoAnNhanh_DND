@@ -1,7 +1,41 @@
+</main>
+    <section class="bg-light py-5 mt-5">
+        <div class="container-xl">
+            <div class="row g-5">
+                <div class="col-lg-3 d-flex align-items-center">
+                    <img src="./view/image/footer/Vector1.png" alt="High Quality" />
+                    <div class="ms-3">
+                        <h3 class="fw-bold mb-1">Chất lượng cao</h3>
+                        <p class="text-muted">Đảm bảo ATVSTP</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 d-flex align-items-center">
+                    <img src="./view/image/footer/Vector2.png" alt="24/7 Support" />
+                    <div class="ms-3">
+                        <h3 class="fw-bold mb-1">Đảm bảo yêu cầu</h3>
+                        <p class="text-muted">Hỗ trợ tận tình</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 d-flex align-items-center">
+                    <img src="./view/image/footer/Vector3.png" alt="Warranty Protection" />
+                    <div class="ms-3">
+                        <h3 class="fw-bold mb-1">Vận chuyển</h3>
+                        <p class="text-muted">Ship hàng nhanh chóng</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 d-flex align-items-center">
+                    <img src="./view/image/footer/Vector4.png" alt="Free Shipping" />
+                    <div class="ms-3">
+                        <h3 class="fw-bold mb-1">Món ăn</h3>
+                        <p class="text-muted">Đa dạng món ăn</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
-
-<footer class="bg-dark text-light mt-5">
+<footer class="bg-dark text-light ">
     <div class="container py-5">
         <div class="row">
             <div class="col-lg-4 col-md-6">
@@ -32,17 +66,13 @@
         </div>
         <div class="row mt-5">
             <div class="col-lg-12 text-center">
-                <p>&copy; 2024  FPT Polytechnic. Bảo lưu mọi quyền.</p>
+                <p>&copy; 2024 FPT Polytechnic. Bảo lưu mọi quyền.</p>
             </div>
         </div>
     </div>
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-    crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-    integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 </body>
 
 </html>
