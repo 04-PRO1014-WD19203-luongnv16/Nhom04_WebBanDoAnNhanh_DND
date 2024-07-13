@@ -4,7 +4,7 @@
                 <form action="index.php?act=editCategory" method="post">
                     <div class="mb-3">
                         <label for="categoryID" class="form-label">ID danh mục <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="categoryID" placeholder="ID danh mục" name="category_id" value="<?php echo $dm['category_id'] ?>" disabled>
+                        <input type="text" class="form-control" id="categoryID" placeholder="ID danh mục" name="category_id" value="<?php echo $dm['category_id'] ?>" readonly>
                     </div>
                     <div class="mb-3"> <label for="categoryName" class="form-label">Tên danh mục <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="categoryName" placeholder="Tên danh mục" name="category_name" value="<?php echo $dm['category_name'] ?>">

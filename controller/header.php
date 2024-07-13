@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,22 +10,21 @@
         header {
             background-color: rgb(252, 252, 253);
         }
-
         main {
             background-color: rgb(242, 237, 243);
         }
-
         nav .list-group-item {
             border: none !important;
         }
+        .custom-width {
+    width: 20%;
+}
     </style>
-
 </head>
-
 <body>
     <div class="d-flex flex-column flex-md-row">
         <!-- Desktop Menu -->
-        <header class="d-none d-md-block w-25 p-3 flex-md-column  text-dark p-3">
+        <header class="d-none d-md-block p-3 flex-md-column text-dark custom-width">
             <a href="index.php" class="d-flex align-items-center mb-3 text-dark text-decoration-none">
                 <img src="../view/image/z5616452484832_1f9b08fd997f2e5c540174a3ca08a95a.jpg" class="me-2 w-25 " alt="Logo">
                 <span class="fs-4 text-danger">DNĐ FOOD</span>
@@ -54,12 +52,10 @@
                         <i class="fas fa-list me-2"></i>
                         Quản lý danh mục
                     </a>
-
                     <a href="index.php?act=product" class="text-dark list-group-item list-group-item-action list-group-item-light">
                         <i class="fas fa-table me-2"></i>
                         Quản lý sản phẩm
                     </a>
-
                     <a href="index.php?act=order" class="text-dark list-group-item list-group-item-action list-group-item-light">
                         <i class="fas fa-cart-plus me-2"></i>
                         Quản lý đơn hàng
@@ -79,7 +75,6 @@
                 </div>
             </nav>
         </header>
-
         <!-- Mobile Menu -->
         <header class="d-md-none  text-white p-3">
             <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
@@ -138,7 +133,6 @@
                 </div>
             </nav>
         </header>
-
         <main class="container-fluid flex-grow-1">
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 d-none d-md-block">
@@ -160,7 +154,7 @@
                                     <img src="https://via.placeholder.com/40" alt="User" width="40" height="40" class="rounded-circle me-1"> Tài khoản của bạn
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="#">Trang người dùng</a></li>
+                                    <li><a class="dropdown-item" href="../index.php">Trang người dùng</a></li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
