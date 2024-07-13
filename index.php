@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 include_once('./model/PDO.php');
 include_once('./model/account.php');
@@ -12,9 +13,8 @@ require_once("./view/header.php");
 // }
 $message = '';
 $errors = [];
-if (isset($_GET['act'])) {
+if (isset($_GET['act']) && ($_GET['act'] != "")) {  
     $act = $_GET['act'];
-    if (isset($_SESSION['user']) && (is_array($_SESSION['user']))) {
         switch ($act) {
             case 'accountSignUp':
                 if (isset($_POST['add_user'])) {
@@ -95,7 +95,8 @@ if (isset($_GET['act'])) {
                         $user = select_user_login($email, $password);
                         if (is_array($user)) {
                             $_SESSION['user'] = $user;
-                            header('Location: ../controller/index.php');
+                            header('Location: ./controller/index.php');
+                            $message = '<h6 class="error text-danger">Đăng nhập thành công</h6>';
                             exit;
                         } else {
                             $message = '<h6 class="error text-danger">Email hoặc mật khẩu không chính xác</h6>';
@@ -114,17 +115,13 @@ if (isset($_GET['act'])) {
             case 'productDetails':
                 require_once("view/productDetails.php");
                 break;
-        }
-    } else {
-        header('Location: ./index.php');
-        exit();
+                default:
+            include_once './view/main.php';
+            break;
     }
 } else {
-    if (isset($_SESSION['user']) && (is_array($_SESSION['user']))) {
-        require_once './view/main.php';
-    } else {
-        header('Location: ./index.php');
-        exit();  
-    }
+    include_once './view/main.php';
 }
-require_once("./view/footer.php");
+include_once './view/footer.php';
+ob_end_flush();
+?>

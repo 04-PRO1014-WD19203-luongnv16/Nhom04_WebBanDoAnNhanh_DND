@@ -1,8 +1,5 @@
 <?php
-// File: categoryController/listCategory.php
-
-// Đảm bảo rằng biến $dsdm đã được gán giá trị từ câu truy vấn SQL trước khi sử dụng
-$dsdm = danhsach_dm(); // Gọi hàm danhsach_dm để lấy danh sách danh mục từ cơ sở dữ liệu
+$dsdm = danhsach_dm(); 
 
 ?>
 
