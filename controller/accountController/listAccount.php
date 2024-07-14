@@ -4,7 +4,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th scope="col">Mã số</th>
+                    <th scope="col">STT</th>
                     <th scope="col">Ảnh đại diện</th>
                     <th scope="col">Họ và tên</th>
                     <th scope="col">Email</th>
@@ -56,7 +56,7 @@
                             <td>$status</td>
                             <td>
                                 <div class='d-flex justify-content-start align-items-center'>
-                                    <a href='$editAccount' class='btn btn-primary btn-sm me-2'>Sửa</a>
+                                    <a href='$editAccount' class='btn btn-warning btn-sm me-2'>Sửa</a>
                                     $delete
                                 </div>
                             </td>

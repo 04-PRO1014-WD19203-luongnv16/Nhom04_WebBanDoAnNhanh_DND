@@ -52,7 +52,7 @@
                         <i class="fas fa-list me-2"></i>
                         Quản lý danh mục
                     </a>
-                    <a href="index.php?act=product" class="text-dark list-group-item list-group-item-action list-group-item-light">
+                    <a href="index.php?act=listProducts" class="text-dark list-group-item list-group-item-action list-group-item-light">
                         <i class="fas fa-table me-2"></i>
                         Quản lý sản phẩm
                     </a>
