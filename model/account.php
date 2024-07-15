@@ -1,5 +1,4 @@
 <?php
-
 // accouct Signup(Đăng ký tài khoản)
 function insert_user($full_name, $email, $password, $phone_number, $address, $avatar_url)
 {

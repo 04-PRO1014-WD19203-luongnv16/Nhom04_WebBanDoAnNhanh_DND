@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Fast Food Website</title>
+    <title>DND Food Website</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -27,7 +27,7 @@
         <header class="d-none d-md-block p-3 flex-md-column text-dark custom-width">
             <a href="index.php" class="d-flex align-items-center mb-3 text-dark text-decoration-none">
                 <img src="../view/image/z5616452484832_1f9b08fd997f2e5c540174a3ca08a95a.jpg" class="me-2 w-25 " alt="Logo">
-                <span class="fs-4 text-danger">DNĐ FOOD</span>
+                <span class="fs-4 text-danger">DND FOOD</span>
             </a>
             <hr>
             <nav>
@@ -52,7 +52,7 @@
                         <i class="fas fa-list me-2"></i>
                         Quản lý danh mục
                     </a>
-                    <a href="index.php?act=product" class="text-dark list-group-item list-group-item-action list-group-item-light">
+                    <a href="index.php?act=listProducts" class="text-dark list-group-item list-group-item-action list-group-item-light">
                         <i class="fas fa-table me-2"></i>
                         Quản lý sản phẩm
                     </a>
@@ -100,7 +100,7 @@
                                 <a class="nav-link" href="#"><i class="fas fa-list me-1"></i> Quản lý danh mục</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fas fa-table me-1"></i> Quản lý sản phẩm</a>
+                                <a class="nav-link" href=""><i class="fas fa-table me-1"></i> Quản lý sản phẩm</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#"><i class="fas fa-cart-plus me-1"></i> Quản lý đơn hàng</a>

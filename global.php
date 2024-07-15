@@ -1,3 +1,5 @@
 <?php
-    $imgPath = './upload/'
+    $imgPath = './upload/';
+    // $imgPath = './images/';
+
 ?>

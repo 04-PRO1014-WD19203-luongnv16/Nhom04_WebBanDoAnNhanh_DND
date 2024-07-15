@@ -71,10 +71,10 @@
         </div>
     </div>
 
-    <script>
-    function confirmDelete(url) {
-        if (confirm("Bạn có chắc chắn muốn xóa tài khoản này không?")) {
-            window.location.href = url;
-        }
+<script>
+function confirmDelete(url) {
+    if (confirm("Bạn có chắc chắn muốn xóa tài khoản này không?")) {
+        window.location.href = url;
     }
-    </script>
+}
+</script>
