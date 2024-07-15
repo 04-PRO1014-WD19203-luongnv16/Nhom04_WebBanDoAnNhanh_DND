@@ -20,7 +20,7 @@
         <div class=" row align-items-center">
             <span class="col"> 0987654321 </span>
             <div class="col-auto">
-                <img src="./view/image/z5616452484832_1f9b08fd997f2e5c540174a3ca08a95a.jpg" class="img-fluid rounded-circle" style="max-width: 50px; height: auto;" alt="logo">
+                <a href="index.php?act=/"><img src="./view/image/z5616452484832_1f9b08fd997f2e5c540174a3ca08a95a.jpg" class="img-fluid rounded-circle" style="max-width: 50px; height: auto;" alt="logo"></a>
             </div>
             <div class="col d-flex justify-content-end">
                 <a href="index.php?act=accountLogin" class="btn btn-outline-primary me-md-3">Đăng Nhập</a>
@@ -73,7 +73,7 @@
                                 <a class="nav-link fw-bold" href="index.php?act=main">Trang chủ</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link fw-bold" href="index.php?act=products">Sản phẩm</a>
+                                <a class="nav-link fw-bold" href="index.php?act=listProducts">Sản phẩm</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link fw-bold" href="#">Tin tức</a>
@@ -82,7 +82,7 @@
                                 <a class="nav-link fw-bold" href="#">Giới Thiệu</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link fw-bold" href="#">Liên hệ</a>
+                                <a class="nav-link fw-bold" href="index.php?act=contect">Liên hệ</a>
                             </li>
                         </ul>
                     </div>
