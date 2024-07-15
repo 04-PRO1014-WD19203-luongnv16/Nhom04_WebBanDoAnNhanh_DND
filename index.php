@@ -119,13 +119,18 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 $oneProductDetail = select_sp_one($_GET['product_id']);
                 extract($oneProductDetail);
                 // sản phẩm tương tự
-                $similarProduct = select_sp_similar($_GET['idsp'],$ma_loai);
+                $similarProduct = select_sp_similar($_GET['product_id'],$category_id);
                         extract($similarProduct);
                 include_once './view/product/productDetails.php';
             }else{
                 include_once '"./view/product/listProducts.php';
             }
             break;
+        case 'logout':
+                session_destroy();
+                header('Location: index.php');
+                exit;
+                break;
         case 'contect':
             include_once("view/contect.php");
             break;

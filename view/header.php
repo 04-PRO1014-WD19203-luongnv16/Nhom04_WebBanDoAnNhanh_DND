@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Fast Food </title>
+    <title>Fast Food</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -16,15 +16,20 @@
 </head>
 
 <body>
-    <div class="container  bg-light">
-        <div class=" row align-items-center">
-            <span class="col"> 0987654321 </span>
+    <div class="container bg-light">
+        <div class="row align-items-center">
+            <span class="col">0987654321</span>
             <div class="col-auto">
                 <a href="index.php?act=/"><img src="./view/image/z5616452484832_1f9b08fd997f2e5c540174a3ca08a95a.jpg" class="img-fluid rounded-circle" style="max-width: 50px; height: auto;" alt="logo"></a>
             </div>
             <div class="col d-flex justify-content-end">
-                <a href="index.php?act=accountLogin" class="btn btn-outline-primary me-md-3">Đăng Nhập</a>
-                <a href="index.php?act=accountSignUp" class="btn btn-primary">Đăng Ký</a>
+                <?php if (isset($_SESSION['user'])) : ?>
+                    <span class="me-3">Chào, <?php echo htmlspecialchars($_SESSION['user']['full_name']); ?></span>
+                    <a href="index.php?act=logout" class="btn btn-outline-primary me-md-3">Đăng Xuất</a>
+                <?php else : ?>
+                    <a href="index.php?act=accountLogin" class="btn btn-outline-primary me-md-3">Đăng Nhập</a>
+                    <a href="index.php?act=accountSignUp" class="btn btn-primary">Đăng Ký</a>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -92,3 +97,5 @@
             </div>
         </div>
     </nav>
+    <!-- Your PHP and HTML content here -->
+
