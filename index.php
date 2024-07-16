@@ -14,6 +14,8 @@ require_once("./view/header.php");
 //     echo "Kết nối không thành công: " . $e->getMessage() . "<br>";
 // }
 $allProduct = select_sp_home();
+$search = '';
+$ds = search_pro($search);
 $message = '';
 $errors = [];
 if (isset($_GET['act']) && ($_GET['act'] != "")) {
@@ -132,6 +134,18 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
         case 'about':
             include_once("view/contact.php");
             break;
+
+        //tìm kiếm
+        case"searchPro":
+            if(isset($_POST['btn'])){
+                $search = $_POST['search'];
+                $allProduct = search_pro($search);
+            }else{
+               echo $search = false;
+            } 
+            include_once("./view/product/listProducts.php");
+            break;
+            
         default:
             include_once './view/main.php';
             break;

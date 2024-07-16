@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Fast Food </title>
+    <title>DND Food</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -18,7 +18,7 @@
 <body>
     <div class="container  bg-light">
         <div class=" row align-items-center">
-            <span class="col"> 0987654321 </span>
+            <span class="col text-danger"> DND Food </span>
             <div class="col-auto">
                 <a href="index.php?act=/"><img src="./view/image/z5616452484832_1f9b08fd997f2e5c540174a3ca08a95a.jpg" class="img-fluid rounded-circle" style="max-width: 50px; height: auto;" alt="logo"></a>
             </div>
@@ -32,15 +32,15 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-2"></div>
-                <div class="col-md-7">
-                    <form class="d-flex">
-                        <div class="input-group me-2">
-                            <input type="search" class="form-control" placeholder="Chọn khoảng giá">
+                <div class="col-md-7" class="d-flex">
+                    <!-- Bộ lọc sản phẩm -->
+                    <!-- Tìm Kiếm -->
+                    <form  method="post" action="index.php?act=searchPro">
+                        <div class="input-group me-2 d-flex">
+                            <input type="text" class="form-control" aria-label="Search" name="search" placeholder="Tìm kiếm">
+                            <button class="btn btn-outline-secondary btn-danger" type="submit" name="btn"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
-                        <div class="input-group me-2">
-                            <input type="search" class="form-control" aria-label="Search" name="inputSearch" placeholder="Tìm kiếm">
-                        </div>
-                        <button class="btn btn-outline-secondary btn-danger" type="submit" name="searchProduct"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        
                     </form>
                 </div>
                 <div class="col-md-3 bg-light-subtle d-flex justify-content-end align-items-center">
