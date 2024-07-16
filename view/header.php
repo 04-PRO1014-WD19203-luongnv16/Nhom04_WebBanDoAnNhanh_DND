@@ -18,7 +18,7 @@
 <body>
     <div class="container  bg-light">
         <div class=" row align-items-center">
-            <span class="col text-danger"> DND Food </span>
+            <span class="col"><a href="index.php" class="text-danger" style="text-decoration:none">DND Food</a></span>
             <div class="col-auto">
                 <a href="index.php?act=/"><img src="./view/image/z5616452484832_1f9b08fd997f2e5c540174a3ca08a95a.jpg" class="img-fluid rounded-circle" style="max-width: 50px; height: auto;" alt="logo"></a>
             </div>

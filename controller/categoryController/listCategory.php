@@ -27,8 +27,8 @@ $dsdm = danhsach_dm();
                     <tr>
                         <td><?php echo $category['category_id']; ?></td>
                         <td><?php echo $category['category_name']; ?></td>
-                        <td><a href="?act=deleteCategory&category_id=<?php echo $category['category_id']; ?>"><i class="fa-solid fa-pen-to-square"></i>Xóa</a></td>
-                        <td><a href="?act=editCategory&category_id=<?php echo $category['category_id']; ?>"><i class="fa-solid fa-eraser"></i>Sửa</a></td>
+                        <td><a href="?act=deleteCategory&category_id=<?php echo $category['category_id']; ?>" style="text-decoration:none"><i class="fa-solid fa-pen-to-square"></i>Xóa</a></td>
+                        <td><a href="?act=editCategory&category_id=<?php echo $category['category_id']; ?>" style="text-decoration:none"><i class="fa-solid fa-eraser"></i>Sửa</a></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else : ?>
