@@ -38,14 +38,12 @@
             <div class="row align-items-center">
                 <div class="col-md-2"></div>
                 <div class="col-md-7">
-                    <form class="d-flex">
-                        <div class="input-group me-2">
-                            <input type="search" class="form-control" placeholder="Chọn khoảng giá">
+                <form  method="post" action="index.php?act=searchPro">
+                        <div class="input-group me-2 d-flex">
+                            <input type="text" class="form-control" aria-label="Search" name="search" placeholder="Tìm kiếm">
+                            <button class="btn btn-outline-secondary btn-danger" type="submit" name="btn"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
-                        <div class="input-group me-2">
-                            <input type="search" class="form-control" aria-label="Search" name="inputSearch" placeholder="Tìm kiếm">
-                        </div>
-                        <button class="btn btn-outline-secondary btn-danger" type="submit" name="searchProduct"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        
                     </form>
                 </div>
                 <div class="col-md-3 bg-light-subtle d-flex justify-content-end align-items-center">

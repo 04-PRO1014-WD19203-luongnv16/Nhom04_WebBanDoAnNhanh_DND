@@ -64,4 +64,11 @@ function select_sp_similar($id, $product_id)
     $listProducts = pdo_query($sql);
     return $listProducts;
 }
+
+//seach
+function search_pro($search){
+    $sql = "SELECT * FROM product WHERE product_name LIKE '%$search%' ";
+    $result = pdo_query($sql);
+    return $result;
+}
 ?>

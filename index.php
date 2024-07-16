@@ -126,6 +126,16 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 include_once '"./view/product/listProducts.php';
             }
             break;
+        //tìm kiếm
+        case"searchPro":
+            if(isset($_POST['btn'])){
+                $search = $_POST['search'];
+                $allProduct = search_pro($search);
+            }else{
+               echo $search = false;
+            } 
+            include_once("./view/product/listProducts.php");
+            break;
         case 'logout':
                 session_destroy();
                 header('Location: index.php');
