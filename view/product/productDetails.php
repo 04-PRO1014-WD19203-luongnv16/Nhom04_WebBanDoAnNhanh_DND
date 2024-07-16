@@ -6,9 +6,9 @@
                 <?php
                 echo '
                     <h3 class="text-center mb-4">Chi tiết sản phẩm</h3>
-                    <div class="col-md-4 mt-4">
+                    <div class="col-md-4">
                         <div class="col-12">
-                            <img src="' . $imgPath . $product_avatar_url . '" class="card-img img-fluid w-100 rounded" alt="Product Image">
+                            <img src="' . $imgPath . $product_avatar_url . '" class="card-img img-fluid w-100 h-100 mb-5" alt="Product Image">
                         </div>
                     </div>
                     <div class="col-md-8 mt-3 mb-4">
@@ -30,9 +30,10 @@
                             <p><strong>Mã sản phẩm:</strong> ' . $product_id . '</p>
                             <p><strong>Danh mục:</strong> ' . $category_name . '</p>
                         </div>
+                    </div>
                 ';
                 ?>
-            </div>
+
             </div>
             <script>
                 document.getElementById('decrement').addEventListener('click', function() {
@@ -61,9 +62,9 @@
                 </nav>
                 </div>
                 <div id="description" class="tab-content active">
-                    <p class="text-secondary mt-3">' . $product_description . '</p>
+                    <h3 class="text-secondary mt-3">Nguyên liệu: </h3>
                     <div class="row mt-4">
-                        <!-- demo mô tả ở đây -->
+                        '. $product_description .'
                     </div>
                 </div>
                 <div id="reviews" class="tab-content" style="display: none;">
@@ -114,4 +115,3 @@
             </div>
         </section>
     </div>
-</main>

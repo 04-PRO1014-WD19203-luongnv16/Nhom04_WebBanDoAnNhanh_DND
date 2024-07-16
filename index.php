@@ -115,32 +115,32 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             include_once("./view/main.php");
             break;
         case 'productDetails':
-            if(isset($_GET['product_id'])&&($_GET['product_id'] > 0)){
+            if (isset($_GET['product_id']) && ($_GET['product_id'] > 0)) {
                 $oneProductDetail = select_sp_one($_GET['product_id']);
                 extract($oneProductDetail);
                 // sản phẩm tương tự
-                $similarProduct = select_sp_similar($_GET['product_id'],$category_id);
-                        extract($similarProduct);
+                $similarProduct = select_sp_similar($_GET['product_id'], $category_id);
+                extract($similarProduct);
                 include_once './view/product/productDetails.php';
-            }else{
+            } else {
                 include_once '"./view/product/listProducts.php';
             }
             break;
-        //tìm kiếm
-        case"searchPro":
-            if(isset($_POST['btn'])){
+            //tìm kiếm
+        case "searchPro":
+            if (isset($_POST['btn'])) {
                 $search = $_POST['search'];
                 $allProduct = search_pro($search);
-            }else{
-               echo $search = false;
-            } 
+            } else {
+                echo $search = false;
+            }
             include_once("./view/product/listProducts.php");
             break;
         case 'logout':
-                session_destroy();
-                header('Location: index.php');
-                exit;
-                break;
+            session_destroy();
+            header('Location: index.php');
+            exit;
+            break;
         case 'contect':
             include_once("view/contect.php");
             break;
