@@ -38,19 +38,21 @@
             <div class="row align-items-center">
                 <div class="col-md-2"></div>
                 <div class="col-md-7">
-                <form  method="post" action="index.php?act=searchPro">
+                    <form method="post" action="index.php?act=searchPro">
                         <div class="input-group me-2 d-flex">
                             <input type="text" class="form-control" aria-label="Search" name="search" placeholder="Tìm kiếm">
                             <button class="btn btn-outline-secondary btn-danger" type="submit" name="btn"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
-                        
+
                     </form>
                 </div>
                 <div class="col-md-3 bg-light-subtle d-flex justify-content-end align-items-center">
                     <a href="#" class="d-flex align-items-center text-decoration-none">
                         <div class="ms-3">
-                            <i class="fa-solid fa-cart-shopping fs-4"></i>
-                            <span class="ms-2 fs-5">Giỏ hàng</span>
+                            <a href="index.php?act=viewCart">
+                                <i class="fa-solid fa-cart-shopping fs-4"></i>
+                                <span class="ms-2 fs-5">Giỏ hàng</span>
+                            </a>
                         </div>
                         <div class="ms-4">
                             <span class="badge bg-primary">0</span>
@@ -96,4 +98,3 @@
         </div>
     </nav>
     <!-- Your PHP and HTML content here -->
-

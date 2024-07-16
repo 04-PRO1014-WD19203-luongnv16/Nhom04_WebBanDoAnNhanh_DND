@@ -60,10 +60,11 @@ function select_sp_one($product_id)
 // Hiển thị sản phẩm tương tự ở user
 function select_sp_similar($id, $product_id)
 {
-    $sql = "SELECT * FROM product WHERE category_id=" . $product_id . " AND product_id<>" . $id;
+    $sql = "SELECT * FROM product WHERE category_id=" . $product_id . " AND product_id<>" . $id . " LIMIT 4";
     $listProducts = pdo_query($sql);
     return $listProducts;
 }
+
 
 //seach
 function search_pro($search){
@@ -71,4 +72,6 @@ function search_pro($search){
     $result = pdo_query($sql);
     return $result;
 }
+
+
 ?>
