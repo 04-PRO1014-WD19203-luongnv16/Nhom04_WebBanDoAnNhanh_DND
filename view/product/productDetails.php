@@ -44,31 +44,31 @@
                 </div>
             </div>
             <script>
-    document.getElementById('decrement').addEventListener('click', function() {
-        var quantityInput = document.getElementById('quantity');
-        var currentValue = parseInt(quantityInput.value);
-        if (currentValue > 1) {
-            quantityInput.value = currentValue - 1;
-        }
-        updateCartQuantityField(); // Update hidden input value
-    });
+                document.getElementById('decrement').addEventListener('click', function() {
+                    var quantityInput = document.getElementById('quantity');
+                    var currentValue = parseInt(quantityInput.value);
+                    if (currentValue > 1) {
+                        quantityInput.value = currentValue - 1;
+                    }
+                    updateCartQuantityField(); // Update hidden input value
+                });
 
-    document.getElementById('increment').addEventListener('click', function() {
-        var quantityInput = document.getElementById('quantity');
-        var currentValue = parseInt(quantityInput.value);
-        quantityInput.value = currentValue + 1;
-        updateCartQuantityField(); // Update hidden input value
-    });
+                document.getElementById('increment').addEventListener('click', function() {
+                    var quantityInput = document.getElementById('quantity');
+                    var currentValue = parseInt(quantityInput.value);
+                    quantityInput.value = currentValue + 1;
+                    updateCartQuantityField(); // Update hidden input value
+                });
 
-    // Function to update hidden input value
-    function updateCartQuantityField() {
-        var quantityInput = document.getElementById('quantity');
-        document.getElementById('cart_quantity').value = quantityInput.value;
-    }
+                // Function to update hidden input value
+                function updateCartQuantityField() {
+                    var quantityInput = document.getElementById('quantity');
+                    document.getElementById('cart_quantity').value = quantityInput.value;
+                }
 
-    // Ensure initial value sync
-    updateCartQuantityField();
-</script>
+                // Ensure initial value sync
+                updateCartQuantityField();
+            </script>
 
         </section>
     </div>

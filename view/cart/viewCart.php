@@ -18,7 +18,7 @@
                     $total = 0;
                     foreach ($_SESSION['myCart'] as $index => $cart) {
                         $img = $imgPath . $cart[5];
-                        $totalAmount = $cart[4] * $cart[3]; // Tính tổng thành tiền cho sản phẩm này
+                        $totalAmount = $cart[2] * $cart[3]; // Tính tổng thành tiền cho sản phẩm này
                         $total += $totalAmount;
 
                         // Tạo link để xóa sản phẩm khỏi giỏ hàng
