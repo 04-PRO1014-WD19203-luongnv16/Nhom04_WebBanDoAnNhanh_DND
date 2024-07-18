@@ -7,11 +7,13 @@ function viewCart() {
     if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
         foreach ($_SESSION['myCart'] as $index => $cart) {
             $img = $imgPath . $cart[5];
-            $totalAmount = $cart[2] * $cart[3]; // Tính tổng tiền cho sản phẩm
+            $totalAmount = $cart[2] * $cart[3]; // Tính tổng thành tiền cho sản phẩm này
             $total += $totalAmount;
+
             // Tạo link để xóa sản phẩm khỏi giỏ hàng
             $deleteCartProduct = '<a href="index.php?act=deleteCartProduct&idcart=' . $index . '" class="btn btn-danger">Xóa</a>';
-            // Cập nhật số lượng sản phẩm
+
+            // Tạo form để cập nhật số lượng sản phẩm
             $updateQuantityForm = '
                 <form action="index.php?act=updateCartQuantity" method="post">
                     <input type="hidden" name="idcart" value="' . $index . '">
@@ -36,7 +38,7 @@ function viewCart() {
         echo '
             <tr>
                 <td colspan="4" class="text-end">Tổng đơn hàng:</td>
-                <td>'. number_format($total).',000 VND</td>
+                <td>'. number_format($total).' ,000 VND</td>
             </tr>
         ';
     } else {
@@ -47,6 +49,4 @@ function viewCart() {
         ';
     }
 }
-
-
 ?>

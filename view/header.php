@@ -47,24 +47,24 @@
                     </form>
                 </div>
                 <div class="col-md-3 bg-light-subtle d-flex justify-content-end align-items-center">
-    <a href="index.php?act=viewCart" class="d-flex align-items-center text-decoration-none">
-        <div class="ms-3">
-            <i class="fa-solid fa-cart-shopping fs-4"></i>
-            <span class="ms-2 fs-5">Giỏ hàng</span>
-        </div>
-        <div class="ms-4">
-            <?php
-            $totalQuantity = 0;
-            if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
-                foreach ($_SESSION['myCart'] as $cart) {
-                    $totalQuantity += $cart[3]; // Giả sử số lượng sản phẩm nằm ở vị trí thứ 4 trong mảng $cart
-                }
-            }
-            ?>
-            <span class="badge bg-primary"><?= $totalQuantity ?></span>
-        </div>
-    </a>
-</div>
+                    <a href="index.php?act=viewCart" class="d-flex align-items-center text-decoration-none">
+                        <div class="ms-3">
+                            <i class="fa-solid fa-cart-shopping fs-4"></i>
+                            <span class="ms-2 fs-5">Giỏ hàng</span>
+                        </div>
+                        <div class="ms-4">
+                            <?php
+                            $totalQuantity = 0;
+                            if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
+                                foreach ($_SESSION['myCart'] as $cart) {
+                                    $totalQuantity += $cart[3]; // Giả sử số lượng sản phẩm nằm ở vị trí thứ 4 trong mảng $cart
+                                }
+                            }
+                            ?>
+                            <span class="badge bg-primary"><?= $totalQuantity ?></span>
+                        </div>
+                    </a>
+                </div>
 
             </div>
         </div>
