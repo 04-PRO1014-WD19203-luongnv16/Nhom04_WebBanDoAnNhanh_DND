@@ -15,10 +15,10 @@ function email_exists($email) {
 }
 
 // Account Login( Đăng nhập tài khoản)
-function select_user_login($email, $password) {
-    $sql = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
-    return pdo_query_one($sql);
-}
+// function select_user_login($email, $password) {
+//     $sql = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
+//     return pdo_query_one($sql);
+// }
 
 // List Account ( Danh sách tất cả tài khoản)
 function select_all_users() {
@@ -54,6 +54,16 @@ function delete_users($user_id) {
     pdo_execute($sql);
 }
 
+// Account Login (Đăng nhập tài khoản)
+function select_user_login($email, $password) {
+    $sql = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
+    $user = pdo_query_one($sql);
+    if ($user) {
+        session_start();
+        $_SESSION['user'] = $user;
+    }
+    return $user;
+}
 
 // // Update Users
 // function update_user($user_id, $full_name, $email, $password, $phone_number, $address, $avatar_url) {

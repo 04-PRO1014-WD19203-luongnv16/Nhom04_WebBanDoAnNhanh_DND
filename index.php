@@ -5,6 +5,7 @@ include_once('./model/PDO.php');
 include_once('./model/account.php');
 include_once('./model/category.php');
 include_once('./model/product.php');
+include_once('./model/cart.php');
 include_once('./global.php');
 require_once("./view/header.php");
 // try {
@@ -247,6 +248,11 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
 
         case 'viewCart':
             include_once("./view/cart/viewCart.php");
+            break;
+        case "bill":
+            include_once("./view/cart/bill.php");
+            break;
+        case "confirmBill":
             break;
         default:
             include_once './view/main.php';
