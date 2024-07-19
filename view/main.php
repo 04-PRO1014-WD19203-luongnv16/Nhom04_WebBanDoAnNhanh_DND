@@ -1,112 +1,111 @@
-<main class="container">
-    <div class="container">
-        <div class="row">
-            <div class="col-3 ">
-                <div class="list-group list-group-flush">
-                    <a href="#" class="list-group-item list-group-item-action">Cơm Trưa</a>
-                    <a href="#" class="list-group-item list-group-item-action">Đồ Ăn</a>
-                    <a href="#" class="list-group-item list-group-item-action">Thức Uống</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tráng Miệng</a>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="row g-2">
-                    <div class="col-4">
-                        <img src="./view/image/com/banh_bo_com_nguoi_doc_dao_moi.jpg" class="img-fluid" alt="Image 1">
-                    </div>
-                    <div class="col-4">
-                        <img src="./view/image/com/banh_bo_com_nguoi_doc_dao_moi.jpg" class="img-fluid" alt="Image 2">
-                    </div>
-                    <div class="col-4">
-                        <img src="./view/image/com/banh_bo_com_nguoi_doc_dao_moi.jpg" class="img-fluid" alt="Image 3">
-                    </div>
-                    <div class="col-12">
-                        <div class="row g-2">
-                            <div class="col-3">
-                                <img src="./view/image/com/banh_bo_com_nguoi_doc_dao_moi.jpg" class="img-fluid" alt="Image 4">
-                            </div>
-                            <div class="col-3">
-                                <img src="./view/image/com/banh_bo_com_nguoi_doc_dao_moi.jpg" class="img-fluid" alt="Image 5">
-                            </div>
-                            <div class="col-3">
-                                <img src="./view/image/com/banh_bo_com_nguoi_doc_dao_moi.jpg" class="img-fluid" alt="Image 6">
-                            </div>
-                            <div class="col-3">
-                                <img src="./view/image/com/banh_bo_com_nguoi_doc_dao_moi.jpg" class="img-fluid" alt="Image 7">
-                            </div>
+<div class="container-fluid  ">
+    <!-- Top 10 sản phẩm -->
+    <div class="row">
+        <div class="col-md-2">
+            <div id="carouselTopProducts" class="carousel slide carousel-vertical" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <?php
+                    $topViewedProducts = getTopViewedProducts();
+                    foreach ($topViewedProducts as $index => $product) :
+                        $active = $first ? 'active' : '';
+                        $first = false;
+                    ?>
+                        <div class="carousel-item <?= $active ?>">
+                            <a href="index.php?act=productDetails&product_id=<?= $product['product_id'] ?>">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5><?= $product['product_name'] ?></h5>
+                                </div>
+                            </a>
                         </div>
+                    <?php endforeach; ?>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselTopProducts" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselTopProducts" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <!-- Slideshow -->
+        <div class="col-md-8 mt-3">
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="./view/image/slideShow/b2.png" class="d-block w-100" alt="...">
                     </div>
-                    <div class="col-4">
-                        <img src="./view/image/com/banh_bo_com_nguoi_doc_dao_moi.jpg" class="img-fluid" alt="Image 8">
+                    <div class="carousel-item">
+                        <img src="./view/image/slideShow/bg-4.png" class="d-block w-100" alt="...">
                     </div>
-                    <div class="col-4">
-                        <img src="./view/image/com/banh_bo_com_nguoi_doc_dao_moi.jpg" class="img-fluid" alt="Image 9">
-                    </div>
-                    <div class="col-4">
-                        <img src="./view/image/com/banh_bo_com_nguoi_doc_dao_moi.jpg" class="img-fluid" alt="Image 10">
+                    <div class="carousel-item">
+                        <img src="./view/image/slideShow/bg3.png" class="d-block w-100" alt="...">
                     </div>
                 </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
-            <div class="col-3">
-                <div class="d-flex flex-column justify-content-center align-items-center h-100 bg-warning">
-                    <img src="./view/image/logo.jpg" alt="Advertisement" class="img-fluid w-75">
+        </div>
+        <!-- Danh sách sản phẩm khuyến mãi -->
+        <div class="col-2 mt-3">
+            <div class="card">
+                <div class="card-body ">
+                    <h6 class="card-title ">Thực Phẩm Khuyến Mại</h6>
+                    <ul class="list-group ">
+                        <li class="list-group-item ">Mỹ Ý Sốt Bò Mỹ - 30,000 ₫</li>
+                        <li class="list-group-item  ">Cơm Chiên Mã Lai Gà Quay - 30,000 ₫</li>
+                        <li class="list-group-item ">Mì Vịt Quay Singapore - 60,000 ₫</li>
+                        <li class="list-group-item ">Mì Vịt Quay & Xá Xíu</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <section class="container my-4">
-        <h2>Thực Phẩm Khuyến Mại</h2>
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Cơm gà sốt chua ngọt">
-                    <div class="card-body">
-                        <h5 class="card-title">Cơm gà sốt chua ngọt</h5>
-                        <p class="card-text">52,250 ₫ <del>55,000 ₫</del></p>
-                        <a href="#" class="btn btn-primary">Cho vào giỏ hàng</a>
+
+<div class="text-center mt-2">
+    <h2>Chào Mừng Bạn Đến Với DND FOOD!</h2>
+    <p>Bạn đang đói? Đừng lo đã có DND Food lo!
+    </p>
+</div>
+<!-- main -->
+<div class="container">
+    <div class="col-md-12">
+        <div class="row g-4">
+            <?php foreach ($allProduct as $products) : ?>
+                <?php
+                extract($products);
+                $linkProduct = "index.php?act=productDetails&product_id=" . $product_id;
+                $image_url = $imgPath . $product_avatar_url;
+                ?>
+                <div class="col-md-4">
+                    <div class="card">
+                        <form action="index.php?act=addToCart" method="post">
+                            <input type="hidden" name="product_id" value="<?= $product_id ?>">
+                            <input type="hidden" name="product_name" value="<?= $product_name ?>">
+                            <input type="hidden" name="product_sale_price" value="<?= $product_sale_price ?>">
+                            <input type="hidden" name="image_url" value="<?= $product_avatar_url ?>">
+                            <a href="<?= $linkProduct ?>"><img src="<?= $image_url ?>" class="card-img img-fluid" alt="Product Image"></a>
+                            <div class="card-body bg-light">
+                                <h3 class="card-title fw-bold fs-5"><?= $product_name ?></h3>
+                                <p class="card-text text-danger fs-5 mb-3"><?= $product_sale_price ?> đ</p>
+                                <input type="submit" name="add_cart" class="btn btn-outline-dark w-100 fw-bold" value="Thêm vào giỏ hàng">
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Mỳ Ý Hầu Pháp sốt Alfredo">
-                    <div class="card-body">
-                        <h5 class="card-title">Mỳ Ý Hầu Pháp sốt Alfredo</h5>
-                        <p class="card-text">76,000 ₫ <del>80,000 ₫</del></p>
-                        <a href="#" class="btn btn-primary">Cho vào giỏ hàng</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Cappuccino">
-                    <div class="card-body">
-                        <h5 class="card-title">Cappuccino</h5>
-                        <p class="card-text">39,900 ₫ <del>42,000 ₫</del></p>
-                        <a href="#" class="btn btn-primary">Cho vào giỏ hàng</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Gà nướng sốt tiêu đen (nguyên con)">
-                    <div class="card-body">
-                        <h5 class="card-title">Gà nướng sốt tiêu đen (nguyên con)</h5>
-                        <p class="card-text">141,550 ₫ <del>149,000 ₫</del></p>
-                        <a href="#" class="btn btn-primary">Cho vào giỏ hàng</a>
-                    </div>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
-    </section>
-
-    <section class="container my-4">
-        <h2>Món Ngon Bán Chạy</h2>
-        <ul class="list-group">
-            <li class="list-group-item">Mỹ Ý Sốt Bò Mỹ - 30,000 ₫</li>
-            <li class="list-group-item">Cơm Chiên Mã Lai Gà Quay - 30,000 ₫</li>
-            <li class="list-group-item">Mì Vịt Quay Singapore - 60,000 ₫</li>
-            <li class="list-group-item">Mì Vịt Quay & Xá Xíu</li>
-        </ul>
-    </section>
+    </div>
+</div>
+</section>
+</div>
+</main>

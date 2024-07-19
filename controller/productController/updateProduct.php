@@ -2,7 +2,7 @@
 if (is_array($product)) {
     extract($product);
 }
-$hinhpath = "../upload/" . $product_avatar_url;
+$hinhpath = "./upload/" . $product_avatar_url;
 if (is_file($hinhpath)) {
     $hinhpath = "<img src='" . $hinhpath . "' height='80px'>";
 } else {
@@ -48,7 +48,7 @@ if (is_file($hinhpath)) {
                     </div>
                     <select class="form-select mb-3" name="category_id">
                         <?php foreach ($listCate as $cate) {
-                            if($product['category_id'] == $cate['category_id']){
+                            if($category_id == $category_id){
                                 echo '<option value="' . $cate['category_id'] . '" selected>' . $cate['category_name'] . '</option>';
                             }
                             else{

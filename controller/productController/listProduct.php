@@ -1,10 +1,10 @@
-<div class="container my-5">
-    <h2>Quản Lý Sản Phẩm</h2>
-    <div class="d-flex justify-content-between mb-3">
+<div class="container ">
+    <h1 class="mb-4 ">Quản Lý Sản Phẩm</h1>
+    <!-- <div class="d-flex justify-content-between mb-3">
         <h5>Quản lý sản phẩm <small class="text-muted">sub title</small></h5>
 
-    </div>
-    <a href="index.php?act=addProduct" class="btn btn-primary">Thêm</a>
+    </div> -->
+    <a href="index.php?act=addProduct" class="btn btn-primary mb-3">Thêm sản phẩm</a>
     <table class="table table-bordered">
         <thead>
             <tr>

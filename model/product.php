@@ -64,11 +64,31 @@ function select_sp_similar($id, $product_id)
     $listProducts = pdo_query($sql);
     return $listProducts;
 }
-//Tìm kiếm
+
+//seach
 function search_pro($search){
     $sql = "SELECT * FROM product WHERE product_name LIKE '%$search%' ";
     $result = pdo_query($sql);
     return $result;
 }
+//lọc
+function getProductByCategory($category_id) {
+    $sql = "SELECT * FROM product WHERE category_id = $category_id";
+    return pdo_query($sql);
+}
 
+function getAllProducts() {
+    $sql = "SELECT * FROM products";
+    return pdo_query($sql);
+}
+//view 
+function increaseProductViewCount($product_id) {
+    $sql = "UPDATE product SET view_count = view_count + 1 WHERE product_id = :product_id";
+    pdo_execute($sql, ['product_id' => $product_id]);
+}
+function getTopViewedProducts()
+{
+    $sql = "SELECT product_id, product_name, view_count FROM product ORDER BY view_count DESC LIMIT 10";
+    return pdo_query($sql);
+}
 ?>

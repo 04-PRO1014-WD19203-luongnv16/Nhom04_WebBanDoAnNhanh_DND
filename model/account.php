@@ -15,9 +15,18 @@ function email_exists($email) {
 }
 
 // Account Login( Đăng nhập tài khoản)
+// function select_user_login($email, $password) {
+//     $sql = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
+//     return pdo_query_one($sql);
+// }
 function select_user_login($email, $password) {
     $sql = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
-    return pdo_query_one($sql);
+    $user = pdo_query_one($sql);
+    if ($user) {
+        session_start();
+        $_SESSION['user'] = $user;
+    }
+    return $user;
 }
 
 // List Account ( Danh sách tất cả tài khoản)
