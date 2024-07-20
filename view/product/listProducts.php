@@ -1,6 +1,7 @@
 <main class="container">
     <section class="container mt-5">
         <div class="row">
+            <!-- loc theo danh muc -->
             <div class="col-md-3">
             <h4 style="text-align: center;">Danh Mục</h4>
               <?php foreach ($dsdm as $value) : ?>
@@ -11,6 +12,7 @@
                 <hr>
               <?php endforeach; ?>
             </div>
+            <!-- Hiển thị sản list sản phẩm-->
             <div class="col-md-9">
                 <div class="row g-4">
                     <?php foreach ($allProduct as $products) : ?>

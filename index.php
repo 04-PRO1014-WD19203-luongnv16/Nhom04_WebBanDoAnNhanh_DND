@@ -266,9 +266,13 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 $dsdm = danhsach_dm();
                 include_once("./view/product/listProducts.php");
                 break;
-               
         case "bill":
             include_once("./view/cart/bill.php");
+            break;
+        //top 10
+        case "showTop10":
+            $listTop10 = load_product_top10();
+            include_once("./view/main.php");
             break;
         case "confirmBill":
             break;

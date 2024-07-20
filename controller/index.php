@@ -281,9 +281,8 @@ if (isset($_GET['act'])) {
                 
                 //Quản lý bình luận
             case "comment":
-                break;
                 require_once("comment/list.php");
-
+                break;                
             default:
                 require_once("./main.php");
                 break;

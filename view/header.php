@@ -79,6 +79,12 @@
             background-color: red;
             color: white;
         }
+        .top10-container {
+            max-height: 400px; /* Chiều cao của thanh trượt */
+            overflow-y: scroll;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
     </style>
 
     <div class="container-fluid header-bg py-2">

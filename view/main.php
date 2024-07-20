@@ -3,30 +3,22 @@
     <div class="row">
         <div class="col-md-2">
             <div id="carouselTopProducts" class="carousel slide carousel-vertical" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <?php
-                    $topViewedProducts = getTopViewedProducts();
-                    foreach ($topViewedProducts as $index => $product) :
-                        $active = $first ? 'active' : '';
-                        $first = false;
-                    ?>
-                        <div class="carousel-item <?= $active ?>">
-                            <a href="index.php?act=productDetails&product_id=<?= $product['product_id'] ?>">
-                                <div class="carousel-caption d-none d-md-block">
-                                    <h5><?= $product['product_name'] ?></h5>
-                                </div>
-                            </a>
+                <div class="mt-2">
+                <h6>Top 10 sản phẩm nổi bật</h6>
+                <div class="top10-container">
+
+                    <?php $listTop10 = load_product_top10() ?>
+                    <?php foreach ($listTop10 as $product) : ?>
+                        <div class="product-item">
+                            <img src="<?php echo './upload/' . $product['product_avatar_url']; ?>" alt="<?php echo $product['product_name']; ?>" class="img-thumbnail">
+                            <div>
+                                <h6><?php echo $product['product_name']; ?></h6>
+                                <p class="text-danger"><?php echo $product['product_listed_price']; ?> VND</p>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselTopProducts" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselTopProducts" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+                </div>
             </div>
         </div>
         <!-- Slideshow -->

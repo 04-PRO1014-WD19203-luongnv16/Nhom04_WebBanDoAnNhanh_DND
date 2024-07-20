@@ -81,14 +81,11 @@ function getAllProducts() {
     $sql = "SELECT * FROM products";
     return pdo_query($sql);
 }
-//view 
-function increaseProductViewCount($product_id) {
-    $sql = "UPDATE product SET view_count = view_count + 1 WHERE product_id = :product_id";
-    pdo_execute($sql, ['product_id' => $product_id]);
+//top 10
+function load_product_top10(){
+    $sql = "SELECT * From product where 1 ORDER BY product_id DESC LIMIT  0,10";
+    $listProducts = pdo_query($sql);
+    return $listProducts;
 }
-function getTopViewedProducts()
-{
-    $sql = "SELECT product_id, product_name, view_count FROM product ORDER BY view_count DESC LIMIT 10";
-    return pdo_query($sql);
-}
+
 ?>
