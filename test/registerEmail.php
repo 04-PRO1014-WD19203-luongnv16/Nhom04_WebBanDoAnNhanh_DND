@@ -27,12 +27,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         // Server settings
         $mail->isSMTP();
-        $mail->Host       = 'smtp.example.com'; // Set the SMTP server to send through
+        $mail->Host       = 'smtp.example.com'; //địa chỉ server
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'your-email@example.com';
-        $mail->Password   = 'your-email-password';
+        $mail->Username   = 'nguyenphuongnam.intern@gmail.com';
+        $mail->Password   = 'jnoz efff dzce nnrt';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
+        $mail->Port       = 587; //465
 
         // Recipients
         $mail->setFrom('your-email@example.com', 'Mailer');

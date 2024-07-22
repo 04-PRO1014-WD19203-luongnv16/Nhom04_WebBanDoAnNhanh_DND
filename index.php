@@ -252,7 +252,26 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
         case "bill":
             include_once("./view/cart/bill.php");
             break;
-        case "confirmBill":
+        case "process_order":
+            if (isset($_POST['checkbill']) && ($_POST['checkbill'])) {
+                $product_name = $_POST['product_name'];
+                $address = $_POST['address'];
+                $email = $_POST['email'];
+                $phone_number = $_POST['phone_number'];
+                $payment_status = $_POST['payment_status'];
+                $total_price = all_total_order();
+                $created_datetime = date('Y-m-d H:i:s');
+
+                $bill_code = insert_bill($product_name, $address, $email, $phone_number, $created_datetime, $total_price);
+                foreach ($_SESSION['mycart'] as $cart) {
+                    insert_cart($_SESSION['user']['id'], $cart[0], $cart[1], $cart[2], $cart[3], $cart[4], $bill_code);
+                }
+                $bill=loadone_bill($bill_code);
+                $billct=loadone_cart($bill_code);
+                var_dump($bill);
+                die();
+            }
+            include_once("./view/cart/process_order.php");
             break;
         default:
             include_once './view/main.php';

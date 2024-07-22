@@ -33,14 +33,13 @@ CREATE TABLE `bill` (
   `full_name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `phone_number` varchar(20) NOT NULL,
-  `address` text,
+  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `total_price` decimal(10,2) NOT NULL COMMENT 'Tổng giá',
-  `bill_status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'Pending' COMMENT 'tình trạng hóa đơn',
-  `payment_status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'Not Paid' COMMENT 'tình trạng thanh toán',
-  `created_datetime` datetime DEFAULT NULL COMMENT 'ngày giờ đã tạo',
+  `bill_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '''0:đơn hàng mới,1:đang chờ xử lí,2:đăng giao hàng,3đã giao hàng, 4:Hủy đơn hàng',
+  `payment_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1: thanh toán trực tiếp, 2:chuyể khoăn , 3 thanh toán online',
+  `created_datetime` datetime NOT NULL COMMENT 'ngày giờ đã tạo',
   `bill_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'mã hoá đơn'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 -- --------------------------------------------------------
 
 --
