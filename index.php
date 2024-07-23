@@ -6,6 +6,7 @@ include_once('./model/account.php');
 include_once('./model/category.php');
 include_once('./model/product.php');
 include_once('./model/cart.php');
+include_once('./model/registerEmail.php');
 include_once('./global.php');
 require_once("./view/header.php");
 // try {
@@ -22,6 +23,9 @@ $errors = [];
 if (isset($_GET['act']) && ($_GET['act'] != "")) {
     $act = $_GET['act'];
     switch ($act) {
+        case 'verify';
+        include_once("view/account/verify.php");
+        break;
         case 'accountSignUp':
             if (isset($_POST['add_user'])) {
                 $full_name = $_POST['full_name'];
@@ -36,6 +40,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 $ext = pathinfo($imgName, PATHINFO_EXTENSION);
                 $allowed_extensions = ['jpg', 'jpeg', 'png'];
                 $target_file = $dir . basename($_FILES["avatar_url"]["name"]);
+                
                 // Validation
                 if (strlen($password) < 5 || strlen($password) > 16) {
                     $errors['password'] = '<p class="error text-danger">Mật khẩu phải có từ 5 đến 16 ký tự</p>';
@@ -54,11 +59,6 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 }
                 if (!preg_match('/^[0-9]+$/', $phone_number)) {
                     $errors['phone_number'] = '<p class="error text-danger">Số điện thoại chỉ chứa các chữ số</p>';
-                } elseif (!preg_match('/^[0-9]+$/', $phone_number)) {
-                    $errors['phone_number'] = '<p class="error text-danger">Số điện thoại chỉ chứa các chữ số</p>';
-                }
-                if ($password !== $importPassword) {
-                    $errors['importPassword'] = '<p class="error text-danger">Mật khẩu nhập lại không khớp</p>';
                 }
                 if (empty(trim($email))) {
                     $errors['email'] = '<p class="error text-danger">Vui lòng nhập địa chỉ email</p>';
@@ -78,39 +78,47 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                     $errors['avatar_url'] = '<p class="error text-danger">File không đúng định dạng (chỉ chấp nhận JPG, JPEG, PNG)</p>';
                 }
                 if (empty($errors)) {
-                    insert_user($full_name, $email, $password, $phone_number, $address, $imgName);
-                    $message = 'Đăng ký thành công';
+                    $token = bin2hex(random_bytes(50));
+                insert_user($full_name, $email, $password, $phone_number, $address, $imgName, $token);
+                send_verification_email($email, $token);
+                    $message = 'Đăng ký thành công. Một email xác nhận đã được gửi đến địa chỉ của bạn.';
                 }
             }
             include_once("view/account/signup.php");
             break;
-        case 'accountLogin':
-            if (isset($_POST['accountLogin']) && $_POST['accountLogin']) {
-                $email = $_POST['email'];
-                $password = $_POST['password'];
-                $user = select_user_login($email, $password);
-                if (empty(trim($email))) {
-                    $errors['email'] = '<p class="error text-danger">Vui lòng nhập địa chỉ email</p>';
-                } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    $errors['email'] = '<p class="error text-danger">Email không đúng định dạng</p>';
-                }
-                if (empty($password)) {
-                    $errors['password'] = '<p class="error text-danger">Vui lòng nhập mật khẩu</p>';
-                }
-                if (empty($errors)) {
-                    $user = select_user_login($email, $password);
-                    if (is_array($user)) {
-                        $_SESSION['user'] = $user;
-                        header('Location: ./controller/index.php');
-                        $message = '<h6 class="error text-danger">Đăng nhập thành công</h6>';
-                        exit;
-                    } else {
-                        $message = '<h6 class="error text-danger">Email hoặc mật khẩu không chính xác</h6>';
+            case 'accountLogin':
+                if (isset($_POST['accountLogin'])) {
+                    $email = trim($_POST['email']);
+                    $password = trim($_POST['password']);
+                    // Kiểm tra email và mật khẩu
+                    if (empty($email)) {
+                        $errors['email'] = '<p class="error text-danger">Vui lòng nhập địa chỉ email</p>';
+                    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        $errors['email'] = '<p class="error text-danger">Email không đúng định dạng</p>';
+                    }
+                    if (empty($password)) {
+                        $errors['password'] = '<p class="error text-danger">Vui lòng nhập mật khẩu</p>';
+                    }
+            
+                    // Nếu không có lỗi
+                    if (empty($errors)) {
+                        $user = select_user_login($email, $password);
+            
+                        if ($user === 'inactive') {
+                            $message = '<h6 class="error text-danger">Tài khoản của bạn chưa được kích hoạt. Vui lòng kiểm tra email để kích hoạt tài khoản.</h6>';
+                        } elseif (is_array($user)) {
+                            // Đăng nhập thành công
+                            $_SESSION['user'] = $user;
+                            header('Location: ./index.php');
+                            exit;
+                        } else {
+                            $message = '<h6 class="error text-danger">Email hoặc mật khẩu không chính xác</h6>';
+                        }
                     }
                 }
-            }
-            include_once("view/account/login.php");
-            break;
+                include_once("view/account/login.php");
+                break;
+            
         case 'listProducts':
             include_once("./view/product/listProducts.php");
             break;

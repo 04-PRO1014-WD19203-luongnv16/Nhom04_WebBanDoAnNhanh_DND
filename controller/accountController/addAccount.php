@@ -1,36 +1,3 @@
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Xử lý dữ liệu được gửi từ form
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-    $fullName = $_POST["full_name"];
-    $phoneNumber = $_POST["phone_number"];
-    $address = $_POST["address"];
-    // Xử lý thêm vào cơ sở dữ liệu (ví dụ sử dụng MySQLi)
-    $servername = "localhost";
-    $username = "username";
-    $password = "password";
-    $dbname = "database_name";
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    if ($conn->connect_error) {
-        die("Kết nối database thất bại: " . $conn->connect_error);
-    }
-
-    // Query để thêm người dùng mới
-    $sql = "INSERT INTO users (email, password, full_name, phone_number, address) 
-            VALUES ('$email', '$password', '$fullName', '$phoneNumber', '$address')";
-
-    if ($conn->query($sql) === TRUE) {
-        echo "Thêm người dùng thành công!";
-    } else {
-        echo "Lỗi: " . $sql . "<br>" . $conn->error;
-    }
-
-    $conn->close();
-}
-?>
 <!-- Form nhập liệu -->
 <div class="container">
     <h2 class="text-center mt-5">Thêm tài khoản người dùng</h2>
@@ -55,6 +22,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label for="address" class="form-label">Địa chỉ</label>
             <textarea class="form-control" id="address" name="address" placeholder="Nhập địa chỉ"></textarea>
         </div>
+        <div class="mb-3">
+            <label for="role" class="form-label">Vai trò</label>
+            <select class="form-control" id="role" name="role" required>
+                <option value="0">Người dùng</option>
+                <option value="1">Admin</option>
+            </select>
+        </div>
         <button type="submit" class="btn btn-primary">Thêm tài khoản</button>
     </form>
 </div>
+

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost:3306
--- Thời gian đã tạo: Th7 16, 2024 lúc 07:57 AM
+-- Thời gian đã tạo: Th7 23, 2024 lúc 07:48 PM
 -- Phiên bản máy phục vụ: 8.0.30
 -- Phiên bản PHP: 8.1.10
 
@@ -40,6 +40,14 @@ CREATE TABLE `bill` (
   `created_datetime` datetime NOT NULL COMMENT 'ngày giờ đã tạo',
   `bill_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'mã hoá đơn'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `bill`
+--
+
+INSERT INTO `bill` (`bill_id`, `user_id`, `full_name`, `email`, `phone_number`, `address`, `total_price`, `bill_status`, `payment_status`, `created_datetime`, `bill_code`) VALUES
+(1, NULL, 'Nguyễn Phương', 'nguyenphuongnam.intern@gmail.com', '0337412617', 'Thanh Mỹ - Sơn Tây - Hà Nội', 30.00, 0, 1, '2024-07-22 16:18:16', 'BILL669e86483d2c2');
+
 -- --------------------------------------------------------
 
 --
@@ -56,6 +64,13 @@ CREATE TABLE `bill_item` (
   `quantity` int NOT NULL COMMENT 'Số lượng'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `bill_item`
+--
+
+INSERT INTO `bill_item` (`bill_item_id`, `bill_id`, `product_id`, `product_name`, `product_avatar`, `product_sale_price`, `quantity`) VALUES
+(1, 1, 11, 'bun cha', 'bun cha', 25.00, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -66,7 +81,8 @@ CREATE TABLE `cart` (
   `cart_id` int NOT NULL,
   `user_id` int NOT NULL,
   `product_id` int NOT NULL,
-  `quantity` int NOT NULL COMMENT 'Số lượng'
+  `quantity` int NOT NULL COMMENT 'Số lượng',
+  `bill_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -113,7 +129,6 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`product_id`, `product_name`, `product_description`, `product_avatar_url`, `product_import_price`, `product_sale_price`, `product_listed_price`, `product_stock`, `category_id`) VALUES
-(3, 'ádfghjk', 'rfdtgyhjkl;', 'Screenshot 2024-07-09 224723.png', 23456.000, 45.000, 35.000, 666, NULL),
 (6, 'Cơm rang cà chua', 'Nguyên liệu gồm :\r\n1 tô cơm ( tô canh)\r\n100gr lạp xưởng\r\n6 quả trứng gà\r\n200gr đậu que\r\nCà rốt, tỏi\r\nGia vị: Nước mắm, nước tương, bột ngọt, tiêu', 'com_rang_ca_chua.png', 30.000, 30.000, 30.000, 999999, 2),
 (7, 'Cơm trưa đầy đủ', 'Nguyên liệu gồm :\r\n 1 tô cơm ( tô canh) 200gr thịt bò 3 quả trứng gà 100gr rau cải Cà rốt, tỏi Gia vị: Nước mắm, nước tương, bột ngọt, tiêu', 'Com_trua_day-du.jpg', 35.000, 35.000, 35.000, 999999, 2),
 (8, 'Cơm gà rán', 'Nguyên liệu gồm: \r\nGạo 250 gr\r\n(1 lon)\r\n Đùi gà 1 cái\r\n(350gr)\r\n Hành tây 1/2 củ\r\n Dầu ăn 50 ml\r\n Bột nghệ 1.5 muỗng cà phê\r\n Muối/ Hạt nêm 1 ít', 'com_trua_ga_ran.jpg', 25.000, 25.000, 23.000, 9999999, 2),
@@ -130,8 +145,7 @@ INSERT INTO `product` (`product_id`, `product_name`, `product_description`, `pro
 (19, 'Cơm chiên Hải sản xanh', 'Nguyên liệu gồm:\r\n 30p\r\n Em bé/người lớn\r\nCơm nấu chín để nguội\r\n1 con mực\r\n1-2 con tôm sơ chế sạch\r\nRau cải kale hoặc bó xôi\r\n1 mẩu nhỏ Carrot\r\nHành, tỏi\r\nBột hành\r\nGia vị (hạt nêm/tương)\r\nDầu ăn', 'cơm-chien-hải-sản-xanh-recipe-main-photo.webp', 30.000, 30.000, 30.000, 100, 2),
 (20, 'Cơm rang keto', 'Nguyên liệu gồm: \r\nSúp lơ trắng. Cà rốt. Lá hẹ hoặc hành. Hành tây.\r\n1 ít Giò chả hoặc xúc xích (giò chả xúc xích tất cả đều mình tự làm mình mới ăn chứ ko mua ngoài. Ai ko tự làm dc thì nên ăn ít đồ mua sẵn thôi ạ,)\r\nMắm muối tiêu', 'cơm-rang-keto-danh-cho-những-bạn-dang-giảm-can-như-tớ-recipe-main-photo.webp', 25.000, 25.000, 25.000, 1000000000, 2),
 (21, 'Cơm gà nướng mật ong ', 'Nguyên Liệu\r\n1 con gà tầm 1 kg rưỡi\r\nCơm trắng hoặc chiên\r\nKetchup, mật ong,dầu hào, muối,xì dầu,bột nêm\r\nĐồ chua cà rốt làm chua ngọt hoặc dưa leo,cà chua,xà lách\r\n3 củ hành tím', 'cơm-ga-nướng-mật-ong-recipe-main-photo.webp', 35.000, 35.000, 35.000, 99999999, 2),
-(22, 'Cơm gạo lứt chiên hạt sen', 'Nguyên Liệu\r\n 40 phút\r\n 1 phần ăn\r\nCơm gạo lứt hạt sen rau củ\r\n25 g gạo lứt đồ Simply\r\n25 g hạt sen\r\n25 g cà rốt thái sợi\r\n25 g bắp vàng tách hạt\r\nỨc gà xào cải thìa và nấm đông cô\r\n75 g ức gà\r\n15 g nấm hương khô\r\n50 g cải thìa\r\nGia vị: dầu hào, hạt nêm', 'com_ga_gao.jpg', 30.000, 30.000, 30.000, 9999999, 2),
-(23, 'Học sinh cấp 2 test', 'fghjk', 'cơm-chien-hải-sản-xanh-recipe-main-photo.webp', 111.000, 222.000, 222.000, 222, 2);
+(22, 'Cơm gạo lứt chiên hạt sen', 'Nguyên Liệu\r\n 40 phút\r\n 1 phần ăn\r\nCơm gạo lứt hạt sen rau củ\r\n25 g gạo lứt đồ Simply\r\n25 g hạt sen\r\n25 g cà rốt thái sợi\r\n25 g bắp vàng tách hạt\r\nỨc gà xào cải thìa và nấm đông cô\r\n75 g ức gà\r\n15 g nấm hương khô\r\n50 g cải thìa\r\nGia vị: dầu hào, hạt nêm', 'com_ga_gao.jpg', 30.000, 30.000, 30.000, 9999999, 2);
 
 -- --------------------------------------------------------
 
@@ -148,15 +162,17 @@ CREATE TABLE `users` (
   `full_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `avatar_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ảnh user',
   `role` tinyint NOT NULL DEFAULT '0' COMMENT 'vai trò của người dùng',
-  `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'Active' COMMENT 'trạng thái của người dùng'
+  `token` varchar(100) DEFAULT NULL,
+  `status` enum('Inactive','Active') DEFAULT 'Inactive'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`user_id`, `email`, `password`, `phone_number`, `address`, `full_name`, `avatar_url`, `role`, `status`) VALUES
-(1, 'nguyenphuongnam.intern@gmail.com', '12345', '0337412617', 'Thanh Mỹ - Sơn Tây - Hà Nội', 'Nguyễn Phương', 'Screenshot 2024-07-11 165115.png', 0, 'Active');
+INSERT INTO `users` (`user_id`, `email`, `password`, `phone_number`, `address`, `full_name`, `avatar_url`, `role`, `token`, `status`) VALUES
+(1, 'nguyenphuongnam.intern@gmail.com', '12345', '0337412617', '123', 'admin', 'Screenshot 2024-07-11 165115.png', 1, NULL, 'Active'),
+(32, 'namnpph32407@fpt.edu.vn', '123456', '0337412617', '123Thanh Mỹ - Sơn Tây ', 'Nguyễn Nam', '40796_iphone_12_pro_max_gold_ha1.jpg', 0, '', 'Active');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -182,6 +198,7 @@ ALTER TABLE `bill_item`
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`cart_id`),
+  ADD UNIQUE KEY `bill_id` (`bill_id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `product_id` (`product_id`);
 
@@ -213,13 +230,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `bill`
 --
 ALTER TABLE `bill`
-  MODIFY `bill_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `bill_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `bill_item`
 --
 ALTER TABLE `bill_item`
-  MODIFY `bill_item_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `bill_item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `cart`
@@ -243,7 +260,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

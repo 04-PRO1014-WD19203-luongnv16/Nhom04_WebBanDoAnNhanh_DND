@@ -36,6 +36,7 @@ if (isset($_GET['act'])) {
                     $phone_number = $_POST['phone_number'];
                     $password = $_POST['password'];
                     $address = $_POST['address'];
+                    $role = $_POST['role'];
                     $avatar_url = ''; // Mặc định không có ảnh mới được tải lên
 
                     // Kiểm tra nếu người dùng đã tải lên ảnh mới
@@ -49,7 +50,7 @@ if (isset($_GET['act'])) {
                         $avatar_url = $user['avatar_url']; // Sử dụng lại đường dẫn ảnh đại diện cũ
                     }
                     if (empty($errors)) {
-                        update_user($user_id, $full_name, $email, $phone_number, $password, $address, $avatar_url);
+                        update_user($user_id, $full_name, $email, $phone_number, $password, $address, $avatar_url, $role);
                         $message = "Cập nhật thành công";
                         $listAccount = select_all_users();
                         include_once './accountController/listAccount.php';
