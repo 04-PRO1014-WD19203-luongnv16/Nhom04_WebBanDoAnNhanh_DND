@@ -34,6 +34,18 @@ function pdo_get_connection()
 //     }
 // }
 
+function pdo_execute_bill_order($sql, ...$params) {
+    try {
+        $conn = pdo_get_connection();
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($params);
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    } finally {
+        $conn = null;
+    }
+}
+
 function pdo_execute($sql, $params = array())
 {
     try {
@@ -46,8 +58,7 @@ function pdo_execute($sql, $params = array())
         unset($conn);
     }
 }
-
-function pdo_execute_lastInsertId($sql, $params = array())
+function pdo_execute_lastInsertId($sql, ...$params)
 {
     try {
         $conn = pdo_get_connection();
@@ -124,7 +135,11 @@ function pdo_query_one($sql, $params = [])
         unset($conn);
     }
 }
-
+function pdo_query_one_cart($sql, $params = []) {
+    $stmt = pdo_get_connection()->prepare($sql);
+    $stmt->execute($params); // Ensure $params is an array
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
 /**
  * Thực thi câu lệnh sql truy vấn một giá trị

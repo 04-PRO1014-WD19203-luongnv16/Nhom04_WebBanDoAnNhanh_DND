@@ -1,6 +1,7 @@
 <?php
 // view_cart.php
-function viewCart($currentPage = '') {
+function viewCart($currentPage = '')
+{
     global $imgPath;
     $total_price = 0;
 
@@ -31,14 +32,14 @@ function viewCart($currentPage = '') {
                     <td>' . number_format($cart[2]) . ',000 VND</td>
                     <td>' . $quantityDisplay . '</td>
                     <td>' . number_format($totalAmount) . ',000 VND</td>';
-            
+
             if ($currentPage != 'bill') {
                 echo '<td><a href="index.php?act=deleteCartProduct&idcart=' . $index . '" class="btn btn-danger">Xóa</a></td>';
             }
-            
+
             echo '</tr>';
         }
-        
+
         echo '
             <tr>
                 <td colspan="4" class="text-end">Tổng đơn hàng:</td>
@@ -56,38 +57,40 @@ function viewCart($currentPage = '') {
 
 
 
-function detailBill($listbill) {
+function detailBill($listbill)
+{
     global $imgPath;
     $total_price = 0;
     // total_price
     // Kiểm tra sự tồn tại của giỏ hàng
 
-        foreach ($listbill as $cart) {
-            $img = $imgPath . $cart['image_url'];
-            $totalAmount = $cart['product_sale_price'] * $cart['quantity']; // Tính tổng thành tiền cho sản phẩm này
-            $total_price += $totalAmount;
+    foreach ($listbill as $cart) {
+        $img = $imgPath . $cart['image_url'];
+        $totalAmount = $cart['product_sale_price'] * $cart['quantity']; // Tính tổng thành tiền cho sản phẩm này
+        $total_price += $totalAmount;
 
-            // Hiển thị sản phẩm trong giỏ hàng
-            echo '
+        // Hiển thị sản phẩm trong giỏ hàng
+        echo '
                 <tr>
                     <td><img src="' . $img . '" class="img-fluid" style="max-width: 50px;"></td>
                     <td>' . $cart[1] . '</td>
                     <td>' . number_format($cart[2]) . ',000 VND</td>
                     <td>' .  $cart[3] . '</td>
                     <td>' . number_format($totalAmount) . ',000 VND</td>';
-'</tr>';
-        }
-        
-        echo '
+        '</tr>';
+    }
+
+    echo '
             <tr>
                 <td colspan="4" class="text-end">Tổng đơn hàng:</td>
-                <td>'. number_format($total_price).' ,000 VND</td>
+                <td>' . number_format($total_price) . ' ,000 VND</td>
             </tr>
         ';
-    } 
+}
 
 // save_cart.php// save_cart.php
-function saveCart($user_id) {
+function saveCart($user_id)
+{
     if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
         // Xóa giỏ hàng cũ của người dùng
         pdo_execute("DELETE FROM cart_items WHERE user_id = ?", $user_id);
@@ -104,7 +107,8 @@ function saveCart($user_id) {
 
 // restore_cart.php Khôi Phục Giỏ Hàng Từ Cơ Sở Dữ Liệu
 
-function restoreCart($user_id) {
+function restoreCart($user_id)
+{
     $cart_items = pdo_query("SELECT * FROM cart_items WHERE user_id = ?", $user_id);
     $_SESSION['myCart'] = [];
     foreach ($cart_items as $item) {
@@ -127,48 +131,61 @@ function restoreCart($user_id) {
 
 
 // update_cart_quantity.php  Cập Nhật Số Lượng Sản Phẩm Trong Giỏ Hàng
-function updateCartQuantity($user_id, $product_id, $quantity) {
+function updateCartQuantity($user_id, $product_id, $quantity)
+{
     pdo_execute("UPDATE cart_items SET quantity = ? WHERE user_id = ? AND product_id = ?", $quantity, $user_id, $product_id);
 }
 // remove_cart_item.php  Xóa Sản Phẩm Khỏi Giỏ Hàng
-function removeCartItem($user_id, $product_id) {
+function removeCartItem($user_id, $product_id)
+{
     pdo_execute("DELETE FROM cart_items WHERE user_id = ? AND product_id = ?", $user_id, $product_id);
 }
 
 
 
 
-function all_total_order(){
+// function all_total_order()
+// {
+//     $total_price = 0;
+//     foreach ($_SESSION['myCart'] as $index => $cart) {
+//         $totalAmount = $cart[2] * $cart[3]; // Tính tổng thành tiền cho sản phẩm này
+//         $total_price += $totalAmount;
+//     }
+//     return $total_price;
+// }
+function all_total_order() {
     $total_price = 0;
-    foreach ($_SESSION['myCart'] as $index => $cart) {
-        $totalAmount = $cart[2] * $cart[3]; // Tính tổng thành tiền cho sản phẩm này
-        $total_price += $totalAmount;
-
+    if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
+        foreach ($_SESSION['myCart'] as $index => $cart) {
+            $totalAmount = $cart[2] * $cart[3];
+            $total_price += $totalAmount;
+        }
     }
     return $total_price;
 }
 
-function insert_bill($product_name, $address, $email, $phone_number, $created_datetime, $total_price) {
-    $sql = "INSERT INTO bill (full_name, address, email, phone_number, created_datetime, total_price) VALUES (?, ?, ?, ?, ?, ?)";
-    return pdo_execute_lastInsertId($sql, $product_name, $address, $email, $phone_number, $created_datetime, $total_price);
+
+function insert_bill($full_name, $address, $email, $phone_number, $payment_status, $created_datetime, $total_price, $bill_code)
+{
+    $sql = "INSERT INTO bill (full_name, address, email, phone_number, payment_status, created_datetime, total_price, bill_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    return pdo_execute_lastInsertId($sql, $full_name, $address, $email, $phone_number, $payment_status, $created_datetime, $total_price, $bill_code);
 }
 
-function insert_cart($cart_id, $user_id, $product_id, $quantity, $bill_id) {
-    $sql = "INSERT INTO cart (cart_id, user_id, product_id, quantity, bill_id) VALUES (?, ?, ?, ?, ?)";
-    pdo_execute($sql, $cart_id, $user_id, $product_id, $quantity, $bill_id);
+function insert_cart($user_id, $product_id, $quantity, $bill_id)
+{
+    $sql = "INSERT INTO cart (user_id, product_id, quantity, bill_id) VALUES (?, ?, ?, ?)";
+    pdo_execute_bill_order($sql, $user_id, $product_id, $quantity, $bill_id);
 }
 
-function loadone_bill($bill_id) {
+function loadone_bill($bill_id)
+{
     $sql = "SELECT * FROM bill WHERE bill_id = ?";
-    return pdo_query_one($sql, $bill_id);
+    return pdo_query_one($sql, [$bill_id]);
 }
 
-function loadone_cart($cart_id) {
+function loadone_cart($cart_id)
+{
     $sql = "SELECT * FROM cart WHERE cart_id = ?";
-    return pdo_query_one($sql, $cart_id);
+    return pdo_query_one($sql, [$cart_id]);
 }
 
-
-
-
-?>

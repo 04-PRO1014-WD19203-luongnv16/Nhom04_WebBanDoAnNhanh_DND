@@ -14,16 +14,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if ($cartItems): ?>
-                        <?php foreach ($cartItems as $item): ?>
+                    <?php if ($cartItems) : ?>
+                        <?php foreach ($cartItems as $item) : ?>
                             <tr>
                                 <td><img src="<?= $item['img'] ?>" class="img-fluid" style="max-width: 50px;"></td>
                                 <td><?= $item['name'] ?></td>
                                 <td><?= $item['price'] ?>,000 VND</td>
                                 <td>
-                                    <?php if ($currentPage === 'bill'): ?>
+                                    <?php if ($currentPage === 'bill') : ?>
                                         <?= $item['quantity'] ?>
-                                    <?php else: ?>
+                                    <?php else : ?>
                                         <form action="index.php?act=updateCartQuantity" method="post">
                                             <input type="hidden" name="idcart" value="<?= $item['index'] ?>">
                                             <div class="input-group">
@@ -33,7 +33,7 @@
                                     <?php endif; ?>
                                 </td>
                                 <td><?= $item['totalAmount'] ?>,000 VND</td>
-                                <?php if ($currentPage !== 'bill'): ?>
+                                <?php if ($currentPage !== 'bill') : ?>
                                     <td><a href="index.php?act=deleteCartProduct&idcart=<?= $item['index'] ?>" class="btn btn-danger">Xóa</a></td>
                                 <?php endif; ?>
                             </tr>
@@ -42,7 +42,7 @@
                             <td colspan="4" class="text-end">Tổng đơn hàng:</td>
                             <td><?= number_format($total_price) ?>,000 VND</td>
                         </tr>
-                    <?php else: ?>
+                    <?php else : ?>
                         <tr>
                             <td colspan="6" class="text-center">Giỏ hàng của bạn đang trống</td>
                         </tr>

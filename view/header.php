@@ -48,10 +48,11 @@
             background-color: black;
             color: white;
         }
-        a{
+
+        a {
             text-decoration: none;
         }
-        
+
 
         .btn-danger {
             background-color: #f8b400;
@@ -72,18 +73,22 @@
         .search-bar {
             width: 100%;
             max-width: 300px;
-            /* Chiều rộng tối đa của thanh tìm kiếm */
         }
 
         #btn:hover {
             background-color: red;
             color: white;
         }
+
         .top10-container {
-            max-height: 400px; /* Chiều cao của thanh trượt */
+            max-height: 400px;
             overflow-y: scroll;
             padding: 10px;
             background-color: #f9f9f9;
+        }
+
+        .bg-light {
+            --bs-bg-opacity: 0;
         }
     </style>
 
@@ -174,23 +179,23 @@
                     </div>
                     <!-- giỏ hàng -->
                     <div class="col-auto mt-1">
-                    <a href="index.php?act=viewCart" class="d-flex align-items-center text-decoration-none">
-                        <div class="ms-3">
-                            <i class="fa-solid fa-cart-shopping fs-4"></i>
-                            <span class="ms-2 fs-5">Giỏ hàng</span>
-                        </div>
-                        <div class="ms-4">
-                            <?php
-                            $totalQuantity = 0;
-                            if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
-                                foreach ($_SESSION['myCart'] as $cart) {
-                                    $totalQuantity += $cart[3]; // Giả sử số lượng sản phẩm nằm ở vị trí thứ 4 trong mảng $cart
+                        <a href="index.php?act=viewCart" class="d-flex align-items-center text-decoration-none">
+                            <div class="ms-3">
+                                <i class="fa-solid fa-cart-shopping fs-4"></i>
+                                <span class="ms-2 fs-5">Giỏ hàng</span>
+                            </div>
+                            <div class="ms-4">
+                                <?php
+                                $totalQuantity = 0;
+                                if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
+                                    foreach ($_SESSION['myCart'] as $cart) {
+                                        $totalQuantity += $cart[3]; // Giả sử số lượng sản phẩm nằm ở vị trí thứ 4 trong mảng $cart
+                                    }
                                 }
-                            }
-                            ?>
-                            <span class="badge bg-primary"><?= $totalQuantity ?></span>
-                        </div>
-                    </a>
+                                ?>
+                                <span class="badge bg-primary"><?= $totalQuantity ?></span>
+                            </div>
+                        </a>
                     </div>
                 </ul>
             </div>

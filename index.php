@@ -137,9 +137,9 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 $oneProductDetail = select_sp_one($_GET['product_id']);
                 extract($oneProductDetail);
                 // sản phẩm tương tự
-                $similarProduct = select_sp_similar($_GET['product_id'], $category_id);       
+                $similarProduct = select_sp_similar($_GET['product_id'], $category_id);
                 extract($similarProduct);
-                 
+
                 include_once './view/product/productDetails.php';
             } else {
                 include_once '"./view/product/listProducts.php';
@@ -155,7 +155,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             }
             include_once("./view/product/listProducts.php");
             break;
-            
+
         case 'logout':
             session_destroy();
             header('Location: index.php');
@@ -168,7 +168,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             include_once("view/contact.php");
             break;
 
-        //Gio hang
+            //Gio hang
         case 'addToCartDetails':
             if (isset($_POST['add_cart'])) {
                 $product_id = $_POST['product_id'];
@@ -289,11 +289,12 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             }
             include_once("./view/cart/viewCart.php");
             break;
-            //Bill
+
         case "bill":
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }
+        
             global $imgPath;
             $total_price = 0;
             $cartItems = [];
@@ -302,6 +303,17 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             $email = $userInfo['email'] ?? '';
             $phone_number = $userInfo['phone_number'] ?? '';
             $address = $userInfo['address'] ?? '';
+        
+            // Retrieve errors from session if any
+            $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
+            $formData = [
+                'full_name' => $_POST['full_name'] ?? $full_name,
+                'address' => $_POST['address'] ?? $address,
+                'phone_number' => $_POST['phone_number'] ?? $phone_number,
+                'email' => $_POST['email'] ?? $email,
+                'payment_status' => $_POST['payment_status'] ?? ''
+            ];
+        
             if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
                 foreach ($_SESSION['myCart'] as $index => $cart) {
                     $img = $imgPath . $cart[5];
@@ -316,66 +328,94 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                     ];
                 }
             }
+        
+            // Clear errors from session after processing
+            unset($_SESSION['errors']);
+        
+            // Include the bill page and pass errors and form data
             include_once("./view/cart/bill.php");
             break;
+        
         case "process_order":
-            if (isset($_POST['checkbill']) && ($_POST['checkbill'])) {
-                $product_name = $_POST['product_name'];
-                $address = $_POST['address'];
-                $email = $_POST['email'];
-                $phone_number = $_POST['phone_number'];
-                $payment_status = $_POST['payment_status'];
+            if (isset($_POST['checkbill'])) {
+                $full_name = trim($_POST['full_name']);
+                $address = trim($_POST['address']);
+                $email = trim($_POST['email']);
+                $phone_number = trim($_POST['phone_number']);
+                $payment_status = isset($_POST['payment_status']) ? $_POST['payment_status'] : null;
                 $total_price = all_total_order();
                 $created_datetime = date('Y-m-d H:i:s');
-
-                $bill_code = insert_bill($product_name, $address, $email, $phone_number, $created_datetime, $total_price);
-                foreach ($_SESSION['mycart'] as $cart) {
-                    insert_cart($_SESSION['user']['id'], $cart[0], $cart[1], $cart[2], $cart[3], $cart[4], $bill_code);
-                }
-                $bill = loadone_bill($bill_code);
-                $billct = loadone_cart($bill_code);
-            }
-            include_once("./view/cart/process_order.php");
-            break;
-            //lọc
-            case 'showdm':
-                $category_id = isset($_GET['category_id']) ? $_GET['category_id'] : '';
-                $allProduct = getProductByCategory($category_id);
-                $dsdm = danhsach_dm();
-                include_once("./view/product/listProducts.php");
-                break;
+                $bill_code = time() . '' . rand(10000, 99999);
         
-        //top 10
+                $errors = [];
+        
+                // Validation
+                if (empty($full_name)) {
+                    $errors['full_name'] = 'Tên khách hàng không được bỏ trống.';
+                }
+                if (empty($address)) {
+                    $errors['address'] = 'Địa chỉ không được bỏ trống.';
+                }
+                if (empty($phone_number)) {
+                    $errors['phone_number'] = 'Số điện thoại không được bỏ trống.';
+                }
+                if (empty($email)) {
+                    $errors['email'] = 'Email không được bỏ trống.';
+                }
+                if (empty($payment_status)) {
+                    $errors['payment_status'] = 'Bạn phải chọn phương thức thanh toán.';
+                }
+        
+                if (!empty($errors)) {
+                    $_SESSION['errors'] = $errors;
+                    header('Location: index.php?act=bill');
+                    exit();
+                }
+        
+                global $imgPath;
+                $total_price = 0;
+                $cartItems = [];
+                if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
+                    foreach ($_SESSION['myCart'] as $index => $cart) {
+                        $img = $imgPath . $cart[5];
+                        $totalAmount = $cart[2] * $cart[3];
+                        $total_price += $totalAmount;
+                        $cartItems[] = [
+                            'img' => $img,
+                            'name' => $cart[1],
+                            'price' => number_format($cart[2]),
+                            'quantity' => $cart[3],
+                            'totalAmount' => number_format($totalAmount),
+                            'index' => $index
+                        ];
+                    }
+                }
+        
+                $bill_info = insert_bill($full_name, $address, $email, $phone_number, $payment_status, $created_datetime, $total_price, $bill_code);
+                foreach ($_SESSION['myCart'] as $cart) {
+                    insert_cart($_SESSION['user']['user_id'], $cart[0], $cart[3], $bill_info);
+                }
+                $bill = loadone_bill($bill_info);
+                $billct = loadone_cart($bill_info);
+        
+                include_once("./view/cart/process_order.php");
+            }
+            break;
+        
+
+            //lọc
+        case 'showdm':
+            $category_id = isset($_GET['category_id']) ? $_GET['category_id'] : '';
+            $allProduct = getProductByCategory($category_id);
+            $dsdm = danhsach_dm();
+            include_once("./view/product/listProducts.php");
+            break;
+
+            //top 10
         case "showTop10":
             $listTop10 = load_product_top10();
             include_once("./view/main.php");
             break;
-        //comment
-        // case 'comment':
-        //     if (isset($_POST['btnbinhluan'])) {
-        //         $pro_id = $_POST['pro_id'];
-        //         $text = $_POST['inputbinhluan'];
-        //         $u_id = $_SESSION['checkus']['u_id'];
-        //         $date = date('Y-m-d');
-        //         //$bl = getall_binhluan($_GET['pro_id']);
-        //         add_binhluan($text, $u_id, $date, $pro_id);
-        //         header('location: ?act=productDetails');
-        //       }
-        //       include_once('./view/product/productDetails.php');
-        //     break;
-        //lọc giá
-        // case 'locgia':{
-
-        //     if (isset($_POST['btnsub'])) {
-        //       $iddm = $_POST['iddm'];
-        //       $giatien = $_POST['giatien'];
-        //       $locgia =  price($giatien,$iddm);
-        //   }
-        //     include './congcu/locgia.php';
-        //     break;
-        //   }
-            
-        
         case "confirmBill":
             break;
         default:
