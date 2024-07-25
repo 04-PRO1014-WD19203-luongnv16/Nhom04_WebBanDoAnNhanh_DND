@@ -69,18 +69,6 @@ if (isset($user) && is_array($user)) {
                 <div class="text-danger"><?= $errors['address'] ?></div>
             <?php endif; ?>
         </div>
-
-        <div class="mb-3">
-            <label for="role" class="form-label">Vai trò:</label>
-            <select class="form-control" id="role" name="role" required>
-                <option value="0" <?= $role == 0 ? 'selected' : '' ?>>Người dùng</option>
-                <option value="1" <?= $role == 1 ? 'selected' : '' ?>>Admin</option>
-            </select>
-            <?php if (isset($errors['role'])) : ?>
-                <div class="text-danger"><?= $errors['role'] ?></div>
-            <?php endif; ?>
-        </div>
-
         <a href="index.php?act=listAccount"> <input type="submit" class="btn btn-primary" value="Cập nhật "></a>
     </form>
 </div>

@@ -1,17 +1,36 @@
 <main class="container">
     <section class="container mt-5">
         <div class="row">
+            <!-- loc theo danh muc -->
             <div class="col-md-3">
-                <h1 class="fw-bold fs-5 mb-4">Danh mục</h1>
-                <ul class="list-unstyled">
-                    <li class="text-yellow-600 mb-2 fw-bold"><a href="#" class="text-decoration-none">Tổng hợp</a></li>
-                    <li class="text-muted mb-2"><a href="#" class="text-decoration-none">Cơm trưa</a></li>
-                    <li class="text-muted mb-2"><a href="#" class="text-decoration-none">Đồ ăn</a></li>
-                    <li class="text-muted mb-2"><a href="#" class="text-decoration-none">Thức uống</a></li>
-                    <li class="text-muted mb-2"><a href="#" class="text-decoration-none">Tráng miệng</a></li>
-                </ul>
+                <h4 style="text-align: center;">Danh Mục</h4>
+                <?php foreach ($dsdm as $value) : ?>
+                    <div style="text-align: center;" class="col-12">
+                        <a id="hoverm" href="?act=showdm&category_id=<?php echo $value['category_id'] ?>" class="text-black">
+                            <?php echo $value['category_name'] ?></a>
+                    </div>
+                    <hr>
+                <?php endforeach; ?>
+                <!-- Price filter form -->
+                <div>
+                    <form action="index.php?act=filterPrice" method="GET">
+                        <input type="hidden" name="act" value="listProducts">
+                        <div class="form-group">
+                            <label for="minPrice">Giá tối thiểu</label>
+                            <input type="number" class="form-control" id="minPrice" name="minPrice" placeholder="Nhập giá tối thiểu">
+                        </div>
+                        <div class="form-group">
+                            <label for="maxPrice">Giá tối đa</label>
+                            <input type="number" class="form-control" id="maxPrice" name="maxPrice" placeholder="Nhập giá tối đa">
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Lọc giá</button>
+                    </form>
+                </div>
             </div>
-            <div class="col-md-9">
+
+
+            <!-- Hiển thị sản list sản phẩm-->
+            <div class="col-md-8">
                 <div class="row g-4">
                     <?php foreach ($allProduct as $products) : ?>
                         <?php

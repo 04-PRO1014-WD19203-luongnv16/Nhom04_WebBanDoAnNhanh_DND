@@ -1,7 +1,6 @@
 <div class="container mt-3">
     <h2 class="text-center mb-3">Quản lý tài khoản</h2>
     <div class="table-responsive">
-
         <table class="table table-bordered">
             <thead>
                 <tr>

@@ -15,17 +15,16 @@ require_once("./view/header.php");
 // } catch (PDOException $e) {
 //     echo "Kết nối không thành công: " . $e->getMessage() . "<br>";
 // }
-if (!isset($_SESSION['mycart'])) $_SESSION['mycart'] = [];
-
 $allProduct = select_sp_home();
+$dsdm = danhsach_dm();
 $message = '';
 $errors = [];
 if (isset($_GET['act']) && ($_GET['act'] != "")) {
     $act = $_GET['act'];
     switch ($act) {
         case 'verify';
-        include_once("view/account/verify.php");
-        break;
+            include_once("view/account/verify.php");
+            break;
         case 'accountSignUp':
             if (isset($_POST['add_user'])) {
                 $full_name = $_POST['full_name'];
@@ -40,7 +39,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 $ext = pathinfo($imgName, PATHINFO_EXTENSION);
                 $allowed_extensions = ['jpg', 'jpeg', 'png'];
                 $target_file = $dir . basename($_FILES["avatar_url"]["name"]);
-                
+
                 // Validation
                 if (strlen($password) < 5 || strlen($password) > 16) {
                     $errors['password'] = '<p class="error text-danger">Mật khẩu phải có từ 5 đến 16 ký tự</p>';
@@ -79,47 +78,55 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 }
                 if (empty($errors)) {
                     $token = bin2hex(random_bytes(50));
-                insert_user($full_name, $email, $password, $phone_number, $address, $imgName, $token);
-                send_verification_email($email, $token);
+                    insert_user($full_name, $email, $password, $phone_number, $address, $imgName, $token);
+                    send_verification_email($email, $token);
                     $message = 'Đăng ký thành công. Một email xác nhận đã được gửi đến địa chỉ của bạn.';
                 }
             }
             include_once("view/account/signup.php");
             break;
-            case 'accountLogin':
-                if (isset($_POST['accountLogin'])) {
-                    $email = trim($_POST['email']);
-                    $password = trim($_POST['password']);
-                    // Kiểm tra email và mật khẩu
-                    if (empty($email)) {
-                        $errors['email'] = '<p class="error text-danger">Vui lòng nhập địa chỉ email</p>';
-                    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                        $errors['email'] = '<p class="error text-danger">Email không đúng định dạng</p>';
-                    }
-                    if (empty($password)) {
-                        $errors['password'] = '<p class="error text-danger">Vui lòng nhập mật khẩu</p>';
-                    }
-            
-                    // Nếu không có lỗi
-                    if (empty($errors)) {
-                        $user = select_user_login($email, $password);
-            
-                        if ($user === 'inactive') {
-                            $message = '<h6 class="error text-danger">Tài khoản của bạn chưa được kích hoạt. Vui lòng kiểm tra email để kích hoạt tài khoản.</h6>';
-                        } elseif (is_array($user)) {
-                            // Đăng nhập thành công
-                            $_SESSION['user'] = $user;
-                            header('Location: ./index.php');
-                            exit;
-                        } else {
-                            $message = '<h6 class="error text-danger">Email hoặc mật khẩu không chính xác</h6>';
-                        }
+        case 'accountLogin':
+            if (isset($_POST['accountLogin'])) {
+                $email = trim($_POST['email']);
+                $password = trim($_POST['password']);
+                // Kiểm tra email và mật khẩu
+                if (empty($email)) {
+                    $errors['email'] = '<p class="error text-danger">Vui lòng nhập địa chỉ email</p>';
+                } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $errors['email'] = '<p class="error text-danger">Email không đúng định dạng</p>';
+                }
+                if (empty($password)) {
+                    $errors['password'] = '<p class="error text-danger">Vui lòng nhập mật khẩu</p>';
+                }
+
+                // Nếu không có lỗi
+                if (empty($errors)) {
+                    $user = select_user_login($email, $password);
+
+                    if ($user === 'inactive') {
+                        $message = '<h6 class="error text-danger">Tài khoản của bạn chưa được kích hoạt. Vui lòng kiểm tra email để kích hoạt tài khoản.</h6>';
+                    } elseif (is_array($user)) {
+                        // Đăng nhập thành công
+                        $_SESSION['user'] = $user;
+                        header('Location: ./index.php');
+                        exit;
+                    } else {
+                        $message = '<h6 class="error text-danger">Email hoặc mật khẩu không chính xác</h6>';
                     }
                 }
-                include_once("view/account/login.php");
-                break;
-            
+            }
+            include_once("view/account/login.php");
+            break;
+            //Products
         case 'listProducts':
+            $allCategories = danhsach_dm();
+            $allProduct = select_sp_home();
+            // if(isset($_GET['$category_id'])&&($_GET['$category_id']>0)){
+            //     $category_id=$_GET['category_id'];
+            // }else{
+            //     $category_id=0;
+            // }
+            // $allProduct = showSP($_GET['category_id']);
             include_once("./view/product/listProducts.php");
             break;
         case 'main':
@@ -130,8 +137,9 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 $oneProductDetail = select_sp_one($_GET['product_id']);
                 extract($oneProductDetail);
                 // sản phẩm tương tự
-                $similarProduct = select_sp_similar($_GET['product_id'], $category_id);
+                $similarProduct = select_sp_similar($_GET['product_id'], $category_id);       
                 extract($similarProduct);
+                 
                 include_once './view/product/productDetails.php';
             } else {
                 include_once '"./view/product/listProducts.php';
@@ -147,6 +155,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             }
             include_once("./view/product/listProducts.php");
             break;
+            
         case 'logout':
             session_destroy();
             header('Location: index.php');
@@ -159,6 +168,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             include_once("view/contact.php");
             break;
 
+        //Gio hang
         case 'addToCartDetails':
             if (isset($_POST['add_cart'])) {
                 $product_id = $_POST['product_id'];
@@ -255,9 +265,57 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             break;
 
         case 'viewCart':
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            global $imgPath;
+            $total_price = 0;
+            $cartItems = [];
+            $currentPage = isset($_GET['act']) ? $_GET['act'] : 'default';
+            if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
+                foreach ($_SESSION['myCart'] as $index => $cart) {
+                    $img = $imgPath . $cart[5];
+                    $totalAmount = $cart[2] * $cart[3];
+                    $total_price += $totalAmount;
+                    $cartItems[] = [
+                        'img' => $img,
+                        'name' => $cart[1],
+                        'price' => number_format($cart[2]),
+                        'quantity' => $cart[3],
+                        'totalAmount' => number_format($totalAmount),
+                        'index' => $index
+                    ];
+                }
+            }
             include_once("./view/cart/viewCart.php");
             break;
+            //Bill
         case "bill":
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            global $imgPath;
+            $total_price = 0;
+            $cartItems = [];
+            $userInfo = isset($_SESSION['user']) ? $_SESSION['user'] : [];
+            $full_name = $userInfo['full_name'] ?? '';
+            $email = $userInfo['email'] ?? '';
+            $phone_number = $userInfo['phone_number'] ?? '';
+            $address = $userInfo['address'] ?? '';
+            if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
+                foreach ($_SESSION['myCart'] as $index => $cart) {
+                    $img = $imgPath . $cart[5];
+                    $totalAmount = $cart[2] * $cart[3];
+                    $total_price += $totalAmount;
+                    $cartItems[] = [
+                        'img' => $img,
+                        'name' => $cart[1],
+                        'price' => number_format($cart[2]),
+                        'quantity' => $cart[3],
+                        'totalAmount' => number_format($totalAmount)
+                    ];
+                }
+            }
             include_once("./view/cart/bill.php");
             break;
         case "process_order":
@@ -274,12 +332,51 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 foreach ($_SESSION['mycart'] as $cart) {
                     insert_cart($_SESSION['user']['id'], $cart[0], $cart[1], $cart[2], $cart[3], $cart[4], $bill_code);
                 }
-                $bill=loadone_bill($bill_code);
-                $billct=loadone_cart($bill_code);
-                var_dump($bill);
-                die();
+                $bill = loadone_bill($bill_code);
+                $billct = loadone_cart($bill_code);
             }
             include_once("./view/cart/process_order.php");
+            break;
+            //lọc
+            case 'showdm':
+                $category_id = isset($_GET['category_id']) ? $_GET['category_id'] : '';
+                $allProduct = getProductByCategory($category_id);
+                $dsdm = danhsach_dm();
+                include_once("./view/product/listProducts.php");
+                break;
+        
+        //top 10
+        case "showTop10":
+            $listTop10 = load_product_top10();
+            include_once("./view/main.php");
+            break;
+        //comment
+        // case 'comment':
+        //     if (isset($_POST['btnbinhluan'])) {
+        //         $pro_id = $_POST['pro_id'];
+        //         $text = $_POST['inputbinhluan'];
+        //         $u_id = $_SESSION['checkus']['u_id'];
+        //         $date = date('Y-m-d');
+        //         //$bl = getall_binhluan($_GET['pro_id']);
+        //         add_binhluan($text, $u_id, $date, $pro_id);
+        //         header('location: ?act=productDetails');
+        //       }
+        //       include_once('./view/product/productDetails.php');
+        //     break;
+        //lọc giá
+        // case 'locgia':{
+
+        //     if (isset($_POST['btnsub'])) {
+        //       $iddm = $_POST['iddm'];
+        //       $giatien = $_POST['giatien'];
+        //       $locgia =  price($giatien,$iddm);
+        //   }
+        //     include './congcu/locgia.php';
+        //     break;
+        //   }
+            
+        
+        case "confirmBill":
             break;
         default:
             include_once './view/main.php';

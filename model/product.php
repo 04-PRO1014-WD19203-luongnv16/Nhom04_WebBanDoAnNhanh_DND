@@ -60,11 +60,10 @@ function select_sp_one($product_id)
 // Hiển thị sản phẩm tương tự ở user
 function select_sp_similar($id, $product_id)
 {
-    $sql = "SELECT * FROM product WHERE category_id=" . $product_id . " AND product_id<>" . $id . " LIMIT 4";
+    $sql = "SELECT * FROM product WHERE category_id=" . $product_id . " AND product_id<>" . $id;
     $listProducts = pdo_query($sql);
     return $listProducts;
 }
-
 
 //seach
 function search_pro($search){
@@ -72,6 +71,37 @@ function search_pro($search){
     $result = pdo_query($sql);
     return $result;
 }
+//lọc danh mục
+function getProductByCategory($category_id) {
+    $sql = "SELECT * FROM product WHERE category_id = $category_id";
+    return pdo_query($sql);
+}
 
+function getAllProducts() {
+    $sql = "SELECT * FROM products";
+    return pdo_query($sql);
+}
+//top 10
+function load_product_top10(){
+    $sql = "SELECT * FROM product ORDER BY view_count DESC LIMIT 0, 10";
+    $listProducts = pdo_query($sql);
+    return $listProducts;
+}
+
+// // Hàm để lấy tổng số sản phẩm
+// function getTotalProductCount() {
+//     $sql = "SELECT COUNT(*) as total FROM products";
+//     return pdo_query_value($sql);
+// }
+
+// // Hàm để lấy sản phẩm theo khoảng giá
+// function getProductsByPriceRange($minPrice, $maxPrice) {
+//     $sql = "SELECT * FROM products WHERE product_sale_price BETWEEN :minPrice AND :maxPrice";
+//     return pdo_query($sql, [':minPrice' => $minPrice, ':maxPrice' => $maxPrice]);
+// }
+// function update_view_count($product_id) {
+//     $sql = "UPDATE product SET view_count = view_count + 1 WHERE product_id = $product_id";
+//     pdo_execute($sql);
+// }
 
 ?>
