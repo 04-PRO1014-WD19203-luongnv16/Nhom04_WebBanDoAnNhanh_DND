@@ -47,14 +47,16 @@
                             <td colspan="6" class="text-center">Giỏ hàng của bạn đang trống</td>
                         </tr>
                     <?php endif; ?>
-                    <tr>
-                        <td colspan="6" class="text-end">
-                            <form action="index.php?act=clearCart" method="post">
-                                <button type="submit" class="btn btn-danger">Xóa toàn bộ giỏ hàng</button>
-                            </form>
-                            <a href="index.php?act=bill"><button type="button" class="btn btn-dark">Thanh toán</button></a>
-                        </td>
-                    </tr>
+                    <?php if ($cartItems) : ?>
+                        <tr>
+                            <td colspan="6" class="text-end">
+                                <form action="index.php?act=clearCart" method="post">
+                                    <button type="submit" class="btn btn-danger">Xóa toàn bộ giỏ hàng</button>
+                                </form>
+                                <a href="index.php?act=bill"><button type="button" class="btn btn-dark">Thanh toán</button></a>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
             <button><a href="index.php?act=listProducts">Tiếp tục mua hàng</a></button>

@@ -97,6 +97,17 @@ function pdo_query($sql)
     }
 }
 
+// function pdo_query($sql, $params = []) {
+//     global $pdo; // Giả sử $pdo là đối tượng PDO của bạn
+//     $stmt = $pdo->prepare($sql);
+//     if ($stmt->execute($params)) {
+//         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+//     } else {
+//         throw new PDOException("Lỗi khi thực thi truy vấn: " . implode(", ", $stmt->errorInfo()));
+//     }
+// }
+
+
 /**
  * Thực thi câu lệnh truy vấn một bản ghi
  * @param string $sql câu lệnh sql

@@ -121,12 +121,6 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
         case 'listProducts':
             $allCategories = danhsach_dm();
             $allProduct = select_sp_home();
-            // if(isset($_GET['$category_id'])&&($_GET['$category_id']>0)){
-            //     $category_id=$_GET['category_id'];
-            // }else{
-            //     $category_id=0;
-            // }
-            // $allProduct = showSP($_GET['category_id']);
             include_once("./view/product/listProducts.php");
             break;
         case 'main':
@@ -336,72 +330,83 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             include_once("./view/cart/bill.php");
             break;
         
-        case "process_order":
-            if (isset($_POST['checkbill'])) {
-                $full_name = trim($_POST['full_name']);
-                $address = trim($_POST['address']);
-                $email = trim($_POST['email']);
-                $phone_number = trim($_POST['phone_number']);
-                $payment_status = isset($_POST['payment_status']) ? $_POST['payment_status'] : null;
-                $total_price = all_total_order();
-                $created_datetime = date('Y-m-d H:i:s');
-                $bill_code = time() . '' . rand(10000, 99999);
-        
-                $errors = [];
-        
-                // Validation
-                if (empty($full_name)) {
-                    $errors['full_name'] = 'Tên khách hàng không được bỏ trống.';
-                }
-                if (empty($address)) {
-                    $errors['address'] = 'Địa chỉ không được bỏ trống.';
-                }
-                if (empty($phone_number)) {
-                    $errors['phone_number'] = 'Số điện thoại không được bỏ trống.';
-                }
-                if (empty($email)) {
-                    $errors['email'] = 'Email không được bỏ trống.';
-                }
-                if (empty($payment_status)) {
-                    $errors['payment_status'] = 'Bạn phải chọn phương thức thanh toán.';
-                }
-        
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    header('Location: index.php?act=bill');
-                    exit();
-                }
-        
-                global $imgPath;
-                $total_price = 0;
-                $cartItems = [];
-                if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
-                    foreach ($_SESSION['myCart'] as $index => $cart) {
-                        $img = $imgPath . $cart[5];
-                        $totalAmount = $cart[2] * $cart[3];
-                        $total_price += $totalAmount;
-                        $cartItems[] = [
-                            'img' => $img,
-                            'name' => $cart[1],
-                            'price' => number_format($cart[2]),
-                            'quantity' => $cart[3],
-                            'totalAmount' => number_format($totalAmount),
-                            'index' => $index
-                        ];
-                    }
-                }
-        
-                $bill_info = insert_bill($full_name, $address, $email, $phone_number, $payment_status, $created_datetime, $total_price, $bill_code);
-                foreach ($_SESSION['myCart'] as $cart) {
-                    insert_cart($_SESSION['user']['user_id'], $cart[0], $cart[3], $bill_info);
-                }
-                $bill = loadone_bill($bill_info);
-                $billct = loadone_cart($bill_info);
-        
-                include_once("./view/cart/process_order.php");
+      // case "process_order"...
+      case "process_order":
+        if (isset($_POST['checkbill'])) {
+            $full_name = trim($_POST['full_name']);
+            $address = trim($_POST['address']);
+            $email = trim($_POST['email']);
+            $phone_number = trim($_POST['phone_number']);
+            $payment_status = isset($_POST['payment_status']) ? $_POST['payment_status'] : null;
+            $total_price = all_total_order();
+            $created_datetime = date('Y-m-d H:i:s');
+            $bill_code = time() . '' . rand(10000, 99999);
+    
+            $errors = [];
+    
+            // Validation
+            if (empty($full_name)) {
+                $errors['full_name'] = 'Tên khách hàng không được bỏ trống.';
             }
-            break;
-        
+            if (empty($address)) {
+                $errors['address'] = 'Địa chỉ không được bỏ trống.';
+            }
+            if (empty($phone_number)) {
+                $errors['phone_number'] = 'Số điện thoại không được bỏ trống.';
+            }
+            if (empty($email)) {
+                $errors['email'] = 'Email không được bỏ trống.';
+            }
+            if (empty($payment_status)) {
+                $errors['payment_status'] = 'Bạn phải chọn phương thức thanh toán.';
+            }
+    
+            if (!empty($errors)) {
+                $_SESSION['errors'] = $errors;
+                header('Location: index.php?act=bill');
+                exit();
+            }
+    
+            global $imgPath;
+            $total_price = 0;
+            $cartItems = [];
+            if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
+                foreach ($_SESSION['myCart'] as $index => $cart) {
+                    $img = $imgPath . $cart[5];
+                    $totalAmount = $cart[2] * $cart[3];
+                    $total_price += $totalAmount;
+                    $cartItems[] = [
+                        'img' => $img,
+                        'name' => $cart[1],
+                        'price' => number_format($cart[2]),
+                        'quantity' => $cart[3],
+                        'totalAmount' => number_format($totalAmount),
+                        'index' => $index
+                    ];
+                }
+            } else {
+                $_SESSION['errors'][] = 'Giỏ hàng không tồn tại hoặc đã bị xóa.';
+                header('Location: index.php?act=bill');
+                exit();
+            }
+    
+            $bill_info = insert_bill($full_name, $address, $email, $phone_number, $payment_status, $created_datetime, $total_price, $bill_code);
+            foreach ($_SESSION['myCart'] as $cart) {
+                insert_cart($_SESSION['user']['user_id'], $cart[0], $cart[3], $bill_info);
+            }
+            $bill = loadone_bill($bill_info);
+            $billct = loadone_cart($bill_info);
+    
+            // Xóa giỏ hàng sau khi thanh toán thành công
+            unset($_SESSION['myCart']);
+    
+            // Set success message in session
+            $_SESSION['success'] = 'Đặt hàng thành công. Cảm ơn bạn đã mua sắm tại cửa hàng của chúng tôi!';
+    
+            include_once("./view/cart/process_order.php");
+        }
+        break;
+    
 
             //lọc
         case 'showdm':

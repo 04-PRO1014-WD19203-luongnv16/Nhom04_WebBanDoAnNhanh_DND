@@ -91,7 +91,7 @@
             --bs-bg-opacity: 0;
         }
     </style>
-
+</head>
     <div class="container-fluid header-bg py-2">
         <div class="row align-items-center">
             <div class="col-auto">
