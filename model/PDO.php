@@ -176,3 +176,12 @@ function pdo_query_value($sql)
         }
     }
 }
+
+function pdo_query_value_order($sql, $params = [])
+{
+    $pdo = pdo_get_connection();
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    return $stmt->fetchColumn();
+}
+

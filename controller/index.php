@@ -177,28 +177,36 @@ if (isset($_GET['act'])) {
                 break;
                 //Đơn hàng
             case 'order':
-                $listBill = loadall_bill();
-                // $listBill = loadall_bill(0);
+                $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                $limit = 15; // số lượng đơn hàng mỗi trang
+                $offset = ($currentPage - 1) * $limit;
+
+                // Lấy tổng số đơn hàng và số trang
+                $totalBills = pdo_query_value_order("SELECT COUNT(*) FROM bill");
+                $totalPages = ceil($totalBills / $limit);
+
+                $listBill = loadall_bill(null, $offset, $limit);
                 require_once("./order/listOrder.php");
                 break;
-              // In your order handling logic
-case 'deleteOrder':
-    if (isset($_GET['bill_id']) && is_numeric($_GET['bill_id'])) {
-        $bill_id = intval($_GET['bill_id']);
-        delete_order($bill_id);
-        $_SESSION['notification'] = 'Đơn hàng đã được xóa thành công!';
-    }
-    header("Location: index.php?act=order");
-    exit;
-    break;
 
-case 'update_status':
-    // The actual status update logic is handled in update_order_status.php
-    require_once('./order/update_order_status.php');
-    $_SESSION['notification'] = 'Trạng thái đơn hàng đã được cập nhật thành công!';
-    header("Location: index.php?act=order");
-    exit;
-    break;
+                // In your order handling logic
+            case 'deleteOrder':
+                if (isset($_GET['bill_id']) && is_numeric($_GET['bill_id'])) {
+                    $bill_id = intval($_GET['bill_id']);
+                    delete_order($bill_id);
+                    $_SESSION['notification'] = 'Đơn hàng đã được xóa thành công!';
+                }
+                header("Location: index.php?act=order");
+                exit;
+                break;
+
+            case 'update_status':
+                // The actual status update logic is handled in update_order_status.php
+                require_once('./order/update_order_status.php');
+                $_SESSION['notification'] = 'Trạng thái đơn hàng đã được cập nhật thành công!';
+                header("Location: index.php?act=order");
+                exit;
+                break;
 
 
 

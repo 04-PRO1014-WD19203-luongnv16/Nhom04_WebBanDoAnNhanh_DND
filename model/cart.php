@@ -197,19 +197,19 @@ function loadone_cart($cart_id)
 //     $listBill = pdo_query($sql);
 //     return $listBill;
 // }
-function loadall_bill($user_id = null)
-{
-    $sql = "SELECT * FROM bill WHERE 1=1";
-    if ($user_id !== null && $user_id > 0) {
-        $sql .= " AND user_id = ?";
-    }
-    $sql .= " ORDER BY created_datetime DESC";
+// function loadall_bill($user_id = null)
+// {
+//     $sql = "SELECT * FROM bill WHERE 1=1";
+//     if ($user_id !== null && $user_id > 0) {
+//         $sql .= " AND user_id = ?";
+//     }
+//     $sql .= " ORDER BY created_datetime DESC";
     
-    if ($user_id !== null && $user_id > 0) {
-        return pdo_query($sql, $user_id);
-    }
-    return pdo_query($sql);
-}
+//     if ($user_id !== null && $user_id > 0) {
+//         return pdo_query($sql, $user_id);
+//     }
+//     return pdo_query($sql);
+// }
 
 
 //Tính tổng đơn hàng ở đơn hàng của tôi
@@ -226,6 +226,23 @@ function searchOrders($searchQuery) {
     $searchParam = '%' . $searchQuery . '%';
     return pdo_query($sql, $searchParam, $searchParam);
 }
+
+//Phân trang
+function loadall_bill($user_id = null, $offset = 0, $limit = 15)
+{
+    $sql = "SELECT * FROM bill WHERE 1=1";
+    if ($user_id !== null && $user_id > 0) {
+        $sql .= " AND user_id = ?";
+    }
+    $sql .= " ORDER BY created_datetime DESC LIMIT $offset, $limit";
+
+    if ($user_id !== null && $user_id > 0) {
+        return pdo_query($sql, $user_id);
+    }
+    return pdo_query($sql);
+}
+
+
 
 
 function get_status_label($status)
@@ -247,7 +264,6 @@ function get_status_label($status)
 }
 
 //xóa
-// delete_order.php
 function delete_order($bill_id) {
 // Xóa các mục trong giỏ hàng liên quan đến đơn hàng
 pdo_execute_bill_order("DELETE FROM cart WHERE bill_id = ?", $bill_id);

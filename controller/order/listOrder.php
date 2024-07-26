@@ -50,14 +50,14 @@
             <?php else : ?>
                 <?php foreach ($listBill as $bill) : ?>
                     <?php
-                        $countSp = loadone_cart_count($bill['bill_id']);
-                        $ttdh = get_status_label($bill['bill_status']);
-                        $bill_id = htmlspecialchars($bill['bill_id']);
-                        $bill_code = htmlspecialchars($bill['bill_code']);
-                        $full_name = htmlspecialchars($bill['full_name']);
-                        $created_datetime = htmlspecialchars($bill['created_datetime']);
-                        $total_price = number_format($bill['total_price'], 0, ',', '.');
-                        $status_label = htmlspecialchars($ttdh);
+                    $countSp = loadone_cart_count($bill['bill_id']);
+                    $ttdh = get_status_label($bill['bill_status']);
+                    $bill_id = htmlspecialchars($bill['bill_id']);
+                    $bill_code = htmlspecialchars($bill['bill_code']);
+                    $full_name = htmlspecialchars($bill['full_name']);
+                    $created_datetime = htmlspecialchars($bill['created_datetime']);
+                    $total_price = number_format($bill['total_price'], 0, ',', '.');
+                    $status_label = htmlspecialchars($ttdh);
                     ?>
                     <tr>
                         <td><?= $bill_code ?></td>
@@ -65,7 +65,7 @@
                         <td><?= $countSp ?></td>
                         <td><?= $created_datetime ?></td>
                         <td><?= $status_label ?></td>
-                        <td><?= $total_price ?> VND</td>
+                        <td><?= $total_price ?>,000 VND</td>
                         <td>
                             <a class="btn btn-danger btn-sm" href="index.php?act=deleteOrder&bill_id=<?= urlencode($bill_id) ?>" onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?');">Xóa</a>
                             <a href="order_detail.php?id=<?= urlencode($bill_id) ?>" class="btn btn-info btn-sm">Chi tiết</a>
@@ -89,10 +89,34 @@
             <?php endif; ?>
         </tbody>
     </table>
-</div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Previous Button -->
+            <li class="page-item <?= ($currentPage <= 1) ? 'disabled' : '' ?>">
+                <a class="page-link" href="?act=order&page=<?= max(1, $currentPage - 1) ?>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <!-- Page Numbers -->
+            <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                <li class="page-item <?= ($i == $currentPage) ? 'active' : '' ?>">
+                    <a class="page-link" href="?act=order&page=<?= $i ?>"><?= $i ?></a>
+                </li>
+            <?php endfor; ?>
+
+            <!-- Next Button -->
+            <li class="page-item <?= ($currentPage >= $totalPages) ? 'disabled' : '' ?>">
+                <a class="page-link" href="?act=order&page=<?= min($totalPages, $currentPage + 1) ?>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         <?php if (isset($_SESSION['notification'])) : ?>
             var toastEl = document.getElementById('toastNotification');
             var toast = new bootstrap.Toast(toastEl);
@@ -107,3 +131,4 @@
     });
 </script>
 
+</div>
