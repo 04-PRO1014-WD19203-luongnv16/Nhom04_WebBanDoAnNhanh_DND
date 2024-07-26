@@ -20,7 +20,6 @@
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">
                     <tr>
-                        <th scope="col">Mã đơn hàng</th>
                         <th scope="col">Tên khách hàng</th>
                         <th scope="col">Số điện thoại</th>
                         <th scope="col">Email</th>
@@ -33,7 +32,6 @@
                 <tbody>
                     <?php if (isset($bill) && is_array($bill)) : ?>
                         <tr>
-                            <td><?= $bill['bill_id'] ?></td>
                             <td><?= $bill['full_name'] ?></td>
                             <td><?= $bill['phone_number'] ?></td>
                             <td><?= $bill['email'] ?></td>
@@ -103,7 +101,7 @@
                     <?php echo $_SESSION['success']; unset($_SESSION['success']); ?>
                 </div>
                 <!-- Meta refresh để tự động chuyển hướng sau 15 giây -->
-                <meta http-equiv="refresh" content="15;url=index.php?act=listProducts">
+                <meta http-equiv="refresh" content="15;url=index.php?act=myBill">
             <?php endif; ?>
 
             <div class="text-center mt-4">

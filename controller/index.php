@@ -1,13 +1,14 @@
 <?php
+ob_start();
 session_start();
 include_once('../model/PDO.php');
 include_once('../model/account.php');
 include_once('../model/category.php');
 include_once('../model/product.php');
+include_once('../model/cart.php');
 require_once("./header.php");
 // require_once("./main.php");
 if (!isset($_SESSION['mycart'])) $_SESSION['mycart'] = [];
-
 $allProduct = select_sp_home();
 $message = '';
 $errors = [];
@@ -174,10 +175,35 @@ if (isset($_GET['act'])) {
                 $listSP = loadAllProduct();
                 require_once("productController/listProduct.php");
                 break;
+                //Đơn hàng
+            case 'order':
+                $listBill = loadall_bill();
+                // $listBill = loadall_bill(0);
+                require_once("./order/listOrder.php");
+                break;
+              // In your order handling logic
+case 'deleteOrder':
+    if (isset($_GET['bill_id']) && is_numeric($_GET['bill_id'])) {
+        $bill_id = intval($_GET['bill_id']);
+        delete_order($bill_id);
+        $_SESSION['notification'] = 'Đơn hàng đã được xóa thành công!';
+    }
+    header("Location: index.php?act=order");
+    exit;
+    break;
 
-                
+case 'update_status':
+    // The actual status update logic is handled in update_order_status.php
+    require_once('./order/update_order_status.php');
+    $_SESSION['notification'] = 'Trạng thái đơn hàng đã được cập nhật thành công!';
+    header("Location: index.php?act=order");
+    exit;
+    break;
+
+
+
                 //Quản lý bình luận
-                case 'dsbl': {
+            case 'dsbl': {
                     $dsbl = chitiet_binhluan();
                     include './binhluan/dsbl.php';
                     break;
@@ -188,7 +214,7 @@ if (isset($_GET['act'])) {
                         header('location: ?act=dsbl');
                     }
                     break;
-                }       
+                }
             default:
                 require_once("./main.php");
                 break;
@@ -204,3 +230,4 @@ if (isset($_GET['act'])) {
     }
 }
 require_once("./footer.php");
+ob_end_flush();

@@ -130,7 +130,7 @@
                                             ?>
                                                 <li><a class="dropdown-item" href="./controller/index.php">Trang Quản Trị</a></li>
                                             <?php endif; ?>
-                                            <li><a class="dropdown-item" href="./index.php">Đơn hàng của tôi</a></li>
+                                            <li><a class="dropdown-item" href="index.php?act=myBill">Đơn hàng của tôi</a></li>
                                             <li>
                                                 <hr class="dropdown-divider">
                                                 <a href="index.php?act=logout" class="btn">Đăng Xuất</a>

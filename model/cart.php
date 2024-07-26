@@ -135,8 +135,9 @@ function removeCartItem($user_id, $product_id)
     pdo_execute("DELETE FROM cart_items WHERE user_id = ? AND product_id = ?", $user_id, $product_id);
 }
 
-// Function to calculate the total price of the order
-function all_total_order() {
+// Hàm tính tổng giá trị đơn hàng
+function all_total_order()
+{
     $total_price = 0;
     if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
         foreach ($_SESSION['myCart'] as $index => $cart) {
@@ -147,27 +148,111 @@ function all_total_order() {
     return $total_price;
 }
 
-// Function to insert a new bill into the database
-function insert_bill($full_name, $address, $email, $phone_number, $payment_status, $created_datetime, $total_price, $bill_code) {
-    $sql = "INSERT INTO bill (full_name, address, email, phone_number, payment_status, created_datetime, total_price, bill_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    return pdo_execute_lastInsertId($sql, $full_name, $address, $email, $phone_number, $payment_status, $created_datetime, $total_price, $bill_code);
+//Mã đơn hàng
+// function generateBillCode($length = 3) {
+//     $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+//     $charactersLength = strlen($characters);
+//     $randomString = '';
+
+//     // Thêm phần thời gian để đảm bảo tính duy nhất
+//     $randomString .= time(); // Thời gian hiện tại
+
+//     // Tạo chuỗi ngẫu nhiên với độ dài tối thiểu
+//     for ($i = 0; $i < $length; $i++) {
+//         $randomString .= $characters[random_int(0, $charactersLength - 1)];
+//     }
+
+//     return $randomString;
+// }
+
+// Hàm chèn hóa đơn mới vào cơ sở dữ liệu
+function insert_bill($user_id, $full_name, $address, $email, $phone_number, $payment_status, $created_datetime, $total_price, $bill_code)
+{
+    $sql = "INSERT INTO bill (user_id, full_name, address, email, phone_number, payment_status, created_datetime, total_price, bill_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    return pdo_execute_lastInsertId($sql, $user_id,  $full_name, $address, $email, $phone_number, $payment_status, $created_datetime, $total_price, $bill_code);
 }
 
-// Function to insert cart items into the database
-function insert_cart($user_id, $product_id, $quantity, $bill_id) {
+// Hàm chèn sản phẩm giỏ hàng vào cơ sở dữ liệu
+function insert_cart($user_id, $product_id, $quantity, $bill_id)
+{
     $sql = "INSERT INTO cart (user_id, product_id, quantity, bill_id) VALUES (?, ?, ?, ?)";
     pdo_execute_bill_order($sql, $user_id, $product_id, $quantity, $bill_id);
 }
 
-// Function to load a single bill from the database
-function loadone_bill($bill_id) {
+// Hàm nạp một hóa đơn từ cơ sở dữ liệu
+function loadone_bill($bill_id)
+{
     $sql = "SELECT * FROM bill WHERE bill_id = ?";
     return pdo_query_one($sql, [$bill_id]);
 }
 
-// Function to load cart items associated with a bill from the database
-function loadone_cart($cart_id) {
+function loadone_cart($cart_id)
+{
     $sql = "SELECT * FROM cart WHERE cart_id = ?";
     return pdo_query_one($sql, [$cart_id]);
 }
+// function loadall_bill($user_id)
+// {
+//     $sql = "SELECT * FROM bill WHERE user_id = $user_id";
+//     $listBill = pdo_query($sql);
+//     return $listBill;
+// }
+function loadall_bill($user_id = null)
+{
+    $sql = "SELECT * FROM bill WHERE 1=1";
+    if ($user_id !== null && $user_id > 0) {
+        $sql .= " AND user_id = ?";
+    }
+    $sql .= " ORDER BY created_datetime DESC";
+    
+    if ($user_id !== null && $user_id > 0) {
+        return pdo_query($sql, $user_id);
+    }
+    return pdo_query($sql);
+}
+
+
+//Tính tổng đơn hàng ở đơn hàng của tôi
+function loadone_cart_count($bill_id)
+{
+    $sql = "SELECT SUM(quantity) as count FROM cart WHERE bill_id = $bill_id";
+    $result = pdo_query($sql);
+    return $result[0]['count'];
+}
+
+//Tìm kiếm
+function searchOrders($searchQuery) {
+    $sql = "SELECT * FROM bill WHERE bill_code LIKE ? OR full_name LIKE ?";
+    $searchParam = '%' . $searchQuery . '%';
+    return pdo_query($sql, $searchParam, $searchParam);
+}
+
+
+function get_status_label($status)
+{
+    switch ($status) {
+        case 0:
+            return 'Đơn hàng mới';
+        case 1:
+            return 'Chờ shipper lấy hàng';
+        case 2:
+            return 'Đang giao hàng';
+        case 3:
+            return 'Hoàn tất';
+        case 4:
+            return 'Hủy hàng';
+        default:
+            return 'Đơn hàng mới';
+    }
+}
+
+//xóa
+// delete_order.php
+function delete_order($bill_id) {
+// Xóa các mục trong giỏ hàng liên quan đến đơn hàng
+pdo_execute_bill_order("DELETE FROM cart WHERE bill_id = ?", $bill_id);
+// Xóa chính thứ tự đó
+pdo_execute_bill_order("DELETE FROM bill WHERE bill_id = ?", $bill_id);
+}
+
 

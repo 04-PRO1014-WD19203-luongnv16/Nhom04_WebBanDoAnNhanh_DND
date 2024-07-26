@@ -23,6 +23,12 @@
         .custom-width {
             width: 20%;
         }
+        .custom-toast {
+        top: 0;
+        right: 0;
+        transform: translateY(-50%);
+    }
+
     </style>
 </head>
 
