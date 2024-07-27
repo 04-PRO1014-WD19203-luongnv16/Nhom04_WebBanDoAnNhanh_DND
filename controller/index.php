@@ -175,6 +175,7 @@ if (isset($_GET['act'])) {
                 $listSP = loadAllProduct();
                 require_once("productController/listProduct.php");
                 break;
+                
                 //Đơn hàng
             case 'order':
                 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;

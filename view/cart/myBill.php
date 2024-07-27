@@ -29,6 +29,7 @@
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderDetailsModal" data-bill-id="<?= $bill_id ?>">
                                 Chi tiết đơn hàng
                             </button>
+                            <button type="button"><a class="btn btn-danger" href="" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');">Hủy đơn hàng</a></button>
                         </td>
                     </tr>
             <?php endforeach; else: ?>

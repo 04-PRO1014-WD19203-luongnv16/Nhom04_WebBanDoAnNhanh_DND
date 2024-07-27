@@ -45,6 +45,18 @@
     return $linkProduct;
 }
 
+// Hàm lọc sản phẩm theo khoảng giá
+function getProductsByPriceRange($minPrice, $maxPrice) {
+    $sql = "SELECT * FROM product WHERE product_sale_price BETWEEN :minPrice AND :maxPrice";
+    return pdo_query_search($sql, [':minPrice' => $minPrice, ':maxPrice' => $maxPrice]);
+}
+
+// Hàm tìm kiếm sản phẩm theo tên
+function searchProductsByName($search) {
+    $sql = "SELECT * FROM product WHERE product_name LIKE :search";
+    return pdo_query_search($sql, [':search' => "%$search%"]);
+}
+
 // Hiển thị chi tiết sản phẩm ở user
 function select_sp_one($product_id)
 {

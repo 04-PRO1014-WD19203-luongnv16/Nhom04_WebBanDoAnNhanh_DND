@@ -1,7 +1,7 @@
 <div class="container mt-5 position-relative">
     <h2 class="mb-4">Danh Sách Đơn Hàng</h2>
 
-    <!-- Toast notification -->
+    <!-- Thông báo update trạng thái đơn hàng -->
     <div id="toastNotification" class="toast align-items-center text-white bg-success border-0 position-absolute p-3 custom-toast" role="alert" aria-live="assertive" aria-atomic="true" style="display: none;">
         <div class="d-flex">
             <div class="toast-body">

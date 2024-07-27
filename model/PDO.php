@@ -20,20 +20,6 @@ function pdo_get_connection()
  * @throws PDOException lỗi thực thi câu lệnh
  */
 
-// function pdo_execute($sql)
-// {
-//     $sql_args = array_slice(func_get_args(), 1);
-//     try {
-//         $conn = pdo_get_connection();
-//         $stmt = $conn->prepare($sql);
-//         $stmt->execute($sql_args);
-//     } catch (PDOException $e) {
-//         throw $e;
-//     } finally {
-//         unset($conn);
-//     }
-// }
-
 function pdo_execute_bill_order($sql, ...$params) {
     try {
         $conn = pdo_get_connection();
@@ -97,16 +83,19 @@ function pdo_query($sql)
     }
 }
 
-// function pdo_query($sql, $params = []) {
-//     global $pdo; // Giả sử $pdo là đối tượng PDO của bạn
-//     $stmt = $pdo->prepare($sql);
-//     if ($stmt->execute($params)) {
-//         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-//     } else {
-//         throw new PDOException("Lỗi khi thực thi truy vấn: " . implode(", ", $stmt->errorInfo()));
-//     }
-// }
-
+function pdo_query_search($sql, $params = []) {
+    try {
+        $conn = pdo_get_connection();
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($params);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $rows;
+    } catch (PDOException $e) {
+        throw $e;
+    } finally {
+        unset($conn);
+    }
+}
 
 /**
  * Thực thi câu lệnh truy vấn một bản ghi
@@ -115,22 +104,6 @@ function pdo_query($sql)
  * @return array mảng chứa bản ghi
  * @throws PDOException lỗi thực thi câu lệnh
  */
-
-// function pdo_query_one($sql)
-// {
-//     $sql_args = array_slice(func_get_args(), 1);
-//     try {
-//         $conn = pdo_get_connection();
-//         $stmt = $conn->prepare($sql);
-//         $stmt->execute($sql_args);
-//         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-//         return $row;
-//     } catch (PDOException $e) {
-//         throw $e;
-//     } finally {
-//         unset($conn);
-//     }
-// }
 
 function pdo_query_one($sql, $params = [])
 {

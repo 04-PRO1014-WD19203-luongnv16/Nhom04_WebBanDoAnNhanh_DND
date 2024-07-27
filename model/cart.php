@@ -242,9 +242,6 @@ function loadall_bill($user_id = null, $offset = 0, $limit = 15)
     return pdo_query($sql);
 }
 
-
-
-
 function get_status_label($status)
 {
     switch ($status) {
