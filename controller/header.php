@@ -42,41 +42,63 @@
             </a>
             <hr>
             <nav>
-                <div class="list-group list-group-flush">
-                    <a href="index.php" class="text-dark list-group-item list-group-item-action list-group-item-light ">
-                        <i class="fas fa-home me-2"></i>
-                        Dashboard
-                    </a>
-                    <a href="index.php?act=listAccount" class="text-dark list-group-item list-group-item-action list-group-item-light">
-                        <i class="fas fa-user me-2"></i>
-                        Quản lý người dùng
-                    </a>
-                    <a href="index.php?act=listCategory" class="text-dark list-group-item list-group-item-action list-group-item-light">
-                        <i class="fas fa-list me-2"></i>
-                        Quản lý danh mục
-                    </a>
-                    <a href="index.php?act=listProducts" class="text-dark list-group-item list-group-item-action list-group-item-light">
-                        <i class="fas fa-table me-2"></i>
-                        Quản lý sản phẩm
-                    </a>
-                    <a href="index.php?act=order" class="text-dark list-group-item list-group-item-action list-group-item-light">
-                        <i class="fas fa-cart-plus me-2"></i>
-                        Quản lý đơn hàng
-                    </a>
-                    <a href="index.php?act=comment" class="text-dark list-group-item list-group-item-action list-group-item-light">
-                        <i class="fas fa-comment me-2"></i>
-                        Quản lý bình luận
-                    </a>
-                    <a href="index.php?act=statistical" class="text-dark list-group-item list-group-item-action list-group-item-light">
-                        <i class="fas fa-chart-line me-2"></i>
-                        Thống kê
-                    </a>
-                    <a href="index.php?act=discount" class="text-dark list-group-item list-group-item-action list-group-item-light">
-                        <i class="fas fa-gift me-2"></i>
-                        Giảm giá
-                    </a>
-                </div>
-            </nav>
+        <div class="list-group list-group-flush">
+            <a href="index.php" class="text-dark list-group-item list-group-item-action list-group-item-light">
+                <i class="fas fa-home me-2"></i>
+                Dashboard
+            </a>
+            <a href="index.php?act=listAccount" class="text-dark list-group-item list-group-item-action list-group-item-light">
+                <i class="fas fa-user me-2"></i>
+                Quản lý người dùng
+            </a>
+            <a href="index.php?act=listCategory" class="text-dark list-group-item list-group-item-action list-group-item-light">
+                <i class="fas fa-list me-2"></i>
+                Quản lý danh mục
+            </a>
+            <a href="index.php?act=listProducts" class="text-dark list-group-item list-group-item-action list-group-item-light">
+                <i class="fas fa-table me-2"></i>
+                Quản lý sản phẩm
+            </a>
+            <a href="index.php?act=order" class="text-dark list-group-item list-group-item-action list-group-item-light">
+                <i class="fas fa-cart-plus me-2"></i>
+                Quản lý đơn hàng
+            </a>
+            <a href="index.php?act=comment" class="text-dark list-group-item list-group-item-action list-group-item-light">
+                <i class="fas fa-comment me-2"></i>
+                Quản lý bình luận
+            </a>
+            <a href="#statisticalSubmenu" class="text-dark list-group-item list-group-item-action list-group-item-light" data-bs-toggle="collapse" onclick="toggleIcon(this)">
+                <i class="fas fa-chart-line me-2"></i>
+                Thống kê
+                <i class="fas fa-chevron-down float-end"></i>
+            </a>
+            <div class="collapse" id="statisticalSubmenu">
+                <a href="index.php?act=statistical" class="text-dark ps-4 list-group-item list-group-item-action list-group-item-light">
+                    Loại sản phẩm
+                </a>
+                <a href="index.php?act=sellingProduct" class="text-dark ps-4 list-group-item list-group-item-action list-group-item-light">
+                    Sản phẩm bán chạy
+                </a>
+                <a href="index.php?act=topOrder" class="text-dark ps-4 list-group-item list-group-item-action list-group-item-light">
+                    Đơn hàng
+                </a>
+                <a href="index.php?act=chart" class="text-dark ps-4 list-group-item list-group-item-action list-group-item-light">
+                    Biểu đồ
+                </a>
+            </div>
+            <a href="index.php?act=discount" class="text-dark list-group-item list-group-item-action list-group-item-light">
+                <i class="fas fa-gift me-2"></i>
+                Giảm giá
+            </a>
+        </div>
+    </nav>
+    <script>
+        function toggleIcon(element) {
+            const icon = element.querySelector('.float-end');
+            icon.classList.toggle('fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
+        }
+    </script>
         </header>
         <!-- Mobile Menu -->
         <header class="d-md-none  text-white p-3">

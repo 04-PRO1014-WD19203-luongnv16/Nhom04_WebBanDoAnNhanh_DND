@@ -6,6 +6,7 @@ include_once('../model/account.php');
 include_once('../model/category.php');
 include_once('../model/product.php');
 include_once('../model/cart.php');
+include_once('../model/statistical.php');
 require_once("./header.php");
 // require_once("./main.php");
 if (!isset($_SESSION['mycart'])) $_SESSION['mycart'] = [];
@@ -175,7 +176,7 @@ if (isset($_GET['act'])) {
                 $listSP = loadAllProduct();
                 require_once("productController/listProduct.php");
                 break;
-                
+
                 //Đơn hàng
             case 'order':
                 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -209,7 +210,54 @@ if (isset($_GET['act'])) {
                 exit;
                 break;
 
+                // Thóng kê
+            case 'statistical': //Thống kê sản phẩm theo loại
+                if (isset($_POST['listok']) && ($_POST['listok'])) {
+                    $kyw = $_POST['kyw'];
+                } else {
+                    $kyw = "";
+                }
+                $listthongke = loadall_thongke($kyw);
+                require_once('./statisticalController/listStatistical.php');
+                break;
+            case 'chart': //Biểu đồ
+                $listthongke = loadall_thongke();
+                require_once('./statisticalController/chartController.php');
+                break;
 
+            case 'sellingProduct': // Thống kê sp bán chạy
+                $time_period = isset($_POST['chon_ngay']) ? intval($_POST['chon_ngay']) : 0;
+                $start_date = isset($_POST['start_date']) ? $_POST['start_date'] : '';
+                $end_date = isset($_POST['end_date']) ? $_POST['end_date'] : '';
+
+                // Lấy dữ liệu sản phẩm bán chạy
+                $_sp_ban_chay = get_top_selling_products($time_period, $start_date, $end_date);
+                $tong_don = count($_sp_ban_chay);
+                $tong_tien = array_sum(array_column($_sp_ban_chay, 'tongtien'));
+
+
+                include "./statisticalController/sellingProduct.php";
+                break;
+
+            case 'topOrder': //Thống kê đơn hàng
+                $selected_status = isset($_POST['chon_ngay']) ? $_POST['chon_ngay'] : '6';
+                $start_date = isset($_POST['start_date']) ? $_POST['start_date'] : '';
+                $end_date = isset($_POST['end_date']) ? $_POST['end_date'] : '';
+
+                if ($selected_status == '6') {
+                    $_don_hang = tk_don();
+                } elseif ($start_date && $end_date) {
+                    $_don_hang = loc_don_ngay($start_date, $end_date);
+                } else {
+                    $_don_hang = trang_thai_don($selected_status);
+                }
+
+                $tong_don = count($_don_hang);
+                $tong_tien = array_sum(array_column($_don_hang, 'total_amount'));
+
+                $_trang_thai = $selected_status;
+                require_once('./statisticalController/topOrderController.php');
+                break;
 
                 //Quản lý bình luận
             case 'dsbl': {
