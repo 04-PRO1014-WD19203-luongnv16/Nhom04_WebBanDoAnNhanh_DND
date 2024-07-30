@@ -18,56 +18,69 @@ function loadall_thongke($kyw = "")
 }
 
 // Function to filter products by date range
-function loc_date_sp($a, $b)
+function loc_date_sp($start_date, $end_date)
 {
-    $sql = "SELECT product.product_name, product.product_sale_price AS price, category.category_name, bill_item.quantity, (bill_item.quantity * product.product_sale_price) AS tongtien, bill.created_datetime AS order_date
-            FROM product
-            JOIN bill_item ON product.product_id = bill_item.product_id
-            JOIN bill ON bill_item.bill_id = bill.bill_id
-            JOIN category ON product.category_id = category.category_id
-            WHERE bill.bill_status = '3' AND bill.created_datetime BETWEEN '$a 00:00' AND '$b 23:59'
-            ORDER BY bill_item.quantity DESC";
+    $sql = "SELECT p.product_name AS name, c.category_name AS tendanhmuc, 
+                   SUM(bi.quantity) AS quantity, 
+                   (SUM(bi.quantity) * p.product_sale_price) AS tongtien
+            FROM product p
+            JOIN bill_item bi ON p.product_id = bi.product_id
+            JOIN bill b ON bi.bill_id = b.bill_id
+            JOIN category c ON p.category_id = c.category_id
+            WHERE b.bill_status = 'Hoàn tất'
+              AND b.created_datetime BETWEEN '$start_date 00:00' AND '$end_date 23:59'
+            GROUP BY p.product_id
+            ORDER BY quantity DESC";
     return pdo_query($sql);
 }
 
-function loc_sp_theo_ngay($a)
+
+function loc_sp_theo_ngay($days)
 {
-    $sql = "SELECT product.product_name, product.product_sale_price AS price, category.category_name, bill_item.quantity, (bill_item.quantity * product.product_sale_price) AS tongtien, bill.created_datetime AS order_date
-            FROM product
-            JOIN bill_item ON product.product_id = bill_item.product_id
-            JOIN bill ON bill_item.bill_id = bill.bill_id
-            JOIN category ON product.category_id = category.category_id
-            WHERE bill.bill_status = '3' AND bill.created_datetime < (CURRENT_DATE - INTERVAL $a DAY)
-            ORDER BY bill_item.quantity DESC";
+    $sql = "SELECT p.product_name AS name, c.category_name AS tendanhmuc, 
+                   SUM(bi.quantity) AS quantity, 
+                   (SUM(bi.quantity) * p.product_sale_price) AS tongtien
+            FROM product p
+            JOIN bill_item bi ON p.product_id = bi.product_id
+            JOIN bill b ON bi.bill_id = b.bill_id
+            JOIN category c ON p.category_id = c.category_id
+            WHERE b.bill_status = 'Hoàn tất'
+              AND DATEDIFF(NOW(), b.created_datetime) <= '$days'
+            GROUP BY p.product_id
+            ORDER BY quantity DESC";
     return pdo_query($sql);
 }
+
 
 function tk_don()
 {
-    $sql = "SELECT bill.bill_id AS order_id, bill.full_name AS username, bill.phone_number, bill.address, 
+    $sql = "SELECT bill.bill_code AS order_code, bill.full_name AS username, bill.phone_number, bill.address, 
             bill.created_datetime AS order_date, bill.bill_status AS process, bill.total_price AS total_amount
             FROM bill
-            ORDER BY total_amount DESC";
+            ORDER BY total_amount DESC
+            LIMIT 10"; // Giới hạn lấy 10 đơn hàng đầu tiên
     return pdo_query($sql);
 }
 
 function trang_thai_don($a)
 {
-    $sql = "SELECT bill.bill_id AS order_id, bill.full_name AS username, bill.phone_number, bill.address, 
+    $sql = "SELECT bill.bill_code AS order_code, bill.full_name AS username, bill.phone_number, bill.address, 
             bill.created_datetime AS order_date, bill.bill_status AS process, bill.total_price AS total_amount
             FROM bill
             WHERE bill.bill_status = '$a'
-            ORDER BY total_amount DESC";
+            ORDER BY total_amount DESC
+            LIMIT 10"; // Giới hạn lấy 10 đơn hàng đầu tiên
     return pdo_query($sql);
 }
 
 function loc_don_ngay($a, $b)
 {
-    $sql = "SELECT bill.bill_id AS order_id, bill.full_name AS username, bill.phone_number, bill.address, 
+    $sql = "SELECT bill.bill_code AS order_code, bill.full_name AS username, bill.phone_number, bill.address, 
             bill.created_datetime AS order_date, bill.bill_status AS process, bill.total_price AS total_amount
             FROM bill
             WHERE created_datetime BETWEEN '$a 00:00' AND '$b 23:59'
-            ORDER BY total_amount DESC";
+            ORDER BY total_amount DESC
+            LIMIT 10"; // Giới hạn lấy 10 đơn hàng đầu tiên
     return pdo_query($sql);
 }
 
@@ -85,34 +98,11 @@ function sw_chon_trang_thai($status)
 
 
 //sellingProduct
-function get_top_selling_products($time_period, $start_date, $end_date)
+function get_top_selling_products($time_period = 0, $start_date = '', $end_date = '')
 {
-    if ($time_period > 0) {
-        $sql = "SELECT p.name, c.name AS tendanhmuc, p.price, SUM(oi.quantity) AS quantity, 
-                SUM(oi.quantity * p.price) AS tongtien, DATE(b.created_datetime) AS order_date
-                FROM order_item oi
-                JOIN product p ON oi.product_id = p.id
-                JOIN bill b ON oi.bill_id = b.id
-                WHERE DATE(b.created_datetime) >= CURDATE() - INTERVAL :time_period DAY
-                GROUP BY p.id, c.id, DATE(b.created_datetime)
-                ORDER BY tongtien DESC";
-    } elseif ($start_date && $end_date) {
-        $sql = "SELECT p.name, c.name AS tendanhmuc, p.price, SUM(oi.quantity) AS quantity, 
-                SUM(oi.quantity * p.price) AS tongtien, DATE(b.created_datetime) AS order_date
-                FROM order_item oi
-                JOIN product p ON oi.product_id = p.id
-                JOIN bill b ON oi.bill_id = b.id
-                WHERE DATE(b.created_datetime) BETWEEN :start_date AND :end_date
-                GROUP BY p.id, c.id, DATE(b.created_datetime)
-                ORDER BY tongtien DESC";
+    if (!empty($start_date) && !empty($end_date)) {
+        return loc_date_sp($start_date, $end_date);
     } else {
-        $sql = "SELECT p.name, c.name AS tendanhmuc, p.price, SUM(oi.quantity) AS quantity, 
-                SUM(oi.quantity * p.price) AS tongtien, DATE(b.created_datetime) AS order_date
-                FROM order_item oi
-                JOIN product p ON oi.product_id = p.id
-                JOIN bill b ON oi.bill_id = b.id
-                GROUP BY p.id, c.id, DATE(b.created_datetime)
-                ORDER BY tongtien DESC";
+        return loc_sp_theo_ngay($time_period);
     }
-    return pdo_query($sql);
 }

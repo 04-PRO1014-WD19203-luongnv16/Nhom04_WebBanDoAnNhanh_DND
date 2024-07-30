@@ -1,56 +1,61 @@
-<main class="w-100 d-f f-d">
-    <div class="row">
-        <div class="row formtitle">
+<main class="container">
+    <div class="row mb-4">
+        <div class="col-12">
             <h1>Thống kê đơn hàng - <?php echo isset($_trang_thai) ? sw_chon_trang_thai($_trang_thai) : 'Tất Cả'; ?></h1>
         </div>
-        <div class="search_list-product-admin w-100">
-            <form style="line-height:30px; display:flex; padding:12px; margin-bottom: 20px;" action="index.php?act=sellingProduct" method="post">
-                <div style="margin-right: 10px;">
-                    <label for="">Trạng Thái Đơn Hàng</label><br>
-                    <select name="chon_ngay">
-                        <option value="6" <?php echo isset($_trang_thai) && $_trang_thai == 6 ? 'selected' : ''; ?>>Tất Cả</option>
-                        <option value="0" <?php echo isset($_trang_thai) && $_trang_thai == 0 ? 'selected' : ''; ?>>Tiếp Nhận Đơn</option>
-                        <option value="1" <?php echo isset($_trang_thai) && $_trang_thai == 1 ? 'selected' : ''; ?>>Đang Xử Lý</option>
-                        <option value="2" <?php echo isset($_trang_thai) && $_trang_thai == 2 ? 'selected' : ''; ?>>Đang Giao Hàng</option>
-                        <option value="3" <?php echo isset($_trang_thai) && $_trang_thai == 3 ? 'selected' : ''; ?>>Giao Hàng Thành Công</option>
-                        <option value="4" <?php echo isset($_trang_thai) && $_trang_thai == 4 ? 'selected' : ''; ?>>Đã Hủy (admin)</option>
-                        <option value="5" <?php echo isset($_trang_thai) && $_trang_thai == 5 ? 'selected' : ''; ?>>Đã Hủy (khách hàng)</option>
+    </div>
+    <div class="row mb-4">
+        <div class="col-12">
+            <form class="d-flex align-items-center" action="index.php?act=topOrder" method="post">
+                <div class="me-3">
+                    <label for="chon_ngay" class="form-label">Trạng Thái Đơn Hàng</label>
+                    <select class="form-select" name="chon_ngay" id="chon_ngay">
+                        <option value="6" <?php echo isset($_trang_thai) && $_trang_thai == 5 ? 'selected' : ''; ?>>Tất Cả</option>
+                        <option value="0" <?php echo isset($_trang_thai) && $_trang_thai == 0 ? 'selected' : ''; ?>>Đơn hàng mới</option>
+                        <option value="1" <?php echo isset($_trang_thai) && $_trang_thai == 1 ? 'selected' : ''; ?>>Chờ shipper lấy hàng</option>
+                        <option value="2" <?php echo isset($_trang_thai) && $_trang_thai == 2 ? 'selected' : ''; ?>>Đang giao hàng</option>
+                        <option value="3" <?php echo isset($_trang_thai) && $_trang_thai == 3 ? 'selected' : ''; ?>>Hoàn tất</option>
+                        <option value="4" <?php echo isset($_trang_thai) && $_trang_thai == 4 ? 'selected' : ''; ?>>Hủy hàng</option>
                     </select>
                 </div>
-                <div style="margin-right: 10px;">
-                    <label for="">Ngày Bắt Đầu</label><br>
-                    <input type="date" name="start_date" value="<?php echo isset($start_date) ? $start_date : ''; ?>">
+                <div class="me-3">
+                    <label for="start_date" class="form-label">Ngày Bắt Đầu</label>
+                    <input type="date" class="form-control" name="start_date" id="start_date" value="<?php echo isset($start_date) ? $start_date : ''; ?>">
                 </div>
-                <div style="margin-right: 10px;">
-                    <label for="">Ngày Kết Thúc</label><br>
-                    <input type="date" name="end_date" value="<?php echo isset($end_date) ? $end_date : ''; ?>">
+                <div class="me-3">
+                    <label for="end_date" class="form-label">Ngày Kết Thúc</label>
+                    <input type="date" class="form-control" name="end_date" id="end_date" value="<?php echo isset($end_date) ? $end_date : ''; ?>">
                 </div>
                 <div>
-                    <br>
-                    <input style="height:20px; padding:5px 10px; background:rgb(32, 169, 255); border:none; border-radius:4px; color:white;" type="submit" value="Lọc" name="done_date">
+                    <button type="submit" class="btn btn-primary mt-4" name="done_date">Lọc</button>
                 </div>
             </form>
-            <table class="w-100 table_bill-admin">
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-12">
+            <table class="table table-striped table-bordered">
                 <thead>
-                    <tr class="maloai">
-                        <th class="th_sp">STT</th>
-                        <th class="th_sp">MÃ ĐƠN HÀNG</th>
-                        <th class="th_sp">TÊN KHÁCH HÀNG</th>
-                        <th class="th_sp">SỐ ĐIỆN THOẠI</th>
-                        <th class="th_sp">ĐỊA CHỈ</th>
-                        <th class="th_sp">TRẠNG THÁI</th>
-                        <th class="th_sp">TỔNG TIỀN</th>
-                        <th class="th_sp">NGÀY</th>
+                    <tr>
+                        <th scope="col">STT</th>
+                        <th scope="col">MÃ ĐƠN HÀNG</th>
+                        <th scope="col">TÊN KHÁCH HÀNG</th>
+                        <th scope="col">SỐ ĐIỆN THOẠI</th>
+                        <th scope="col">ĐỊA CHỈ</th>
+                        <th scope="col">TRẠNG THÁI</th>
+                        <th scope="col">TỔNG TIỀN</th>
+                        <th scope="col">NGÀY</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                     $count = 1;
-                    foreach ($_don_hang as $value) {
+                    $orders_to_display = array_slice($_don_hang, 0, 10); // Lấy 10 đơn hàng đầu tiên
+                    foreach ($orders_to_display as $value) {
                     ?>
                         <tr>
                             <td><?php echo $count; ?></td>
-                            <td><?php echo $value['order_id']; ?></td>
+                            <td><?php echo $value['order_code']; ?></td> <!-- Sử dụng bill_code -->
                             <td><?php echo $value['username']; ?></td>
                             <td><?php echo $value['phone_number']; ?></td>
                             <td><?php echo $value['address']; ?></td>
@@ -64,11 +69,15 @@
                     ?>
                 </tbody>
             </table>
-            <table class="w-100 table_bill-admin">
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-12">
+            <table class="table table-striped table-bordered">
                 <thead>
-                    <tr class="maloai">
-                        <th class="th_sp">Tổng Đơn Hàng</th>
-                        <th class="th_sp">Tổng Tiền</th>
+                    <tr>
+                        <th scope="col">Tổng Đơn Hàng</th>
+                        <th scope="col">Tổng Tiền</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -78,8 +87,11 @@
                     </tr>
                 </tbody>
             </table>
-            <hr>
-            <div class="canvas-chart" style="margin-top: 100px;">
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="canvas-chart">
                 <canvas id="myChart" style="width:100%;max-width: 80%;height: 350px;"></canvas>
             </div>
         </div>
@@ -97,15 +109,17 @@
             labels: xValues,
             datasets: [{
                 fill: false,
-                lineTension: 0,
+                tension: 0.1,
                 backgroundColor: "rgba(0,0,255,1.0)",
                 borderColor: "rgb(53, 208, 247)",
                 data: yValues,
             }]
         },
         options: {
-            legend: {
-                display: false
+            plugins: {
+                legend: {
+                    display: false
+                }
             },
             scales: {
                 y: {

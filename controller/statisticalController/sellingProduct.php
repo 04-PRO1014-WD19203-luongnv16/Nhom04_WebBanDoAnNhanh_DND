@@ -1,12 +1,10 @@
 <main class="w-100 d-f f-d">
-
     <div class="row">
         <div class="row formtitle">
-            <h1>THỐNG KÊ SẢN PHẨM BÁN CH</h1>
+            <h1>THỐNG KÊ SẢN PHẨM BÁN CHẠY</h1>
         </div>
-
         <div class="search_list-product-admin w-100">
-            <form style="line-height:30px; display:flex;padding:12px;margin-bottom: 20px;" action="index.php?act=sp_ban_chay" method="post">
+            <form style="line-height:30px; display:flex;padding:12px;margin-bottom: 20px;" action="index.php?act=sellingProduct" method="post">
                 <div style="margin-right: 10px;">
                     <label for="">Thời Gian</label><br>
                     <select name="chon_ngay" id="">
@@ -75,7 +73,7 @@
                 <tbody>
                     <tr>
                         <td><?php echo isset($tong_don) ? $tong_don : '0'; ?></td>
-                        <td><?php echo isset($tong_tien) ? number_format($tong_tien * 26000) : '0'; ?> VNĐ</td>
+                        <td><?php echo isset($tong_tien) ? number_format($tong_tien) : '0'; ?> VNĐ</td>
                     </tr>
                 </tbody>
             </table>
@@ -85,12 +83,12 @@
                 <canvas id="myChart" style="width:100%;max-width: 80%;height: 350px;"></canvas>
             </div>
         </div>
+    </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    var xValues = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140];
-    var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14];
-
+    var xValues = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
+    var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
     new Chart("myChart", {
         type: "line",
         data: {
@@ -99,20 +97,14 @@
                 fill: false,
                 lineTension: 0,
                 backgroundColor: "rgba(0,0,255,1.0)",
-                borderColor: "rgb(53, 208, 247)",
-                data: yValues,
+                borderColor: "rgba(0,0,255,0.1)",
+                data: yValues
             }]
         },
         options: {
-            legend: {
-                display: false
-            },
+            legend: { display: false },
             scales: {
-                y: {
-                    beginAtZero: true,
-                    min: 0,
-                    max: 16
-                }
+                yAxes: [{ ticks: { min: 6, max: 16 } }],
             }
         }
     });

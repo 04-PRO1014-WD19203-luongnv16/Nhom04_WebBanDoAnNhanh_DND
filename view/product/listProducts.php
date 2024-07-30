@@ -60,7 +60,7 @@
                                     <a href="<?= $linkProduct ?>"><img src="<?= $image_url ?>" class="card-img img-fluid" alt="Product Image"></a>
                                     <div class="card-body bg-light">
                                         <h3 class="card-title fw-bold fs-5"><?= $product_name ?></h3>
-                                        <p class="card-text text-danger fs-5 mb-3"><?= $product_sale_price ?> đ</p>
+                                        <p class="card-text text-danger fs-5 mb-3"><?= $product_sale_price ?>,000 VND</p>
                                         <input type="submit" name="add_cart" class="btn btn-outline-dark w-100 fw-bold" value="Thêm vào giỏ hàng">
                                     </div>
                                 </form>
@@ -68,13 +68,20 @@
                         </div>
                     <?php endforeach; ?>
                 </div>
-                <!-- Pagination (you may want to add pagination logic) -->
-                <div class="mt-5">
-                    <a href="#" class="btn btn-primary me-2">1</a>
-                    <a href="#" class="btn btn-secondary me-2">2</a>
-                    <a href="#" class="btn btn-secondary me-2">3</a>
-                    <a href="#" class="btn btn-secondary">Next</a>
-                </div>
+                <?php if (isset($pages)): ?>
+                    <div class="mt-5">
+                        <?php for ($i = 1; $i <= $pages; $i++): ?>
+                            <a href="?act=listProducts&page=<?= $i ?>" class="btn 
+                                <?php if (isset($_GET['page']) && $_GET['page'] == $i): ?>
+                                     btn-primary
+                                      <?php else: ?>
+                                         btn-secondary 
+                                        <?php endif; ?>
+                                         me-2"><?= $i ?>
+                            </a>
+                        <?php endfor; ?>-
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </section>

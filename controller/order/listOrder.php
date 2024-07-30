@@ -33,7 +33,7 @@
                 <th scope="col">Trạng thái</th>
                 <th scope="col">Tổng giá</th>
                 <th scope="col">Chi tiết</th>
-                <th scope="col">Thao tác</th>
+                <!-- <th scope="col">Thao tác</th> -->
             </tr>
         </thead>
         <tbody>
@@ -67,22 +67,7 @@
                         <td><?= $status_label ?></td>
                         <td><?= $total_price ?>,000 VND</td>
                         <td>
-                            <a class="btn btn-danger btn-sm" href="index.php?act=deleteOrder&bill_id=<?= urlencode($bill_id) ?>" onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?');">Xóa</a>
                             <a href="order_detail.php?id=<?= urlencode($bill_id) ?>" class="btn btn-info btn-sm">Chi tiết</a>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton<?= $bill_id ?>" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Thay đổi trạng thái
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<?= $bill_id ?>">
-                                    <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=0">Đơn hàng mới</a></li>
-                                    <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=1">Chờ shipper lấy hàng</a></li>
-                                    <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=2">Đang giao hàng</a></li>
-                                    <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=3">Hoàn tất</a></li>
-                                    <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=4">Hủy hàng</a></li>
-                                </ul>
-                            </div>
                         </td>
                     </tr>
                 <?php endforeach; ?>

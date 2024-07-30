@@ -45,6 +45,34 @@
     return $linkProduct;
 }
 
+//Phân trang
+function select_sp($page = null)
+{
+    $sql = "SELECT * FROM product INNER JOIN category ON product.category_id = category.category_id ORDER BY product_id DESC ";
+
+    if ($page != null && $page >= 2) {
+        $start = 12 * ($page - 1); // Vị trí bắt đầu
+        $sql .= "LIMIT $start, 12";
+    } else {
+        $sql .= "LIMIT 0, 12";
+    }
+
+    $linkProduct = pdo_query($sql);
+
+    return $linkProduct;
+}
+
+function count_pages()
+{
+    $sql = "SELECT COUNT(*) as total FROM product";
+    $result = pdo_query_one($sql);
+    $total = $result['total'];
+    $pages = ceil($total / 12);
+
+    return $pages;
+}
+
+
 // Hàm lọc sản phẩm theo khoảng giá
 function getProductsByPriceRange($minPrice, $maxPrice) {
     $sql = "SELECT * FROM product WHERE product_sale_price BETWEEN :minPrice AND :maxPrice";

@@ -225,19 +225,19 @@ if (isset($_GET['act'])) {
                 require_once('./statisticalController/chartController.php');
                 break;
 
-            case 'sellingProduct': // Thống kê sp bán chạy
+            case 'sellingProduct': // Thống kê sản phẩm bán chạy
                 $time_period = isset($_POST['chon_ngay']) ? intval($_POST['chon_ngay']) : 0;
                 $start_date = isset($_POST['start_date']) ? $_POST['start_date'] : '';
                 $end_date = isset($_POST['end_date']) ? $_POST['end_date'] : '';
-
+            
                 // Lấy dữ liệu sản phẩm bán chạy
                 $_sp_ban_chay = get_top_selling_products($time_period, $start_date, $end_date);
                 $tong_don = count($_sp_ban_chay);
                 $tong_tien = array_sum(array_column($_sp_ban_chay, 'tongtien'));
-
-
+            
                 include "./statisticalController/sellingProduct.php";
                 break;
+            
 
             case 'topOrder': //Thống kê đơn hàng
                 $selected_status = isset($_POST['chon_ngay']) ? $_POST['chon_ngay'] : '6';

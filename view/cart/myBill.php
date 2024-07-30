@@ -13,8 +13,8 @@
         </thead>
         <tbody>
             <?php
-            if (is_array($listBill) && count($listBill) > 0):
-                foreach ($listBill as $bill):
+            if (is_array($listBill) && count($listBill) > 0) :
+                foreach ($listBill as $bill) :
                     $bill_id = $bill['bill_id'];
                     $countSp = loadone_cart_count($bill_id);
                     $ttdh = get_status_label($bill['bill_status']);
@@ -26,13 +26,22 @@
                         <td><?= number_format($bill['total_price']) ?>,000 VND</td>
                         <td><?= $ttdh ?></td>
                         <td>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderDetailsModal" data-bill-id="<?= $bill_id ?>">
-                                Chi tiết đơn hàng
-                            </button>
-                            <button type="button"><a class="btn btn-danger" href="" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');">Hủy đơn hàng</a></button>
+                            <div class="d-flex">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderDetailsModal" data-bill-id="<?= $bill_id ?>">
+                                    Chi tiết đơn hàng
+                                </button>
+                                <!-- Nếu đơn hàng là đơn hàng mới thì xóa đc -->
+                                <?php
+                                $ttdh = get_status_label($bill['bill_status']);
+                                if ($ttdh == 'Đơn hàng mới') {
+                                ?>
+                                    <a class="btn btn-danger bg-danger" href="index.php?act=deleteOrder&bill_id=<?= urlencode($bill_id) ?>" onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?');">Hủy</a>
+                                <?php } ?>
+                            </div>
                         </td>
                     </tr>
-            <?php endforeach; else: ?>
+                <?php endforeach;
+            else : ?>
                 <tr>
                     <td colspan="6" class="text-center">Thông tin đơn hàng không tồn tại</td>
                 </tr>
@@ -52,15 +61,16 @@
                     <p>Mã đơn hàng: <?= $bill['bill_code'] ?> </p>
                 </div>
                 <div id="order-details-content">
-                    <p>Hình:<img src="<?= $bill['img'] ?>" class="img-fluid" style="max-width: 50px;"> </p>
+                    <p>Hình:<img src="<?= $bill['product_avatar'] ?>" class="img-fluid" style="max-width: 50px;"> </p>
                 </div>
                 <div id="order-details-content">
-                    <p>Tên hàng: <?= $bill['name'] ?> </p>
+                    <p>Tên hàng: <?= $bill['product_name'] ?> </p>
                 </div>
                 <div id="order-details-content">
                     <p>Số lượng: <?= number_format($bill['total_price']) ?>,000 VND ?> </p>
                 </div>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
             </div>

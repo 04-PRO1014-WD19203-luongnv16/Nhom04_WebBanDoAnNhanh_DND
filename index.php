@@ -120,7 +120,14 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             //Products
         case 'listProducts':
             $allCategories = danhsach_dm();
-            $allProduct = select_sp_home();
+            $pages = count_pages();
+
+            if (isset($_GET['page']) && $_GET['page'] >= 2) {
+                $allProduct = select_sp($_GET['page']);
+            } else {
+                $allProduct = select_sp_home();
+            }
+
             include_once("./view/product/listProducts.php");
             break;
         case 'main':
@@ -149,21 +156,21 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             }
             include_once("./view/product/listProducts.php");
             break;
-            case 'filterPrice':
-                $minPrice = isset($_GET['minPrice']) ? (int)$_GET['minPrice'] : 0;
-                $maxPrice = isset($_GET['maxPrice']) ? (int)$_GET['maxPrice'] : PHP_INT_MAX;
-                $allProduct = getProductsByPriceRange($minPrice, $maxPrice);
-                $allCategories = danhsach_dm(); // Cập nhật danh sách danh mục nếu cần
-                include_once("./view/product/listProducts.php");
-                break;
-            
-            case 'search':
-                $search = isset($_GET['search']) ? $_GET['search'] : '';
-                $allProduct = searchProductsByName($search);
-                $allCategories = danhsach_dm(); // Cập nhật danh sách danh mục nếu cần
-                include_once("./view/product/listProducts.php");
-                break;            
-            
+        case 'filterPrice':
+            $minPrice = isset($_GET['minPrice']) ? (int)$_GET['minPrice'] : 0;
+            $maxPrice = isset($_GET['maxPrice']) ? (int)$_GET['maxPrice'] : PHP_INT_MAX;
+            $allProduct = getProductsByPriceRange($minPrice, $maxPrice);
+            $allCategories = danhsach_dm(); // Cập nhật danh sách danh mục nếu cần
+            include_once("./view/product/listProducts.php");
+            break;
+
+        case 'search':
+            $search = isset($_GET['search']) ? $_GET['search'] : '';
+            $allProduct = searchProductsByName($search);
+            $allCategories = danhsach_dm(); // Cập nhật danh sách danh mục nếu cần
+            include_once("./view/product/listProducts.php");
+            break;
+
         case 'logout':
             session_destroy();
             header('Location: index.php');
@@ -423,6 +430,17 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
 
                 include_once("./view/cart/process_order.php");
             }
+            break;
+        
+        //xóa đơn nếu là đơn hàng mới
+        case 'deleteOrder':
+            if (isset($_GET['bill_id']) && is_numeric($_GET['bill_id'])) {
+                $bill_id = intval($_GET['bill_id']);
+                delete_order($bill_id);
+                $_SESSION['notification'] = 'Đơn hàng đã được xóa thành công!';
+            }
+            header("Location: index.php?act=myBill");
+            exit;
             break;
 
         case 'myBill':

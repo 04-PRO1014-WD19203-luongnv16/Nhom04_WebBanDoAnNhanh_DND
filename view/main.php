@@ -46,7 +46,7 @@
                 </button>
             </div>
         </div>
-        <!-- Danh sách sản phẩm khuyến mãi -->
+        <!-- Danh sách sản phẩm khuyến mãi
         <div class="col-2 mt-2">
             <div class="card">
                 <div class="card-body ">
@@ -59,7 +59,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 

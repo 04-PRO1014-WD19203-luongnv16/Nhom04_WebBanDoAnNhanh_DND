@@ -168,8 +168,35 @@ function all_total_order()
 // Hàm chèn hóa đơn mới vào cơ sở dữ liệu
 function insert_bill($user_id, $full_name, $address, $email, $phone_number, $payment_status, $created_datetime, $total_price, $bill_code)
 {
-    $sql = "INSERT INTO bill (user_id, full_name, address, email, phone_number, payment_status, created_datetime, total_price, bill_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    return pdo_execute_lastInsertId($sql, $user_id,  $full_name, $address, $email, $phone_number, $payment_status, $created_datetime, $total_price, $bill_code);
+    // Chèn hóa đơn mới vào cơ sở dữ liệu và lấy ID của hóa đơn mới chèn
+    $bill_id = pdo_execute_lastInsertId(
+        "INSERT INTO bill (user_id, full_name, address, email, phone_number, payment_status, created_datetime, total_price, bill_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        $user_id, $full_name, $address, $email, $phone_number, $payment_status, $created_datetime, $total_price, $bill_code
+    );
+    
+    // Chèn sản phẩm vào bảng bill_item
+    insert_bill_items($bill_id);
+    
+    return $bill_id;
+}
+
+//bill_item
+function insert_bill_items($bill_id)
+{
+    if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
+        foreach ($_SESSION['myCart'] as $item) {
+            $product_id = $item[0];
+            $product_name = $item[1];
+            $product_avatar = $item[5];
+            $product_sale_price = $item[2];
+            $quantity = $item[3];
+            
+            pdo_execute_lastInsertId(
+                "INSERT INTO bill_item (bill_id, product_id, product_name, product_avatar, product_sale_price, quantity) VALUES (?, ?, ?, ?, ?, ?)",
+                $bill_id, $product_id, $product_name, $product_avatar, $product_sale_price, $quantity
+            );
+        }
+    }
 }
 
 // Hàm chèn sản phẩm giỏ hàng vào cơ sở dữ liệu
@@ -261,11 +288,17 @@ function get_status_label($status)
 }
 
 //xóa
+// delete_order.php
 function delete_order($bill_id) {
-// Xóa các mục trong giỏ hàng liên quan đến đơn hàng
-pdo_execute_bill_order("DELETE FROM cart WHERE bill_id = ?", $bill_id);
-// Xóa chính thứ tự đó
-pdo_execute_bill_order("DELETE FROM bill WHERE bill_id = ?", $bill_id);
+    // Xóa các mục trong giỏ hàng liên quan đến đơn hàng
+    pdo_execute_bill_order("DELETE FROM cart WHERE bill_id = ?", $bill_id);
+    
+    // Xóa các sản phẩm trong đơn hàng từ bảng bill_item
+    pdo_execute_bill_order("DELETE FROM bill_item WHERE bill_id = ?", $bill_id);
+    
+    // Xóa chính hóa đơn đó
+    pdo_execute_bill_order("DELETE FROM bill WHERE bill_id = ?", $bill_id);
 }
+
 
 
