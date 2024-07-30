@@ -4,7 +4,7 @@
         <div class="col-md-2">
             <div id="carouselTopProducts" class="carousel slide carousel-vertical" data-bs-ride="carousel">
                 <div class="mt-2">
-                <h6>Top 10 sản phẩm nổi bật</h6>
+                <h6 class="text-center">Top 10 sản phẩm lượt xem nhiều nhât</h6>
                 <div class="top10-container">
 
                     <?php $listTop10 = load_product_top10() ?>
@@ -14,6 +14,7 @@
                             <div>
                                 <h6><?php echo $product['product_name']; ?></h6>
                                 <p class="text-danger"><?php echo $product['product_listed_price']; ?> VND</p>
+                                <p>Views: <?php echo htmlspecialchars($product['view_count']); ?></p>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -46,7 +47,7 @@
             </div>
         </div>
         <!-- Danh sách sản phẩm khuyến mãi -->
-        <div class="col-2 mt-3">
+        <div class="col-2 mt-2">
             <div class="card">
                 <div class="card-body ">
                     <h6 class="card-title ">Thực Phẩm Khuyến Mại</h6>

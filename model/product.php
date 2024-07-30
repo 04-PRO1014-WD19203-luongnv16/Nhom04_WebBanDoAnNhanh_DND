@@ -45,6 +45,46 @@
     return $linkProduct;
 }
 
+//Phân trang
+function select_sp($page = null)
+{
+    $sql = "SELECT * FROM product INNER JOIN category ON product.category_id = category.category_id ORDER BY product_id DESC ";
+
+    if ($page != null && $page >= 2) {
+        $start = 12 * ($page - 1); // Vị trí bắt đầu
+        $sql .= "LIMIT $start, 12";
+    } else {
+        $sql .= "LIMIT 0, 12";
+    }
+
+    $linkProduct = pdo_query($sql);
+
+    return $linkProduct;
+}
+
+function count_pages()
+{
+    $sql = "SELECT COUNT(*) as total FROM product";
+    $result = pdo_query_one($sql);
+    $total = $result['total'];
+    $pages = ceil($total / 12);
+
+    return $pages;
+}
+
+
+// Hàm lọc sản phẩm theo khoảng giá
+function getProductsByPriceRange($minPrice, $maxPrice) {
+    $sql = "SELECT * FROM product WHERE product_sale_price BETWEEN :minPrice AND :maxPrice";
+    return pdo_query_search($sql, [':minPrice' => $minPrice, ':maxPrice' => $maxPrice]);
+}
+
+// Hàm tìm kiếm sản phẩm theo tên
+function searchProductsByName($search) {
+    $sql = "SELECT * FROM product WHERE product_name LIKE :search";
+    return pdo_query_search($sql, [':search' => "%$search%"]);
+}
+
 // Hiển thị chi tiết sản phẩm ở user
 function select_sp_one($product_id)
 {
@@ -71,7 +111,7 @@ function search_pro($search){
     $result = pdo_query($sql);
     return $result;
 }
-//lọc
+//lọc danh mục
 function getProductByCategory($category_id) {
     $sql = "SELECT * FROM product WHERE category_id = $category_id";
     return pdo_query($sql);
@@ -83,9 +123,25 @@ function getAllProducts() {
 }
 //top 10
 function load_product_top10(){
-    $sql = "SELECT * From product where 1 ORDER BY product_id DESC LIMIT  0,10";
+    $sql = "SELECT * FROM product ORDER BY view_count DESC LIMIT 0, 10";
     $listProducts = pdo_query($sql);
     return $listProducts;
 }
+
+// // Hàm để lấy tổng số sản phẩm
+// function getTotalProductCount() {
+//     $sql = "SELECT COUNT(*) as total FROM products";
+//     return pdo_query_value($sql);
+// }
+
+// // Hàm để lấy sản phẩm theo khoảng giá
+// function getProductsByPriceRange($minPrice, $maxPrice) {
+//     $sql = "SELECT * FROM products WHERE product_sale_price BETWEEN :minPrice AND :maxPrice";
+//     return pdo_query($sql, [':minPrice' => $minPrice, ':maxPrice' => $maxPrice]);
+// }
+// function update_view_count($product_id) {
+//     $sql = "UPDATE product SET view_count = view_count + 1 WHERE product_id = $product_id";
+//     pdo_execute($sql);
+// }
 
 ?>

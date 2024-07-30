@@ -6,6 +6,7 @@ include_once('./model/account.php');
 include_once('./model/category.php');
 include_once('./model/product.php');
 include_once('./model/cart.php');
+include_once('./model/registerEmail.php');
 include_once('./global.php');
 require_once("./view/header.php");
 // try {
@@ -21,6 +22,9 @@ $errors = [];
 if (isset($_GET['act']) && ($_GET['act'] != "")) {
     $act = $_GET['act'];
     switch ($act) {
+        case 'verify';
+            include_once("view/account/verify.php");
+            break;
         case 'accountSignUp':
             if (isset($_POST['add_user'])) {
                 $full_name = $_POST['full_name'];
@@ -35,6 +39,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 $ext = pathinfo($imgName, PATHINFO_EXTENSION);
                 $allowed_extensions = ['jpg', 'jpeg', 'png'];
                 $target_file = $dir . basename($_FILES["avatar_url"]["name"]);
+
                 // Validation
                 if (strlen($password) < 5 || strlen($password) > 16) {
                     $errors['password'] = '<p class="error text-danger">Mật khẩu phải có từ 5 đến 16 ký tự</p>';
@@ -53,11 +58,6 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 }
                 if (!preg_match('/^[0-9]+$/', $phone_number)) {
                     $errors['phone_number'] = '<p class="error text-danger">Số điện thoại chỉ chứa các chữ số</p>';
-                } elseif (!preg_match('/^[0-9]+$/', $phone_number)) {
-                    $errors['phone_number'] = '<p class="error text-danger">Số điện thoại chỉ chứa các chữ số</p>';
-                }
-                if ($password !== $importPassword) {
-                    $errors['importPassword'] = '<p class="error text-danger">Mật khẩu nhập lại không khớp</p>';
                 }
                 if (empty(trim($email))) {
                     $errors['email'] = '<p class="error text-danger">Vui lòng nhập địa chỉ email</p>';
@@ -77,18 +77,20 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                     $errors['avatar_url'] = '<p class="error text-danger">File không đúng định dạng (chỉ chấp nhận JPG, JPEG, PNG)</p>';
                 }
                 if (empty($errors)) {
-                    insert_user($full_name, $email, $password, $phone_number, $address, $imgName);
-                    $message = 'Đăng ký thành công';
+                    $token = bin2hex(random_bytes(50));
+                    insert_user($full_name, $email, $password, $phone_number, $address, $imgName, $token);
+                    send_verification_email($email, $token);
+                    $message = 'Đăng ký thành công. Một email xác nhận đã được gửi đến địa chỉ của bạn.';
                 }
             }
             include_once("view/account/signup.php");
             break;
         case 'accountLogin':
-            if (isset($_POST['accountLogin']) && $_POST['accountLogin']) {
-                $email = $_POST['email'];
-                $password = $_POST['password'];
-                $user = select_user_login($email, $password);
-                if (empty(trim($email))) {
+            if (isset($_POST['accountLogin'])) {
+                $email = trim($_POST['email']);
+                $password = trim($_POST['password']);
+                // Kiểm tra email và mật khẩu
+                if (empty($email)) {
                     $errors['email'] = '<p class="error text-danger">Vui lòng nhập địa chỉ email</p>';
                 } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     $errors['email'] = '<p class="error text-danger">Email không đúng định dạng</p>';
@@ -96,12 +98,17 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 if (empty($password)) {
                     $errors['password'] = '<p class="error text-danger">Vui lòng nhập mật khẩu</p>';
                 }
+
+                // Nếu không có lỗi
                 if (empty($errors)) {
                     $user = select_user_login($email, $password);
-                    if (is_array($user)) {
+
+                    if ($user === 'inactive') {
+                        $message = '<h6 class="error text-danger">Tài khoản của bạn chưa được kích hoạt. Vui lòng kiểm tra email để kích hoạt tài khoản.</h6>';
+                    } elseif (is_array($user)) {
+                        // Đăng nhập thành công
                         $_SESSION['user'] = $user;
-                        header('Location: ./controller/index.php');
-                        $message = '<h6 class="error text-danger">Đăng nhập thành công</h6>';
+                        header('Location: ./index.php');
                         exit;
                     } else {
                         $message = '<h6 class="error text-danger">Email hoặc mật khẩu không chính xác</h6>';
@@ -114,12 +121,6 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
         case 'listProducts':
             $allCategories = danhsach_dm();
             $allProduct = select_sp_home();
-            // if(isset($_GET['$category_id'])&&($_GET['$category_id']>0)){
-            //     $category_id=$_GET['category_id'];
-            // }else{
-            //     $category_id=0;
-            // }
-            // $allProduct = showSP($_GET['category_id']);
             include_once("./view/product/listProducts.php");
             break;
         case 'main':
@@ -132,6 +133,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 // sản phẩm tương tự
                 $similarProduct = select_sp_similar($_GET['product_id'], $category_id);
                 extract($similarProduct);
+
                 include_once './view/product/productDetails.php';
             } else {
                 include_once '"./view/product/listProducts.php';
@@ -147,7 +149,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             }
             include_once("./view/product/listProducts.php");
             break;
-            
+
         case 'logout':
             session_destroy();
             header('Location: index.php');
@@ -160,7 +162,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             include_once("view/contact.php");
             break;
 
-        //Gio hang
+            //Gio hang
         case 'addToCartDetails':
             if (isset($_POST['add_cart'])) {
                 $product_id = $_POST['product_id'];
@@ -235,11 +237,11 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
 
         case 'deleteCartProduct':
             if (isset($_GET['idcart'])) {
-                $idcart = (int)$_GET['idcart']; 
+                $idcart = (int)$_GET['idcart']; // Đảm bảo là chỉ số là số nguyên
 
                 if (isset($_SESSION['myCart'][$idcart])) {
-                    unset($_SESSION['myCart'][$idcart]); 
-                    $_SESSION['myCart'] = array_values($_SESSION['myCart']); 
+                    unset($_SESSION['myCart'][$idcart]); // Xóa sản phẩm khỏi giỏ hàng
+                    $_SESSION['myCart'] = array_values($_SESSION['myCart']); // Đặt lại chỉ số để tránh lỗ hổng chỉ số
                 }
             }
             header("Location: index.php?act=viewCart");
@@ -250,35 +252,202 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             // Xóa toàn bộ giỏ hàng
             if (isset($_SESSION['myCart'])) {
                 unset($_SESSION['myCart']);
-                $_SESSION['myCart'] = []; 
+                $_SESSION['myCart'] = []; // Khởi tạo lại giỏ hàng là một mảng rỗng
             }
             header("Location: index.php?act=viewCart");
             exit();
             break;
 
         case 'viewCart':
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            global $imgPath;
+            $total_price = 0;
+            $cartItems = [];
+            $currentPage = isset($_GET['act']) ? $_GET['act'] : 'default';
+            if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
+                foreach ($_SESSION['myCart'] as $index => $cart) {
+                    $img = $imgPath . $cart[5];
+                    $totalAmount = $cart[2] * $cart[3];
+                    $total_price += $totalAmount;
+                    $cartItems[] = [
+                        'img' => $img,
+                        'name' => $cart[1],
+                        'price' => number_format($cart[2]),
+                        'quantity' => $cart[3],
+                        'totalAmount' => number_format($totalAmount),
+                        'index' => $index
+                    ];
+                }
+            }
             include_once("./view/cart/viewCart.php");
             break;
-            //lọc
-            case 'showdm':
-                $category_id = isset($_GET['category_id']) ? $_GET['category_id'] : '';
-                $allProduct = getProductByCategory($category_id);
-                $dsdm = danhsach_dm();
-                include_once("./view/product/listProducts.php");
-                break;
+
         case "bill":
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+
+            global $imgPath;
+            $total_price = 0;
+            $cartItems = [];
+            $userInfo = isset($_SESSION['user']) ? $_SESSION['user'] : [];
+            $full_name = $userInfo['full_name'] ?? '';
+            $email = $userInfo['email'] ?? '';
+            $phone_number = $userInfo['phone_number'] ?? '';
+            $address = $userInfo['address'] ?? '';
+
+            // Retrieve errors from session if any
+            $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
+            $formData = [
+                'full_name' => $_POST['full_name'] ?? $full_name,
+                'address' => $_POST['address'] ?? $address,
+                'phone_number' => $_POST['phone_number'] ?? $phone_number,
+                'email' => $_POST['email'] ?? $email,
+                'payment_status' => $_POST['payment_status'] ?? ''
+            ];
+
+            if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
+                foreach ($_SESSION['myCart'] as $index => $cart) {
+                    $img = $imgPath . $cart[5];
+                    $totalAmount = $cart[2] * $cart[3];
+                    $total_price += $totalAmount;
+                    $cartItems[] = [
+                        'img' => $img,
+                        'name' => $cart[1],
+                        'price' => number_format($cart[2]),
+                        'quantity' => $cart[3],
+                        'totalAmount' => number_format($totalAmount)
+                    ];
+                }
+            }
+
+            // Clear errors from session after processing
+            unset($_SESSION['errors']);
+
+            // Include the bill page and pass errors and form data
             include_once("./view/cart/bill.php");
             break;
-        //top 10
+
+            // case "process_order"...
+        case "process_order":
+            if (isset($_POST['checkbill'])) {
+                if (isset($_SESSION['user'])) {
+                    $user_id = $_SESSION['user']['user_id'];
+                } else {
+                    $user_id = 0;
+                }
+                // $user_id = $_POST['user_id'];
+                $full_name = trim($_POST['full_name']);
+                $address = trim($_POST['address']);
+                $email = trim($_POST['email']);
+                $phone_number = trim($_POST['phone_number']);
+                $payment_status = isset($_POST['payment_status']) ? $_POST['payment_status'] : null;
+                $total_price = all_total_order();
+                $created_datetime = date('Y-m-d H:i:s');
+                $bill_code = time() . '' . rand(10000, 99999);
+                // $bill_code= generateBillCode();
+                // Validation
+                if (empty($full_name)) {
+                    $errors['full_name'] = 'Tên khách hàng không được bỏ trống.';
+                }
+                if (empty($address)) {
+                    $errors['address'] = 'Địa chỉ không được bỏ trống.';
+                }
+                if (empty($phone_number)) {
+                    $errors['phone_number'] = 'Số điện thoại không được bỏ trống.';
+                }
+                if (empty($email)) {
+                    $errors['email'] = 'Email không được bỏ trống.';
+                }
+                if (empty($payment_status)) {
+                    $errors['payment_status'] = 'Bạn phải chọn phương thức thanh toán.';
+                }
+
+                if (!empty($errors)) {
+                    $_SESSION['errors'] = $errors;
+                    header('Location: index.php?act=bill');
+                    exit();
+                }
+
+                global $imgPath;
+                $total_price = 0;
+                $cartItems = [];
+                if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
+                    foreach ($_SESSION['myCart'] as $index => $cart) {
+                        $img = $imgPath . $cart[5];
+                        $totalAmount = $cart[2] * $cart[3];
+                        $total_price += $totalAmount;
+                        $cartItems[] = [
+                            'img' => $img,
+                            'name' => $cart[1],
+                            'price' => number_format($cart[2]),
+                            'quantity' => $cart[3],
+                            'totalAmount' => number_format($totalAmount),
+                            'index' => $index
+                        ];
+                    }
+                } else {
+                    $_SESSION['errors'][] = 'Giỏ hàng không tồn tại hoặc đã bị xóa.';
+                    header('Location: index.php?act=bill');
+                    exit();
+                }
+
+                $bill_info = insert_bill($user_id, $full_name, $address, $email, $phone_number, $payment_status, $created_datetime, $total_price, $bill_code);
+                foreach ($_SESSION['myCart'] as $cart) {
+                    insert_cart($_SESSION['user']['user_id'], $cart[0], $cart[3], $bill_info);
+                }
+                $bill = loadone_bill($bill_info);
+                $billct = loadone_cart($bill_info);
+
+                // Xóa giỏ hàng sau khi thanh toán thành công
+                unset($_SESSION['myCart']);
+
+                // Set success message in session
+                $_SESSION['success'] = 'Đặt hàng thành công. Cảm ơn bạn đã mua sắm tại cửa hàng của chúng tôi!';
+
+                include_once("./view/cart/process_order.php");
+            }
+            break;
+
+        case 'myBill':
+            $listBill = loadall_bill($_SESSION['user']['user_id']);
+            include_once("./view/cart/myBill.php");
+            break;
+
+            //lọc
+        case 'showdm':
+            $category_id = isset($_GET['category_id']) ? $_GET['category_id'] : '';
+            $allProduct = getProductByCategory($category_id);
+            $dsdm = danhsach_dm();
+            include_once("./view/product/listProducts.php");
+            break;
+
+            //top 10
         case "showTop10":
             $listTop10 = load_product_top10();
             include_once("./view/main.php");
             break;
+        case "comment":
+            
+            break;
+            //xóa đơn nếu là đơn hàng mới
+            case 'deleteOrder':
+                if (isset($_GET['bill_id']) && is_numeric($_GET['bill_id'])) {
+                    $bill_id = intval($_GET['bill_id']);
+                    delete_order($bill_id);
+                    $_SESSION['notification'] = 'Đơn hàng đã được xóa thành công!';
+                }
+                header("Location: index.php?act=myBill");
+                exit;
+                break;
         case "confirmBill":
             break;
         default:
             include_once './view/main.php';
             break;
+            
     }
 } else {
     include_once './view/main.php';

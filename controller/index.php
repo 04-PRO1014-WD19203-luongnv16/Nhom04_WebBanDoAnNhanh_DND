@@ -1,13 +1,15 @@
 <?php
+ob_start();
 session_start();
 include_once('../model/PDO.php');
 include_once('../model/account.php');
 include_once('../model/category.php');
 include_once('../model/product.php');
+include_once('../model/cart.php');
+include_once('../model/statistical.php');
 require_once("./header.php");
 // require_once("./main.php");
 if (!isset($_SESSION['mycart'])) $_SESSION['mycart'] = [];
-
 $allProduct = select_sp_home();
 $message = '';
 $errors = [];
@@ -39,6 +41,7 @@ if (isset($_GET['act'])) {
                     $phone_number = $_POST['phone_number'];
                     $password = $_POST['password'];
                     $address = $_POST['address'];
+                    $role = $_POST['role'];
                     $avatar_url = ''; // Mặc định không có ảnh mới được tải lên
 
                     // Kiểm tra nếu người dùng đã tải lên ảnh mới
@@ -52,7 +55,7 @@ if (isset($_GET['act'])) {
                         $avatar_url = $user['avatar_url']; // Sử dụng lại đường dẫn ảnh đại diện cũ
                     }
                     if (empty($errors)) {
-                        update_user($user_id, $full_name, $email, $phone_number, $password, $address, $avatar_url);
+                        update_user($user_id, $full_name, $email, $phone_number, $password, $address, $avatar_url, $role);
                         $message = "Cập nhật thành công";
                         $listAccount = select_all_users();
                         include_once './accountController/listAccount.php';
@@ -173,116 +176,102 @@ if (isset($_GET['act'])) {
                 $listSP = loadAllProduct();
                 require_once("productController/listProduct.php");
                 break;
-                //giỏ hàng
-                case 'addToCartDetails':
-                    if (isset($_POST['add_cart'])) {
-                        $product_id = $_POST['product_id'];
-                        $product_name = $_POST['product_name'];
-                        $product_sale_price = $_POST['product_sale_price'];
-                        $image_url = $_POST['image_url'];
-                        $quantity = $_POST['quantity']; // Use the updated quantity from hidden field
-                        $totalAmount = $product_sale_price * $quantity;  // Calculate total amount
-                        $productAdd = [$product_id, $product_name, $product_sale_price, $quantity, $totalAmount, $image_url];
-                        $_SESSION['myCart'][] = $productAdd;
-        
-                        // Redirect to the cart view after adding the product
-                        header("Location: index.php?act=viewCart");
-                        exit();
-                    }
-                    include_once("./view/cart/viewCart.php");
-                    break;
-        
-                case 'addToCart':
-                    if (isset($_POST['add_cart'])) {
-                        $product_id = $_POST['product_id'];
-                        $product_name = $_POST['product_name'];
-                        $product_sale_price = $_POST['product_sale_price'];
-                        $image_url = $_POST['image_url'];
-                        $quantity = 1; // Số lượng mặc định là 1
-        
-                        // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-                        $found = false;
-                        foreach ($_SESSION['myCart'] as $key => $item) {
-                            if ($item[0] == $product_id) {
-                                // Nếu đã có sản phẩm này trong giỏ hàng, cập nhật số lượng
-                                $_SESSION['myCart'][$key][3]++;
-                                $found = true;
-                                break;
-                            }
-                        }
-        
-                        if (!$found) {
-                            // Nếu chưa có thì thêm mới vào giỏ hàng
-                            $totalAmount = $product_sale_price * $quantity; // Tính tổng tiền
-                            $productAdd = [$product_id, $product_name, $product_sale_price, $quantity, $totalAmount, $image_url];
-                            $_SESSION['myCart'][] = $productAdd;
-                        }
-        
-                        // Redirect lại đến trang giỏ hàng sau khi thêm sản phẩm
-                        header("Location: index.php?act=viewCart");
-                        exit();
-                    }
-                    include_once("./view/cart/viewCart.php");
-                    break;
-        
-                case 'updateCartQuantity':
-                    if (isset($_POST['idcart'], $_POST['new_quantity'])) {
-                        $idcart = (int)$_POST['idcart'];
-                        $new_quantity = (int)$_POST['new_quantity'];
-                        if ($new_quantity <= 0) {
-                            // Xóa sản phẩm nếu số lượng <= 0
-                            unset($_SESSION['myCart'][$idcart]);
-                            $_SESSION['myCart'] = array_values($_SESSION['myCart']); // Đặt lại chỉ số để tránh lỗ hổng chỉ số
-                        } else {
-                            // Cập nhật số lượng mới
-                            $_SESSION['myCart'][$idcart][3] = $new_quantity;
-        
-                            // Tính lại tổng tiền cho sản phẩm
-                            $product_sale_price = $_SESSION['myCart'][$idcart][2];
-                            $_SESSION['myCart'][$idcart][4] = $product_sale_price * $new_quantity;
-                        }
-                        header("Location: index.php?act=viewCart");
-                        exit();
-                    }
-                    break;
-        
-                case 'deleteCartProduct':
-                    if (isset($_GET['idcart'])) {
-                        $idcart = (int)$_GET['idcart']; // Đảm bảo là chỉ số là số nguyên
-        
-                        if (isset($_SESSION['myCart'][$idcart])) {
-                            unset($_SESSION['myCart'][$idcart]); // Xóa sản phẩm khỏi giỏ hàng
-                            $_SESSION['myCart'] = array_values($_SESSION['myCart']); // Đặt lại chỉ số để tránh lỗ hổng chỉ số
-                        }
-                    }
-                    header("Location: index.php?act=viewCart");
-                    exit();
-                    break;
-        
-                case 'clearCart':
-                    // Xóa toàn bộ giỏ hàng
-                    if (isset($_SESSION['myCart'])) {
-                        unset($_SESSION['myCart']);
-                        $_SESSION['myCart'] = []; // Khởi tạo lại giỏ hàng là một mảng rỗng
-                    }
-                    header("Location: index.php?act=viewCart");
-                    exit();
-                    break;
-        
-                case 'viewCart':
-                    include_once("./view/cart/viewCart.php");
-                    break;
-                case "bill":
-                    include_once("./view/cart/bill.php");
-                    break;
-                case "confirmBill":
-                    break;
 
-                
+                //Đơn hàng
+            case 'order':
+                $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                $limit = 15; // số lượng đơn hàng mỗi trang
+                $offset = ($currentPage - 1) * $limit;
+
+                // Lấy tổng số đơn hàng và số trang
+                $totalBills = pdo_query_value_order("SELECT COUNT(*) FROM bill");
+                $totalPages = ceil($totalBills / $limit);
+
+                $listBill = loadall_bill(null, $offset, $limit);
+                require_once("./order/listOrder.php");
+                break;
+
+                // In your order handling logic
+            case 'deleteOrder':
+                if (isset($_GET['bill_id']) && is_numeric($_GET['bill_id'])) {
+                    $bill_id = intval($_GET['bill_id']);
+                    delete_order($bill_id);
+                    $_SESSION['notification'] = 'Đơn hàng đã được xóa thành công!';
+                }
+                header("Location: index.php?act=order");
+                exit;
+                break;
+
+            case 'update_status':
+                // The actual status update logic is handled in update_order_status.php
+                require_once('./order/update_order_status.php');
+                $_SESSION['notification'] = 'Trạng thái đơn hàng đã được cập nhật thành công!';
+                header("Location: index.php?act=order");
+                exit;
+                break;
+
+                // Thóng kê
+            case 'statistical': //Thống kê sản phẩm theo loại
+                if (isset($_POST['listok']) && ($_POST['listok'])) {
+                    $kyw = $_POST['kyw'];
+                } else {
+                    $kyw = "";
+                }
+                $listthongke = loadall_thongke($kyw);
+                require_once('./statisticalController/listStatistical.php');
+                break;
+            case 'chart': //Biểu đồ
+                $listthongke = loadall_thongke();
+                require_once('./statisticalController/chartController.php');
+                break;
+
+            case 'sellingProduct': // Thống kê sp bán chạy
+                $time_period = isset($_POST['chon_ngay']) ? intval($_POST['chon_ngay']) : 0;
+                $start_date = isset($_POST['start_date']) ? $_POST['start_date'] : '';
+                $end_date = isset($_POST['end_date']) ? $_POST['end_date'] : '';
+
+                // Lấy dữ liệu sản phẩm bán chạy
+                $_sp_ban_chay = get_top_selling_products($time_period, $start_date, $end_date);
+                $tong_don = count($_sp_ban_chay);
+                $tong_tien = array_sum(array_column($_sp_ban_chay, 'tongtien'));
+
+
+                include "./statisticalController/sellingProduct.php";
+                break;
+
+            case 'topOrder': //Thống kê đơn hàng
+                $selected_status = isset($_POST['chon_ngay']) ? $_POST['chon_ngay'] : '6';
+                $start_date = isset($_POST['start_date']) ? $_POST['start_date'] : '';
+                $end_date = isset($_POST['end_date']) ? $_POST['end_date'] : '';
+
+                if ($selected_status == '6') {
+                    $_don_hang = tk_don();
+                } elseif ($start_date && $end_date) {
+                    $_don_hang = loc_don_ngay($start_date, $end_date);
+                } else {
+                    $_don_hang = trang_thai_don($selected_status);
+                }
+
+                $tong_don = count($_don_hang);
+                $tong_tien = array_sum(array_column($_don_hang, 'total_amount'));
+
+                $_trang_thai = $selected_status;
+                require_once('./statisticalController/topOrderController.php');
+                break;
+
                 //Quản lý bình luận
-            case "comment":
-                require_once("comment/list.php");
-                break;                
+            // case 'dsbl': {
+            //         $dsbl = chitiet_binhluan();
+            //         include './binhluan/dsbl.php';
+            //         break;
+            //     }
+            // case 'delbl': {
+            //         if (isset($_GET['comment_id']) && $_GET['comment_id'] > 0) {
+            //             del_binhluan($_GET['comment_id']);
+            //             header('location: ?act=dsbl');
+            //         }
+            //         break;
+            //     }
             default:
                 require_once("./main.php");
                 break;
@@ -298,3 +287,4 @@ if (isset($_GET['act'])) {
     }
 }
 require_once("./footer.php");
+ob_end_flush();

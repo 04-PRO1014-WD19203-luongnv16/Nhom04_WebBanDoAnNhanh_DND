@@ -19,24 +19,26 @@
                         </div>
 
                         <h3 class="text-danger">
-        <?php
-        if (isset($message) && $message != "") {
-            echo $message;
-        }
-        ?>
-    </h3>
+                            <?php
+                            if (isset($message) && $message != "") {
+                                echo $message;
+                            }
+                            ?>
+                        </h3>
                         <div class="mb-3">
                             <input type="submit" class="btn btn-primary" name="accountLogin" value="Đăng nhập">
                             <input type="reset" class="btn btn-info" value="Nhập lại">
                         </div>
                     </form>
                 </div>
-                
+
                 <div class="card-footer text-center">
-                    <a href="index.php?act=accountSignUp">Bạn chưa có tài khoản? Đăng ký</a>
-                </div>
+    <a class="me-5" href="index.php?act=accountSignUp">Bạn chưa có tài khoản? Đăng ký</a>
+    <a href="index.php?act=?">Quên mật khẩu</a>
+</div>
+
             </div>
         </div>
     </div>
-    
+
 </div>

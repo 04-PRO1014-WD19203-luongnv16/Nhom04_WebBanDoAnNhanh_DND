@@ -5,7 +5,7 @@
 
 function pdo_get_connection()
 {
-    $dburl = "mysql:host=localhost;dbname=duan1;charset=utf8";
+    $dburl = "mysql:host=localhost;dbname=duan11;charset=utf8";
     $usename = "root";
     $password = "";
     $conn = new PDO($dburl, $usename, $password);
@@ -20,19 +20,17 @@ function pdo_get_connection()
  * @throws PDOException lỗi thực thi câu lệnh
  */
 
-// function pdo_execute($sql)
-// {
-//     $sql_args = array_slice(func_get_args(), 1);
-//     try {
-//         $conn = pdo_get_connection();
-//         $stmt = $conn->prepare($sql);
-//         $stmt->execute($sql_args);
-//     } catch (PDOException $e) {
-//         throw $e;
-//     } finally {
-//         unset($conn);
-//     }
-// }
+function pdo_execute_bill_order($sql, ...$params) {
+    try {
+        $conn = pdo_get_connection();
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($params);
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    } finally {
+        $conn = null;
+    }
+}
 
 function pdo_execute($sql, $params = array())
 {
@@ -40,6 +38,19 @@ function pdo_execute($sql, $params = array())
         $conn = pdo_get_connection();
         $stmt = $conn->prepare($sql);
         $stmt->execute($params);
+    } catch (PDOException $e) {
+        throw $e;
+    } finally {
+        unset($conn);
+    }
+}
+function pdo_execute_lastInsertId($sql, ...$params)
+{
+    try {
+        $conn = pdo_get_connection();
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($params);
+        return $conn->lastInsertId();
     } catch (PDOException $e) {
         throw $e;
     } finally {
@@ -72,6 +83,20 @@ function pdo_query($sql)
     }
 }
 
+function pdo_query_search($sql, $params = []) {
+    try {
+        $conn = pdo_get_connection();
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($params);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $rows;
+    } catch (PDOException $e) {
+        throw $e;
+    } finally {
+        unset($conn);
+    }
+}
+
 /**
  * Thực thi câu lệnh truy vấn một bản ghi
  * @param string $sql câu lệnh sql
@@ -79,22 +104,6 @@ function pdo_query($sql)
  * @return array mảng chứa bản ghi
  * @throws PDOException lỗi thực thi câu lệnh
  */
-
-// function pdo_query_one($sql)
-// {
-//     $sql_args = array_slice(func_get_args(), 1);
-//     try {
-//         $conn = pdo_get_connection();
-//         $stmt = $conn->prepare($sql);
-//         $stmt->execute($sql_args);
-//         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-//         return $row;
-//     } catch (PDOException $e) {
-//         throw $e;
-//     } finally {
-//         unset($conn);
-//     }
-// }
 
 function pdo_query_one($sql, $params = [])
 {
@@ -110,7 +119,11 @@ function pdo_query_one($sql, $params = [])
         unset($conn);
     }
 }
-
+function pdo_query_one_cart($sql, $params = []) {
+    $stmt = pdo_get_connection()->prepare($sql);
+    $stmt->execute($params); // Ensure $params is an array
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
 /**
  * Thực thi câu lệnh sql truy vấn một giá trị
@@ -136,3 +149,12 @@ function pdo_query_value($sql)
         }
     }
 }
+
+function pdo_query_value_order($sql, $params = [])
+{
+    $pdo = pdo_get_connection();
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    return $stmt->fetchColumn();
+}
+

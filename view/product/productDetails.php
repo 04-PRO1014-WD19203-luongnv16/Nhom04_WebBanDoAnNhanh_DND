@@ -115,28 +115,4 @@
             });
         </script>
     </section>
-
-    <!-- Similar Products Section -->
-    <section class="container mt-5 mb-5">
-        <h2 class="text-center font-semibold display-5 mb-5">Sản phẩm tương tự</h2>
-        <div class="row row-cols-1 row-cols-md-4 g-4">
-            <?php
-            foreach ($similarProduct as $product) {
-                extract($product);
-                $linkProduct = "index.php?act=productDetails&product_id=" . $product_id;
-                echo '<div class="col">
-                    <div class="card h-100 shadow-sm">
-                        <a href="' . $linkProduct . '"><img src="' . $imgPath . $product_avatar_url . '" class="card-img img-fluid rounded-top" alt="Product Image"></a>
-                                        <div class="card-body bg-light">
-                                            <h3 class="card-title fw-bold fs-5">' . $product_name . '</h3>
-                                            <p class="card-text text-muted mb-2">30.000</p>
-                                            <p class="card-text text-danger fs-5 mb-3">' . $product_sale_price . ' đ</p>
-                                            <a href="index.php?act=addToCart" class="btn btn-outline-dark w-100 fw-bold">Thêm vào giỏ hàng</a>
-                                    </div>
-                                </div>
-                </div>';
-            };
-            ?>
-        </div>
-    </section>
-    </div>
+     
