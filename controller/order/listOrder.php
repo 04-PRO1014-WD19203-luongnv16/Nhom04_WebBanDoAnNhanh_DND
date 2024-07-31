@@ -33,7 +33,6 @@
                 <th scope="col">Trạng thái</th>
                 <th scope="col">Tổng giá</th>
                 <th scope="col">Chi tiết</th>
-                <!-- <th scope="col">Thao tác</th> -->
             </tr>
         </thead>
         <tbody>
@@ -45,7 +44,7 @@
 
             if (empty($listBill)) : ?>
                 <tr>
-                    <td colspan="8" class="text-center">Không tìm thấy đơn hàng nào</td>
+                    <td colspan="7" class="text-center">Không tìm thấy đơn hàng nào</td>
                 </tr>
             <?php else : ?>
                 <?php foreach ($listBill as $bill) : ?>
@@ -58,6 +57,7 @@
                     $created_datetime = htmlspecialchars($bill['created_datetime']);
                     $total_price = number_format($bill['total_price'], 0, ',', '.');
                     $status_label = htmlspecialchars($ttdh);
+                    $billDetails = load_bill_details($bill_id);  // lấy thông tin chi tiết của từng hóa đơn
                     ?>
                     <tr>
                         <td><?= $bill_code ?></td>
@@ -65,15 +65,50 @@
                         <td><?= $countSp ?></td>
                         <td><?= $created_datetime ?></td>
                         <td><?= $status_label ?></td>
-                        <td><?= $total_price ?>,000 VND</td>
+                        <td><?= $total_price ?> VND</td>
                         <td>
-                            <a href="order_detail.php?id=<?= urlencode($bill_id) ?>" class="btn btn-info btn-sm">Chi tiết</a>
+                            <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#orderDetailsModal<?= $bill_id ?>">
+                                Chi tiết đơn hàng
+                            </button>
                         </td>
                     </tr>
+                    <!-- Modal for order details -->
+<div class="modal fade" id="orderDetailsModal<?= $bill_id ?>" tabindex="-1" aria-labelledby="orderDetailsModalLabel<?= $bill_id ?>" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderDetailsModalLabel<?= $bill_id ?>">Chi tiết đơn hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5 class="mb-3">Mã đơn hàng: <?= htmlspecialchars($bill['bill_code']) ?></h5>
+                <?php if ($ttdh == 'Chờ xác nhận'): ?>
+                    <a class="btn bg-danger btn-danger" href="index.php?act=cancelOrder&bill_id=<?= urlencode($bill_id) ?>" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');">Hủy đơn hàng</a>
+                <?php endif; ?>
+                <hr>
+                <?php foreach ($billDetails as $item): ?>
+                    <div class="mb-3">
+                        <img src="<?= htmlspecialchars($imgPath.$item['product_avatar']) ?>" class="img-fluid" style="max-width: 100px;" alt="<?= htmlspecialchars($item['product_name']) ?>">
+                        <p class="mt-2 mb-1"><strong>Tên hàng:</strong> <?= htmlspecialchars($item['product_name']) ?></p>
+                        <p class="mb-1"><strong>Số lượng:</strong> <?= htmlspecialchars($item['quantity']) ?></p>
+                        <p><strong>Giá:</strong> <?= number_format($item['product_sale_price']) ?> VND</p>
+                    </div>
+                    <hr>
+                <?php endforeach; ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
                 <?php endforeach; ?>
             <?php endif; ?>
         </tbody>
     </table>
+
+    <!-- Pagination -->
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             <!-- Previous Button -->
@@ -99,21 +134,20 @@
         </ul>
     </nav>
 
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        <?php if (isset($_SESSION['notification'])) : ?>
-            var toastEl = document.getElementById('toastNotification');
-            var toast = new bootstrap.Toast(toastEl);
-            toastEl.style.display = 'block';
-            toast.show();
-            setTimeout(function() {
-                toast.hide();
-                toastEl.style.display = 'none';
-            }, 5000);
-            <?php unset($_SESSION['notification']); ?>
-        <?php endif; ?>
-    });
-</script>
-
+    <script>
+        // Logic for displaying toast notification
+        document.addEventListener('DOMContentLoaded', function() {
+            <?php if (isset($_SESSION['notification'])) : ?>
+                var toastEl = document.getElementById('toastNotification');
+                var toast = new bootstrap.Toast(toastEl);
+                toastEl.style.display = 'block';
+                toast.show();
+                setTimeout(function() {
+                    toast.hide();
+                    toastEl.style.display = 'none';
+                }, 5000);
+                <?php unset($_SESSION['notification']); ?>
+            <?php endif; ?>
+        });
+    </script>
 </div>

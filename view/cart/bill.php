@@ -44,14 +44,14 @@
                                     <tr>
                                         <td><img src="<?= htmlspecialchars($item['img']) ?>" class="img-fluid" style="max-width: 50px;"></td>
                                         <td><?= htmlspecialchars($item['name']) ?></td>
-                                        <td><?= htmlspecialchars($item['price']) ?>,000 VND</td>
+                                        <td><?= htmlspecialchars($item['price']) ?> VND</td>
                                         <td><?= htmlspecialchars($item['quantity']) ?></td>
-                                        <td><?= htmlspecialchars($item['totalAmount']) ?>,000 VND</td>
+                                        <td><?= htmlspecialchars($item['totalAmount']) ?> VND</td>
                                     </tr>
                                 <?php endforeach; ?>
                                 <tr>
                                     <td colspan="4" class="text-end">Tổng đơn hàng:</td>
-                                    <td><?= number_format($total_price) ?>,000 VND</td>
+                                    <td><?= number_format($total_price) ?> VND</td>
                                 </tr>
                             <?php else : ?>
                                 <tr>

@@ -52,9 +52,9 @@
                 <div class="card-body ">
                     <h6 class="card-title ">Thực Phẩm Khuyến Mại</h6>
                     <ul class="list-group ">
-                        <li class="list-group-item ">Mỹ Ý Sốt Bò Mỹ - 30,000 ₫</li>
-                        <li class="list-group-item  ">Cơm Chiên Mã Lai Gà Quay - 30,000 ₫</li>
-                        <li class="list-group-item ">Mì Vịt Quay Singapore - 60,000 ₫</li>
+                        <li class="list-group-item ">Mỹ Ý Sốt Bò Mỹ - 30 ₫</li>
+                        <li class="list-group-item  ">Cơm Chiên Mã Lai Gà Quay - 30 ₫</li>
+                        <li class="list-group-item ">Mì Vịt Quay Singapore - 60 ₫</li>
                         <li class="list-group-item ">Mì Vịt Quay & Xá Xíu</li>
                     </ul>
                 </div>

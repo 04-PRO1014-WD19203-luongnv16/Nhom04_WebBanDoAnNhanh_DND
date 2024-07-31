@@ -19,7 +19,7 @@
                             <tr>
                                 <td><img src="<?= $item['img'] ?>" class="img-fluid" style="max-width: 50px;"></td>
                                 <td><?= $item['name'] ?></td>
-                                <td><?= $item['price'] ?>,000 VND</td>
+                                <td><?= $item['price'] ?> VND</td>
                                 <td>
                                     <?php if ($currentPage === 'bill') : ?>
                                         <?= $item['quantity'] ?>
@@ -32,7 +32,7 @@
                                         </form>
                                     <?php endif; ?>
                                 </td>
-                                <td><?= $item['totalAmount'] ?>,000 VND</td>
+                                <td><?= $item['totalAmount'] ?> VND</td>
                                 <?php if ($currentPage !== 'bill') : ?>
                                     <td><a href="index.php?act=deleteCartProduct&idcart=<?= $item['index'] ?>" class="btn btn-danger">Xóa</a></td>
                                 <?php endif; ?>
@@ -40,7 +40,7 @@
                         <?php endforeach; ?>
                         <tr>
                             <td colspan="4" class="text-end">Tổng đơn hàng:</td>
-                            <td><?= number_format($total_price) ?>,000 VND</td>
+                            <td><?= number_format($total_price) ?> VND</td>
                         </tr>
                     <?php else : ?>
                         <tr>

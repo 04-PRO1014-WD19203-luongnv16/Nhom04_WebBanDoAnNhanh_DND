@@ -431,22 +431,21 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 include_once("./view/cart/process_order.php");
             }
             break;
-        
-        //xóa đơn nếu là đơn hàng mới
-        case 'deleteOrder':
-            if (isset($_GET['bill_id']) && is_numeric($_GET['bill_id'])) {
-                $bill_id = intval($_GET['bill_id']);
-                delete_order($bill_id);
-                $_SESSION['notification'] = 'Đơn hàng đã được xóa thành công!';
+
+        case 'cancelOrder':
+            if (isset($_GET['bill_id'])) {
+                $bill_id = $_GET['bill_id'];
+                update_order_status($bill_id, 6); // 6 là mã trạng thái "Hủy đơn (khách hàng)"
+                header('Location: index.php?act=myBill');
+                exit();
             }
-            header("Location: index.php?act=myBill");
-            exit;
             break;
 
         case 'myBill':
             $listBill = loadall_bill($_SESSION['user']['user_id']);
             include_once("./view/cart/myBill.php");
             break;
+
 
             //lọc
         case 'showdm':

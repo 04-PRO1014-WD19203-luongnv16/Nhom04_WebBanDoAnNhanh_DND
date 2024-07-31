@@ -178,7 +178,8 @@ if (isset($_GET['act'])) {
                 break;
 
                 //Đơn hàng
-            case 'order':
+            case 'order': 
+                $target_dir = "../upload/";           
                 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                 $limit = 15; // số lượng đơn hàng mỗi trang
                 $offset = ($currentPage - 1) * $limit;
@@ -226,39 +227,53 @@ if (isset($_GET['act'])) {
                 break;
 
             case 'sellingProduct': // Thống kê sản phẩm bán chạy
-                $time_period = isset($_POST['chon_ngay']) ? intval($_POST['chon_ngay']) : 0;
-                $start_date = isset($_POST['start_date']) ? $_POST['start_date'] : '';
-                $end_date = isset($_POST['end_date']) ? $_POST['end_date'] : '';
-            
-                // Lấy dữ liệu sản phẩm bán chạy
-                $_sp_ban_chay = get_top_selling_products($time_period, $start_date, $end_date);
-                $tong_don = count($_sp_ban_chay);
-                $tong_tien = array_sum(array_column($_sp_ban_chay, 'tongtien'));
-            
+                if (isset($_POST['done_date'])) {
+                    $start_date = $_POST['start_date'];
+                    $end_date = $_POST['end_date'];
+                    $_chon_ngay = $_POST['chon_ngay'];
+                    if ($start_date != '' && $end_date != '' && $_chon_ngay == 0) {
+                        $_sp_ban_chay = loc_date_sp($start_date, $end_date);
+                    } else {
+                        $_sp_ban_chay = loc_sp_theo_ngay($_chon_ngay);
+                    }
+                } else {
+                    $_sp_ban_chay = sp_ban_chay();
+                }
                 include "./statisticalController/sellingProduct.php";
                 break;
             
-
-            case 'topOrder': //Thống kê đơn hàng
-                $selected_status = isset($_POST['chon_ngay']) ? $_POST['chon_ngay'] : '6';
-                $start_date = isset($_POST['start_date']) ? $_POST['start_date'] : '';
-                $end_date = isset($_POST['end_date']) ? $_POST['end_date'] : '';
-
-                if ($selected_status == '6') {
-                    $_don_hang = tk_don();
-                } elseif ($start_date && $end_date) {
-                    $_don_hang = loc_don_ngay($start_date, $end_date);
-                } else {
-                    $_don_hang = trang_thai_don($selected_status);
-                }
-
-                $tong_don = count($_don_hang);
-                $tong_tien = array_sum(array_column($_don_hang, 'total_amount'));
-
-                $_trang_thai = $selected_status;
-                require_once('./statisticalController/topOrderController.php');
-                break;
-
+                case 'topOrder': // Thống kê đơn hàng
+                    if (isset($_POST['done_date'])) {
+                        $start_date = $_POST['start_date'];
+                        $end_date = $_POST['end_date'];
+                        $_trang_thai = $_POST['chon_ngay'];
+                        
+                        if ($start_date != '' && $end_date != '' && $_trang_thai == 7) {
+                            $_tk_don = loc_don_ngay($start_date, $end_date);
+                        } else {
+                            $_tk_don = trang_thai_don($_trang_thai);
+                            $tong_don = count($_tk_don);
+                            $tong_tien = array_sum(array_column($_tk_don, 'total_price'));
+                        }
+                    } else {
+                        $_trang_thai = 7;
+                        $_tk_don = tk_don();
+                        $tong_don = $_tk_don[0]['tong_don_' . $_trang_thai];
+                        $tong_tien = $_tk_don[0]['tong_tien_' . $_trang_thai];
+                    }
+                
+                    // Chuẩn bị dữ liệu cho biểu đồ
+                    $chart_data = [];
+                    foreach ($_tk_don as $value) {
+                        $chart_data[] = [
+                            'date' => $value['order_date'],
+                            'total' => $value['total_price']
+                        ];
+                    }
+                
+                    include "./statisticalController/topOrderController.php";
+                    break;
+                    
                 //Quản lý bình luận
             case 'dsbl': {
                     $dsbl = chitiet_binhluan();

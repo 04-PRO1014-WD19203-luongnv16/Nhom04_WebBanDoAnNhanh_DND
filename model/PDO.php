@@ -24,6 +24,7 @@ function pdo_execute_bill_order($sql, ...$params) {
     try {
         $conn = pdo_get_connection();
         $stmt = $conn->prepare($sql);
+        
         $stmt->execute($params);
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
