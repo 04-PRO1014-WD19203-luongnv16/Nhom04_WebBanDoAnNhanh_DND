@@ -464,10 +464,14 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             break;
 
             //top 10
-        case "showTop10":
-            $listTop10 = load_product_top10();
-            include_once("./view/main.php");
-            break;
+            case "productDetail":
+                if (isset($_GET['id'])) {
+                    $productId = $_GET['id'];
+                    update_view_count($productId); // Tăng view_count
+                    $product = load_product_by_id($productId);
+                    include_once("./view/productDetail.php"); // Trang chi tiết sản phẩm
+                }
+                break;
         case "comment":
 
             break;

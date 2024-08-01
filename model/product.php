@@ -127,6 +127,16 @@ function load_product_top10(){
     $listProducts = pdo_query($sql);
     return $listProducts;
 }
+function load_product_by_id($productId) {
+    $sql = "SELECT * FROM product WHERE product_id = ?";
+    return pdo_query_one($sql, $productId);
+}
+
+function update_view_count($productId) {
+    $sql = "UPDATE product SET view_count = view_count + 1 WHERE product_id = ?";
+    pdo_execute($sql, $productId);
+}
+
 
 // // Hàm để lấy tổng số sản phẩm
 // function getTotalProductCount() {
