@@ -1,11 +1,3 @@
-<?php
-// Define the path to the images
-$imgPath = '/images/'; // Adjust this path as needed
-
-// ... Other PHP code ...
-
-?>
-
 <div class="container mt-5 position-relative">
     <h2 class="mb-4">Danh Sách Đơn Hàng</h2>
 
@@ -65,13 +57,10 @@ $imgPath = '/images/'; // Adjust this path as needed
                     $created_datetime = htmlspecialchars($bill['created_datetime']);
                     $total_price = number_format($bill['total_price'], 0, ',', '.');
                     $status_label = htmlspecialchars($ttdh);
-<<<<<<< HEAD
 
                     // Fetch bill details
                     $billDetails = load_bill_details($bill_id); // Ensure this function returns an array of details
-=======
                     $billDetails = load_bill_details($bill_id);  // lấy thông tin chi tiết của từng hóa đơn
->>>>>>> 52ff62ba25c5891c2e51f600e965b1397d764422
                     ?>
                     <tr>
                         <td><?= $bill_code ?></td>
@@ -86,7 +75,6 @@ $imgPath = '/images/'; // Adjust this path as needed
                             </button>
                         </td>
                     </tr>
-<<<<<<< HEAD
                     <div class="modal fade" id="orderDetailsModal<?= $bill_id ?>" tabindex="-1" aria-labelledby="orderDetailsModalLabel<?= $bill_id ?>" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
@@ -97,11 +85,11 @@ $imgPath = '/images/'; // Adjust this path as needed
                                 <div class="modal-body">
                                     <h5 class="mb-3">Mã đơn hàng: <?= htmlspecialchars($bill['bill_code']) ?></h5>
                                     <hr>
-                                    <?php 
+                                    <?php
                                     $hinhpath = "../upload/";
-                                    ?> 
+                                    ?>
                                     <?php if (!empty($billDetails)) : ?>
-                                        <?php foreach ($billDetails as $item): ?>
+                                        <?php foreach ($billDetails as $item) : ?>
                                             <div class="mb-3">
                                                 <img src="<?= htmlspecialchars($hinhpath . $item['product_avatar']) ?>" class="img-fluid" style="max-width: 100px;" alt="<?= htmlspecialchars($item['product_name']) ?>">
                                                 <p class="mt-2 mb-1"><strong>Tên hàng:</strong> <?= htmlspecialchars($item['product_name']) ?></p>
@@ -110,23 +98,23 @@ $imgPath = '/images/'; // Adjust this path as needed
                                             </div>
                                             <hr>
                                         <?php endforeach; ?>
-                                    <?php else: ?>
+                                    <?php else : ?>
                                         <p>Không có chi tiết đơn hàng</p>
                                     <?php endif; ?>
                                     <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton<?= $bill_id ?>" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Thay đổi trạng thái
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<?= $bill_id ?>">
-                                    <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=0">Chờ xác nhận</a></li>
-                                    <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=1">Đã xác nhận</a></li>
-                                    <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=2">Đang giao hàng</a></li>
-                                    <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=3">Giao Hàng Thành Công</a></li>
-                                    <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=4">Giao Hàng Thất Bại</a></li>
-                                    <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=5">Hủy đơn(admin)</a></li>
-                                    <li><a class="dropdown-item disabled" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=6">Hủy đơn(khách hàng)</a></li>
-                                </ul>
-                            </div>
+                                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton<?= $bill_id ?>" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Thay đổi trạng thái
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<?= $bill_id ?>">
+                                            <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=0">Chờ xác nhận</a></li>
+                                            <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=1">Đã xác nhận</a></li>
+                                            <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=2">Đang giao hàng</a></li>
+                                            <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=3">Giao Hàng Thành Công</a></li>
+                                            <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=4">Giao Hàng Thất Bại</a></li>
+                                            <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=5">Hủy đơn(admin)</a></li>
+                                            <li><a class="dropdown-item disabled" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=6">Hủy đơn(khách hàng)</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -134,39 +122,36 @@ $imgPath = '/images/'; // Adjust this path as needed
                             </div>
                         </div>
                     </div>
-=======
                     <!-- Modal for order details -->
-<div class="modal fade" id="orderDetailsModal<?= $bill_id ?>" tabindex="-1" aria-labelledby="orderDetailsModalLabel<?= $bill_id ?>" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="orderDetailsModalLabel<?= $bill_id ?>">Chi tiết đơn hàng</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <h5 class="mb-3">Mã đơn hàng: <?= htmlspecialchars($bill['bill_code']) ?></h5>
-                <?php if ($ttdh == 'Chờ xác nhận'): ?>
-                    <a class="btn bg-danger btn-danger" href="index.php?act=cancelOrder&bill_id=<?= urlencode($bill_id) ?>" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');">Hủy đơn hàng</a>
-                <?php endif; ?>
-                <hr>
-                <?php foreach ($billDetails as $item): ?>
-                    <div class="mb-3">
-                        <img src="<?= htmlspecialchars($imgPath.$item['product_avatar']) ?>" class="img-fluid" style="max-width: 100px;" alt="<?= htmlspecialchars($item['product_name']) ?>">
-                        <p class="mt-2 mb-1"><strong>Tên hàng:</strong> <?= htmlspecialchars($item['product_name']) ?></p>
-                        <p class="mb-1"><strong>Số lượng:</strong> <?= htmlspecialchars($item['quantity']) ?></p>
-                        <p><strong>Giá:</strong> <?= number_format($item['product_sale_price']) ?> VND</p>
+                    <div class="modal fade" id="orderDetailsModal<?= $bill_id ?>" tabindex="-1" aria-labelledby="orderDetailsModalLabel<?= $bill_id ?>" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="orderDetailsModalLabel<?= $bill_id ?>">Chi tiết đơn hàng</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <h5 class="mb-3">Mã đơn hàng: <?= htmlspecialchars($bill['bill_code']) ?></h5>
+                                    <?php if ($ttdh == 'Chờ xác nhận') : ?>
+                                        <a class="btn bg-danger btn-danger" href="index.php?act=cancelOrder&bill_id=<?= urlencode($bill_id) ?>" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');">Hủy đơn hàng</a>
+                                    <?php endif; ?>
+                                    <hr>
+                                    <?php foreach ($billDetails as $item) : ?>
+                                        <div class="mb-3">
+                                            <img src="<?= htmlspecialchars($imgPath . $item['product_avatar']) ?>" class="img-fluid" style="max-width: 100px;" alt="<?= htmlspecialchars($item['product_name']) ?>">
+                                            <p class="mt-2 mb-1"><strong>Tên hàng:</strong> <?= htmlspecialchars($item['product_name']) ?></p>
+                                            <p class="mb-1"><strong>Số lượng:</strong> <?= htmlspecialchars($item['quantity']) ?></p>
+                                            <p><strong>Giá:</strong> <?= number_format($item['product_sale_price']) ?> VND</p>
+                                        </div>
+                                        <hr>
+                                    <?php endforeach; ?>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <hr>
-                <?php endforeach; ?>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-            </div>
-        </div>
-    </div>
-</div>
-
->>>>>>> 52ff62ba25c5891c2e51f600e965b1397d764422
                 <?php endforeach; ?>
             <?php endif; ?>
         </tbody>
