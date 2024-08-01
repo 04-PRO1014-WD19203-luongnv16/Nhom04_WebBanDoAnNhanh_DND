@@ -267,5 +267,14 @@ pdo_execute_bill_order("DELETE FROM cart WHERE bill_id = ?", $bill_id);
 // Xóa chính thứ tự đó
 pdo_execute_bill_order("DELETE FROM bill WHERE bill_id = ?", $bill_id);
 }
+// Hàm nạp sản phẩm của một hóa đơn
+function load_cart_items_by_bill($bill_id)
+{
+    $sql = "SELECT p.*, c.quantity FROM products p 
+            INNER JOIN cart c ON p.id = c.product_id
+            WHERE c.bill_id = ?";
+    return pdo_query($sql, [$bill_id]);
+}
+
 
 

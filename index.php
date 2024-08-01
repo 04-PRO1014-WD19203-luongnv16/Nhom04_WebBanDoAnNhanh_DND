@@ -410,11 +410,50 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 include_once("./view/cart/process_order.php");
             }
             break;
-
+            //chi tiết đơn hàng đã muavcủa tôi
         case 'myBill':
             $listBill = loadall_bill($_SESSION['user']['user_id']);
+            $cartItems = [];
+            $total_price = 0;
+
+            // Kiểm tra xem giỏ hàng có tồn tại và là mảng không
+            if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
+                foreach ($_SESSION['myCart'] as $index => $cart) {
+                    $img = $imgPath . $cart[5];
+                    $totalAmount = $cart[2] * $cart[3];
+                    $total_price += $totalAmount;
+                    $cartItems[] = [
+                        'img' => $img,
+                        'name' => $cart[1],
+                        'price' => number_format($cart[2]),
+                        'quantity' => $cart[3],
+                        'totalAmount' => number_format($totalAmount)
+                    ];
+                }
+            }
+
             include_once("./view/cart/myBill.php");
             break;
+            case 'orderDetail':
+                if (isset($_GET['bill_id'])) {
+                    $bill_id = $_GET['bill_id'];
+                    $user_id = $_SESSION['user']['user_id'];
+            
+                    // Fetch the order details
+                    $bill = loadone_bill($bill_id);
+            
+                    // Verify that the order belongs to the logged-in user
+                    if ($bill && $bill['user_id'] == $user_id) {
+                        // Fetch the products in the order
+                        $cartItems = load_cart_items_by_bill($bill_id);
+                        include_once("./view/cart/orderDetail.php");
+                    } else {
+                        echo "Order not found or you do not have permission to view this order.";
+                    }
+                }
+                break;
+            
+
 
             //lọc
         case 'showdm':
@@ -430,24 +469,23 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             include_once("./view/main.php");
             break;
         case "comment":
-            
+
             break;
             //xóa đơn nếu là đơn hàng mới
-            case 'deleteOrder':
-                if (isset($_GET['bill_id']) && is_numeric($_GET['bill_id'])) {
-                    $bill_id = intval($_GET['bill_id']);
-                    delete_order($bill_id);
-                    $_SESSION['notification'] = 'Đơn hàng đã được xóa thành công!';
-                }
-                header("Location: index.php?act=myBill");
-                exit;
-                break;
+        case 'deleteOrder':
+            if (isset($_GET['bill_id']) && is_numeric($_GET['bill_id'])) {
+                $bill_id = intval($_GET['bill_id']);
+                delete_order($bill_id);
+                $_SESSION['notification'] = 'Đơn hàng đã được xóa thành công!';
+            }
+            header("Location: index.php?act=myBill");
+            exit;
+            break;
         case "confirmBill":
             break;
         default:
             include_once './view/main.php';
             break;
-            
     }
 } else {
     include_once './view/main.php';

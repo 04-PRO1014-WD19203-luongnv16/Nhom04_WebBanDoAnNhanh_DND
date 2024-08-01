@@ -63,10 +63,10 @@
                 <i class="fas fa-cart-plus me-2"></i>
                 Quản lý đơn hàng
             </a>
-            <a href="index.php?act=comment" class="text-dark list-group-item list-group-item-action list-group-item-light">
+            <!-- <a href="index.php?act=comment" class="text-dark list-group-item list-group-item-action list-group-item-light">
                 <i class="fas fa-comment me-2"></i>
                 Quản lý bình luận
-            </a>
+            </a> -->
             <a href="#statisticalSubmenu" class="text-dark list-group-item list-group-item-action list-group-item-light" data-bs-toggle="collapse" onclick="toggleIcon(this)">
                 <i class="fas fa-chart-line me-2"></i>
                 Thống kê
