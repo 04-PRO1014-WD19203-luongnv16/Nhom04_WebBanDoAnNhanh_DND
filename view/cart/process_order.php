@@ -37,7 +37,7 @@
                             <td><?= $bill['email'] ?></td>
                             <td><?= $bill['address'] ?></td>
                             <td><?= $bill['created_datetime'] ?></td>
-                            <td><?= number_format($bill['total_price']) ?>,000 VND</td>
+                            <td><?= number_format($bill['total_price']) ?> VND</td>
                             <td>
                                 <?php
                                 switch ($bill['payment_status'] ?? 0) {
@@ -79,14 +79,14 @@
                             <tr>
                                 <td><img src="<?= $item['img'] ?>" class="img-fluid" style="max-width: 50px;"></td>
                                 <td><?= $item['name'] ?></td>
-                                <td><?= number_format($item['price']) ?>,000 VND</td>
+                                <td><?= number_format($item['price']) ?> VND</td>
                                 <td><?= $item['quantity'] ?></td>
-                                <td><?= number_format($item['totalAmount']) ?>,000 VND</td>
+                                <td><?= number_format(floatval($bill['total_price'])) ?> VND</td>
                             </tr>
                         <?php endforeach; ?>
                         <tr>
                             <td colspan="4" class="text-end fw-bold">Tổng đơn hàng:</td>
-                            <td class="fw-bold"><?= number_format($total_price) ?>,000 VND</td>
+                            <td class="fw-bold"><?= number_format($total_price) ?> VND</td>
                         </tr>
                     <?php else : ?>
                         <tr>

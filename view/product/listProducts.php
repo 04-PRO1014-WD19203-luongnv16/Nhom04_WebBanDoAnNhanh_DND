@@ -60,7 +60,7 @@
                                     <a href="<?= $linkProduct ?>"><img src="<?= $image_url ?>" class="card-img img-fluid" alt="Product Image"></a>
                                     <div class="card-body bg-light">
                                         <h3 class="card-title fw-bold fs-5"><?= $product_name ?></h3>
-                                        <p class="card-text text-danger fs-5 mb-3"><?= $product_sale_price ?>,000 VND</p>
+                                        <p class="card-text text-danger fs-5 mb-3"><?= $product_sale_price ?> VND</p>
                                         <input type="submit" name="add_cart" class="btn btn-outline-dark w-100 fw-bold" value="Thêm vào giỏ hàng">
                                     </div>
                                 </form>

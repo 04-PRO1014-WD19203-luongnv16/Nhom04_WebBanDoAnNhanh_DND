@@ -1,5 +1,5 @@
-<div class="container">
-    <h3>Đơn hàng của bạn</h3>
+<div class="container my-4">
+    <h3 class="mb-4">Đơn hàng của bạn</h3>
     <table class="table table-bordered table-striped">
         <thead class="table-dark">
             <tr>
@@ -12,68 +12,62 @@
             </tr>
         </thead>
         <tbody>
-            <?php
-            if (is_array($listBill) && count($listBill) > 0) :
-                foreach ($listBill as $bill) :
+            <?php if (is_array($listBill) && count($listBill) > 0): ?>
+                <?php foreach ($listBill as $bill): ?>
+                    <?php
                     $bill_id = $bill['bill_id'];
                     $countSp = loadone_cart_count($bill_id);
                     $ttdh = get_status_label($bill['bill_status']);
-            ?>
+                    $billDetails = pdo_query("SELECT * FROM bill_item WHERE bill_id = ?", $bill_id);
+                    ?>
                     <tr>
-                        <td><?= $bill['bill_code'] ?></td>
-                        <td><?= $bill['created_datetime'] ?></td>
-                        <td><?= $countSp ?></td>
-                        <td><?= number_format($bill['total_price']) ?>,000 VND</td>
-                        <td><?= $ttdh ?></td>
+                        <td><?= htmlspecialchars($bill['bill_code']) ?></td>
+                        <td><?= htmlspecialchars($bill['created_datetime']) ?></td>
+                        <td><?= htmlspecialchars($countSp) ?></td>
+                        <td><?= number_format($bill['total_price']) ?> VND</td>
+                        <td><?= htmlspecialchars($ttdh) ?></td>
                         <td>
-                            <div class="d-flex">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderDetailsModal" data-bill-id="<?= $bill_id ?>">
-                                    Chi tiết đơn hàng
-                                </button>
-                                <!-- Nếu đơn hàng là đơn hàng mới thì xóa đc -->
-                                <?php
-                                $ttdh = get_status_label($bill['bill_status']);
-                                if ($ttdh == 'Đơn hàng mới') {
-                                ?>
-                                    <a class="btn btn-danger bg-danger" href="index.php?act=deleteOrder&bill_id=<?= urlencode($bill_id) ?>" onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?');">Hủy</a>
-                                <?php } ?>
-                            </div>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderDetailsModal<?= $bill_id ?>">
+                                Chi tiết đơn hàng
+                            </button>
                         </td>
                     </tr>
-                <?php endforeach;
-            else : ?>
+                    <!-- Modal for order details -->
+                    <div class="modal fade" id="orderDetailsModal<?= $bill_id ?>" tabindex="-1" aria-labelledby="orderDetailsModalLabel<?= $bill_id ?>" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="orderDetailsModalLabel<?= $bill_id ?>">Chi tiết đơn hàng</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <h5 class="mb-3">Mã đơn hàng: <?= htmlspecialchars($bill['bill_code']) ?></h5>
+                                    <?php if ($ttdh == 'Chờ xác nhận'): ?>
+                                        <a class="btn bg-danger btn-danger" href="index.php?act=cancelOrder&bill_id=<?= urlencode($bill_id) ?>" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');">Hủy đơn hàng</a>
+                                    <?php endif; ?>
+                                    <hr>
+                                    <?php foreach ($billDetails as $item): ?>
+                                        <div class="mb-3">
+                                            <img src="<?= htmlspecialchars($imgPath.$item['product_avatar']) ?>" class="img-fluid" style="max-width: 100px;" alt="<?= htmlspecialchars($item['product_name']) ?>">
+                                            <p class="mt-2 mb-1"><strong>Tên hàng:</strong> <?= htmlspecialchars($item['product_name']) ?></p>
+                                            <p class="mb-1"><strong>Số lượng:</strong> <?= htmlspecialchars($item['quantity']) ?></p>
+                                            <p><strong>Giá:</strong> <?= number_format($item['product_sale_price']) ?> VND</p>
+                                        </div>
+                                        <hr>
+                                    <?php endforeach; ?>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
                 <tr>
                     <td colspan="6" class="text-center">Thông tin đơn hàng không tồn tại</td>
                 </tr>
             <?php endif; ?>
         </tbody>
     </table>
-</div>
-<div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="orderDetailsModalLabel">Chi tiết đơn hàng</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="order-details-content">
-                    <p>Mã đơn hàng: <?= $bill['bill_code'] ?> </p>
-                </div>
-                <div id="order-details-content">
-                    <p>Hình:<img src="<?= $bill['product_avatar'] ?>" class="img-fluid" style="max-width: 50px;"> </p>
-                </div>
-                <div id="order-details-content">
-                    <p>Tên hàng: <?= $bill['product_name'] ?> </p>
-                </div>
-                <div id="order-details-content">
-                    <p>Số lượng: <?= number_format($bill['total_price']) ?>,000 VND ?> </p>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-            </div>
-        </div>
-    </div>
 </div>
