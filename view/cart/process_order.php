@@ -86,7 +86,7 @@
                         <?php endforeach; ?>
                         <tr>
                             <td colspan="4" class="text-end fw-bold">Tổng đơn hàng:</td>
-                            <td class="fw-bold"><?= number_format($total_price) ?> VND</td>
+                            <td class="fw-bold"><?= number_format(floatval($bill['total_price'])) ?> VND</td>
                         </tr>
                     <?php else : ?>
                         <tr>

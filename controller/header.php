@@ -86,10 +86,10 @@
                     Biểu đồ
                 </a>
             </div>
-            <a href="index.php?act=discount" class="text-dark list-group-item list-group-item-action list-group-item-light">
+            <!-- <a href="index.php?act=discount" class="text-dark list-group-item list-group-item-action list-group-item-light">
                 <i class="fas fa-gift me-2"></i>
                 Giảm giá
-            </a>
+            </a> -->
         </div>
     </nav>
     <script>
@@ -136,9 +136,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="index.php?act=statistical"><i class="fas fa-chart-line me-1"></i> Thống kê</a>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link" href="index.php?act=discount"><i class="fas fa-gift me-1"></i> Giảm giá</a>
-                            </li>
+                            </li> -->
                         </ul>
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li class="nav-item dropdown">
@@ -161,7 +161,7 @@
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 d-none d-md-block">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">Dashboard</a>
+                    <a class="navbar-brand" href="#"></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>

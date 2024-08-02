@@ -9,16 +9,11 @@ include_once('./model/cart.php');
 include_once('./model/registerEmail.php');
 include_once('./global.php');
 require_once("./view/header.php");
-// try {
-//     $conn = pdo_get_connection();
-//     echo "Kết nối thành công!<br>";
-// } catch (PDOException $e) {
-//     echo "Kết nối không thành công: " . $e->getMessage() . "<br>";
-// }
 $allProduct = select_sp_home();
 $dsdm = danhsach_dm();
 $message = '';
 $errors = [];
+
 if (isset($_GET['act']) && ($_GET['act'] != "")) {
     $act = $_GET['act'];
     switch ($act) {
@@ -130,9 +125,9 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
 
             include_once("./view/product/listProducts.php");
             break;
-        case 'main':
-            include_once("./view/main.php");
-            break;
+            // case 'main':
+            //     include_once("./view/main.php");
+            //     break;
         case 'productDetails':
             if (isset($_GET['product_id']) && ($_GET['product_id'] > 0)) {
                 $oneProductDetail = select_sp_one($_GET['product_id']);
@@ -190,18 +185,51 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 $product_name = $_POST['product_name'];
                 $product_sale_price = $_POST['product_sale_price'];
                 $image_url = $_POST['image_url'];
-                $quantity = $_POST['quantity']; // Use the updated quantity from hidden field
-                $totalAmount = $product_sale_price * $quantity;  // Calculate total amount
+                $quantity = $_POST['quantity']; // Sử dụng số lượng cập nhật từ trường ẩn
+                $totalAmount = $product_sale_price * $quantity;  // Tính tổng số tiền
                 $productAdd = [$product_id, $product_name, $product_sale_price, $quantity, $totalAmount, $image_url];
                 $_SESSION['myCart'][] = $productAdd;
-
-                // Redirect to the cart view after adding the product
+                $_SESSION['toast_message'] = 'Sản phẩm đã được thêm vào giỏ hàng!';
                 header("Location: index.php?act=viewCart");
                 exit();
             }
             include_once("./view/cart/viewCart.php");
             break;
-
+            
+            case 'addToCartMain':
+                if (isset($_POST['add_cart'])) {
+                    $product_id = $_POST['product_id'];
+                    $product_name = $_POST['product_name'];
+                    $product_sale_price = $_POST['product_sale_price'];
+                    $image_url = $_POST['image_url'];
+                    $quantity = 1; // Số lượng mặc định là 1
+    
+                    // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+                    $found = false;
+                    foreach ($_SESSION['myCart'] as $key => $item) {
+                        if ($item[0] == $product_id) {
+                            // Nếu đã có sản phẩm này trong giỏ hàng, cập nhật số lượng
+                            $_SESSION['myCart'][$key][3]++;
+                            $found = true;
+                            break;
+                        }
+                    }
+    
+                    if (!$found) {
+                        // Nếu chưa có thì thêm mới vào giỏ hàng
+                        $totalAmount = $product_sale_price * $quantity; // Tính tổng tiền
+                        $productAdd = [$product_id, $product_name, $product_sale_price, $quantity, $totalAmount, $image_url];
+                        $_SESSION['myCart'][] = $productAdd;
+                    }
+                    // Set session variable to show toast
+                    // $_SESSION['toast_message'] = 'Sản phẩm đã được thêm vào giỏ hàng!';
+                    
+                    // Redirect lại đến trang giỏ hàng sau khi thêm sản phẩm
+                    header("Location: index.php?act=addToCartMain");
+                    exit();
+                }
+                include_once("./view/main.php");
+                break;
         case 'addToCart':
             if (isset($_POST['add_cart'])) {
                 $product_id = $_POST['product_id'];
@@ -227,9 +255,11 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                     $productAdd = [$product_id, $product_name, $product_sale_price, $quantity, $totalAmount, $image_url];
                     $_SESSION['myCart'][] = $productAdd;
                 }
-
+                // Set session variable to show toast
+                // $_SESSION['toast_message'] = 'Sản phẩm đã được thêm vào giỏ hàng!';
+                
                 // Redirect lại đến trang giỏ hàng sau khi thêm sản phẩm
-                header("Location: index.php?act=viewCart");
+                header("Location: index.php?act=listProducts");
                 exit();
             }
             include_once("./view/cart/viewCart.php");
@@ -403,9 +433,9 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                         $cartItems[] = [
                             'img' => $img,
                             'name' => $cart[1],
-                            'price' => number_format($cart[2]),
+                            'price' => ($cart[2]),
                             'quantity' => $cart[3],
-                            'totalAmount' => number_format($totalAmount),
+                            'totalAmount' => ($totalAmount),
                             'index' => $index
                         ];
                     }

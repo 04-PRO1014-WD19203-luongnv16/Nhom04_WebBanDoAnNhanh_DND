@@ -1,4 +1,20 @@
 <main>
+<div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">Thông báo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <?php echo isset($_SESSION['notification']) ? $_SESSION['notification'] : ''; ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <section class="container mt-5">
             <div class="row mb-5">
@@ -13,7 +29,7 @@
                 <!-- Product info -->
                 <div class="col-md-8 mt-3 mb-4">
                     <h1 class="h4 font-bold"><?= $product_name ?></h1>
-                    <div class="text-danger h4 font-bold mb-3"><?= $product_sale_price ?> đ</div>
+                    <div class="text-danger h4 font-bold mb-3"><?= number_format($product_sale_price) ?> VNĐ</div>
                     <p class="text-secondary">Sake</p>
                     <div class="d-flex gap-3 mb-3 align-items-stretch">
                         <!-- Quantity selector -->
@@ -72,10 +88,6 @@
 
         </section>
     </div>
-
-
-
-
 
     <!-- Product Description and Reviews Tabs -->
     <section class="container mt-5">

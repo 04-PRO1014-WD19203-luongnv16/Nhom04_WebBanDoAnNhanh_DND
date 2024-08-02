@@ -225,20 +225,27 @@ if (isset($_GET['act'])) {
                 $listthongke = loadall_thongke();
                 require_once('./statisticalController/chartController.php');
                 break;
-
-            case 'sellingProduct': // Thống kê sản phẩm bán chạy
-                if (isset($_POST['done_date'])) {
-                    $start_date = $_POST['start_date'];
-                    $end_date = $_POST['end_date'];
-                    $_chon_ngay = $_POST['chon_ngay'];
-                    if ($start_date != '' && $end_date != '' && $_chon_ngay == 0) {
-                        $_sp_ban_chay = loc_date_sp($start_date, $end_date);
+                
+                case 'sellingProduct': // Thống kê sản phẩm bán chạy
+                    if (isset($_POST['done_date'])) {
+                        $start_date = $_POST['start_date'];
+                        $end_date = $_POST['end_date'];
+                        $_chon_ngay = $_POST['chon_ngay'];
+                        if ($start_date != '' && $end_date != '' && $_chon_ngay == 0) {
+                            $_sp_ban_chay = loc_date_sp($start_date, $end_date);
+                        } else {
+                            $_sp_ban_chay = loc_sp_theo_ngay($_chon_ngay);
+                        }
                     } else {
-                        $_sp_ban_chay = loc_sp_theo_ngay($_chon_ngay);
+                        $_sp_ban_chay = sp_ban_chay();
                     }
-                } else {
-                    $_sp_ban_chay = sp_ban_chay();
-                }
+            
+                    $total_quantity = 0;
+                    $total_amount = 0;
+                    foreach ($_sp_ban_chay as $value) {
+                        $total_quantity += $value['quantity'];
+                        $total_amount += $value['tongtien'];
+                    }
                 include "./statisticalController/sellingProduct.php";
                 break;
             
@@ -247,6 +254,7 @@ if (isset($_GET['act'])) {
                         $start_date = $_POST['start_date'];
                         $end_date = $_POST['end_date'];
                         $_trang_thai = $_POST['chon_ngay'];
+                        // $bill_code = $_POST['bill_code'];
                         
                         if ($start_date != '' && $end_date != '' && $_trang_thai == 7) {
                             $_tk_don = loc_don_ngay($start_date, $end_date);

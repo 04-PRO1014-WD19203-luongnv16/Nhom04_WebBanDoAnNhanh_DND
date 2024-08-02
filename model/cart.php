@@ -145,26 +145,6 @@ function loadone_cart($cart_id)
     $sql = "SELECT * FROM cart WHERE cart_id = ?";
     return pdo_query_one($sql, [$cart_id]);
 }
-// function loadall_bill($user_id)
-// {
-//     $sql = "SELECT * FROM bill WHERE user_id = $user_id";
-//     $listBill = pdo_query($sql);
-//     return $listBill;
-// }
-// function loadall_bill($user_id = null)
-// {
-//     $sql = "SELECT * FROM bill WHERE 1=1";
-//     if ($user_id !== null && $user_id > 0) {
-//         $sql .= " AND user_id = ?";
-//     }
-//     $sql .= " ORDER BY created_datetime DESC";
-
-//     if ($user_id !== null && $user_id > 0) {
-//         return pdo_query($sql, $user_id);
-//     }
-//     return pdo_query($sql);
-// }
-
 
 //Tính tổng đơn hàng ở đơn hàng của tôi
 function loadone_cart_count($bill_id)

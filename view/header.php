@@ -161,7 +161,7 @@
                     <div class="d-flex justify-content-center flex-grow-1">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link fw-bold" href="index.php?act=main">Trang chủ</a>
+                                <a class="nav-link fw-bold" href="index.php">Trang chủ</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link fw-bold" href="index.php?act=listProducts">Sản phẩm</a>

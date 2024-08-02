@@ -55,7 +55,7 @@
                     $bill_code = htmlspecialchars($bill['bill_code']);
                     $full_name = htmlspecialchars($bill['full_name']);
                     $created_datetime = htmlspecialchars($bill['created_datetime']);
-                    $total_price = number_format($bill['total_price'], 0, ',', '.');
+                    $total_price = number_format($bill['total_price']);
                     $status_label = htmlspecialchars($ttdh);
 
                     // Fetch bill details

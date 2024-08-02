@@ -1,25 +1,25 @@
+
 <div class="container-fluid  ">
     <!-- Top 10 sản phẩm -->
     <div class="row">
         <div class="col-md-2">
             <div id="carouselTopProducts" class="carousel slide carousel-vertical" data-bs-ride="carousel">
-                <div class="mt-2">
-                <h6 class="text-center">Top 10 sản phẩm lượt xem nhiều nhât</h6>
-                <div class="top10-container">
-
-                    <?php $listTop10 = load_product_top10() ?>
-                    <?php foreach ($listTop10 as $product) : ?>
-                        <div class="product-item">
-                            <img src="<?php echo './upload/' . $product['product_avatar_url']; ?>" alt="<?php echo $product['product_name']; ?>" class="img-thumbnail">
-                            <div>
-                                <h6><?php echo $product['product_name']; ?></h6>
-                                <p class="text-danger"><?php echo $product['product_listed_price']; ?> VND</p>
-                                <p>Views: <?php echo htmlspecialchars($product['view_count']); ?></p>
+                <!-- <div class="mt-2">
+                    <h6 class="text-center">Top 10 sản phẩm lượt xem nhiều nhât</h6>
+                    <div class="top10-container">
+                        <?php $listTop10 = load_product_top10() ?>
+                        <?php foreach ($listTop10 as $product) : ?>
+                            <div class="product-item">
+                                <img src="<?php echo './upload/' . $product['product_avatar_url']; ?>" alt="<?php echo $product['product_name']; ?>" class="img-thumbnail">
+                                <div>
+                                    <h6><?php echo $product['product_name']; ?></h6>
+                                    <p class="text-danger"><?php echo $product['product_listed_price']; ?> VND</p>
+                                    <p>Views: <?php echo htmlspecialchars($product['view_count']); ?></p>
+                                </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div> -->
             </div>
         </div>
         <!-- Slideshow -->
@@ -81,7 +81,7 @@
                 ?>
                 <div class="col-md-4">
                     <div class="card">
-                        <form action="index.php?act=addToCart" method="post">
+                        <form action="index.php?act=addToCartMain" method="post">
                             <input type="hidden" name="product_id" value="<?= $product_id ?>">
                             <input type="hidden" name="product_name" value="<?= $product_name ?>">
                             <input type="hidden" name="product_sale_price" value="<?= $product_sale_price ?>">
@@ -89,7 +89,7 @@
                             <a href="<?= $linkProduct ?>"><img src="<?= $image_url ?>" class="card-img img-fluid" alt="Product Image"></a>
                             <div class="card-body bg-light">
                                 <h3 class="card-title fw-bold fs-5"><?= $product_name ?></h3>
-                                <p class="card-text text-danger fs-5 mb-3"><?= $product_sale_price ?> đ</p>
+                                <p class="card-text text-danger fs-5 mb-3"><?= number_format($product_sale_price) ?> VNĐ</p>
                                 <input type="submit" name="add_cart" class="btn btn-outline-dark w-100 fw-bold" value="Thêm vào giỏ hàng">
                             </div>
                         </form>
@@ -99,6 +99,3 @@
         </div>
     </div>
 </div>
-</section>
-</div>
-</main>
