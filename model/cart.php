@@ -1,88 +1,4 @@
-<?php
-// view_cart.php
-// function viewCart($currentPage = '')
-// {
-//     global $imgPath;
-//     $total_price = 0;
-
-//     if (isset($_SESSION['myCart']) && is_array($_SESSION['myCart'])) {
-//         foreach ($_SESSION['myCart'] as $index => $cart) {
-//             $img = $imgPath . $cart[5];
-//             $totalAmount = $cart[2] * $cart[3];
-//             $total_price += $totalAmount;
-
-//             $quantityDisplay = '';
-//             if ($currentPage == 'bill') {
-//                 $quantityDisplay = $cart[3];
-//             } else {
-//                 $quantityDisplay = '
-//                     <form action="index.php?act=updateCartQuantity" method="post">
-//                         <input type="hidden" name="idcart" value="' . $index . '">
-//                         <div class="input-group">
-//                             <input type="number" class="form-control" name="new_quantity" value="' . $cart[3] . '" min="1" max="100" step="1">
-//                         </div>
-//                     </form>
-//                 ';
-//             }
-
-//             echo '
-//                 <tr>
-//                     <td><img src="' . $img . '" class="img-fluid" style="max-width: 50px;"></td>
-//                     <td>' . $cart[1] . '</td>
-//                     <td>' . number_format($cart[2]) . ' VND</td>
-//                     <td>' . $quantityDisplay . '</td>
-//                     <td>' . number_format($totalAmount) . ' VND</td>';
-
-//             if ($currentPage != 'bill') {
-//                 echo '<td><a href="index.php?act=deleteCartProduct&idcart=' . $index . '" class="btn btn-danger">Xóa</a></td>';
-//             }
-
-//             echo '</tr>';
-//         }
-
-//         echo '
-//             <tr>
-//                 <td colspan="4" class="text-end">Tổng đơn hàng:</td>
-//                 <td>' . number_format($total_price) . ' VND</td>
-//             </tr>
-//         ';
-//     } else {
-//         echo '
-//             <tr>
-//                 <td colspan="6" class="text-center">Giỏ hàng của bạn đang trống</td>
-//             </tr>
-//         ';
-//     }
-// }
-
-
-
-// function detailBill($listbill)
-// {
-//     global $imgPath;
-//     $total_price = 0;
-//     foreach ($listbill as $cart) {
-//         $img = $imgPath . $cart['image_url'];
-//         $totalAmount = $cart['product_sale_price'] * $cart['quantity']; // Tính tổng thành tiền cho sản phẩm này
-//         $total_price += $totalAmount;
-//         // Hiển thị sản phẩm trong giỏ hàng
-//         echo '
-//                 <tr>
-//                     <td><img src="' . $img . '" class="img-fluid" style="max-width: 50px;"></td>
-//                     <td>' . $cart[1] . '</td>
-//                     <td>' . number_format($cart[2]) . ' VND</td>
-//                     <td>' .  $cart[3] . '</td>
-//                     <td>' . number_format($totalAmount) . ' VND</td>';
-//         '</tr>';
-//     }
-//     echo '
-//             <tr>
-//                 <td colspan="4" class="text-end">Tổng đơn hàng:</td>
-//                 <td>' . number_format($total_price) . '  VND</td>
-//             </tr>
-//         ';
-// }
-
+<?php 
 // save_cart.php// save_cart.php
 function saveCart($user_id)
 {
@@ -98,7 +14,6 @@ function saveCart($user_id)
         }
     }
 }
-
 
 // restore_cart.php Khôi Phục Giỏ Hàng Từ Cơ Sở Dữ Liệu
 function restoreCart($user_id)
@@ -122,7 +37,6 @@ function restoreCart($user_id)
         }
     }
 }
-
 
 // update_cart_quantity.php  Cập Nhật Số Lượng Sản Phẩm Trong Giỏ Hàng
 function updateCartQuantity($user_id, $product_id, $quantity)

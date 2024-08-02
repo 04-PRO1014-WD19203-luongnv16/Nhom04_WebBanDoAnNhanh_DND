@@ -292,6 +292,7 @@ if (isset($_GET['act'])) {
                 break;
         }
     } else {
+        
         header('Location: ../index.php');
     }
 } else {

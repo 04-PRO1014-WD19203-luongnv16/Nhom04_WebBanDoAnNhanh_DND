@@ -1,101 +1,78 @@
-<!-- Main content -->
-<!-- <main class="container-fluid flex-grow-1">
+<?php
+$donHang = tk_don(); // Hàm này lấy thống kê đơn hàng
+$doanhThu = tongdoanhthu(); // Hàm này lấy tổng doanh thu
+$sanPhamBanChay = sp_ban_chay(); // Hàm này lấy top sản phẩm bán chạy
+$tong_huy = $donHang[0]['tong_don_5'] + $donHang[0]['tong_don_6'];
+
+$sanPhamBanChay = sp_ban_chay();
+var_dump($sanPhamBanChay);
+
+?>
+<div class="container mt-5">
+    <h1 class="mb-4">Thống kê Bán Hàng</h1>
     
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 d-none d-md-block">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Dashboard</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-3 mb-lg-0">
-                    <li class="nav-item mt-2">
-                        <a class="nav-link" href="#"><i class="fas fa-bell me-1"></i> Thông báo</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://via.placeholder.com/40" alt="User" width="40" height="40"
-                                class="rounded-circle me-1"> Tài khoản của bạn
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Trang người dùng</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+    <!-- Thống Kê Đơn Hàng -->
+    <div class="mb-4">
+        <h2>#1. Thống Kê Đơn Hàng</h2>
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-secondary">Chờ Xác Nhận <span class="badge bg-light text-dark"><?= $donHang[0]['tong_don_0'] ?></span></button>
+            <button class="btn btn-secondary">Đã Xác Nhận <span class="badge bg-light text-dark"><?= $donHang[0]['tong_don_1'] ?></span></button>
+            <button class="btn btn-secondary">Đang Giao Hàng <span class="badge bg-light text-dark"><?= $donHang[0]['tong_don_2'] ?></span></button>
+            <button class="btn btn-success">Giao Hàng Thành Công <span class="badge bg-light text-dark"><?= $donHang[0]['tong_don_3'] ?></span></button>
+            <button class="btn btn-danger">Giao Hàng Thất Bại <span class="badge bg-light text-dark"><?= $donHang[0]['tong_don_4'] ?></span></button>
+            <button class="btn btn-dark">Hủy <span class="badge bg-light text-dark"><?= $tong_huy ?></span></button>
+            <!-- <button class="btn btn-dark">Hủy (khác hàng)<span class="badge bg-light text-dark"><?= $donHang[0]['tong_don_6'] ?></span></button> -->
         </div>
-    </nav> -->
-    <!-- Dashboard cards -->
-    <div class="container my-5">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Thông kê dữ liệu giao dịch</h5>
-                        <p class="card-text">Tổng số giao dịch: 27</p>
-                        <p class="card-text">Đang chờ xử lý: 22</p>
-                        <p class="card-text">Số giao dịch đã xử lý: 5</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Dữ liệu</h5>
-                        <p class="card-text">Tổng số sản phẩm: 17</p>
-                        <p class="card-text">Tổng số bài viết: 5</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Doanh thu</h5>
-                        <p class="card-text">Đã thanh toán: 162 VND</p>
-                        <p class="card-text">Đang chờ xử lý: 1,593,200 VND</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <h2 class="mt-5">Danh sách giao dịch</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Tên</th>
-                    <th>Email</th>
-                    <th>Địa chỉ</th>
-                    <th>Phone</th>
-                    <th>Tổng tiền</th>
-                    <th>Trạng thái</th>
-                    <th>Ngày tạo</th>
-                    <th>Thao tác</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>11</td>
-                    <td>nguyễn văn được</td>
-                    <td>admin@gmail.com</td>
-                    <td>Hà Nội</td>
-                    <td>01659020898</td>
-                    <td>30đ</td>
-                    <td><span class="badge bg-success">Đã thanh toán</span></td>
-                    <td>2017-10-07 15:32:01</td>
-                    <td>
-                        <button class="btn btn-sm btn-danger">Delete</button>
-                    </td>
-                </tr>
-                <!-- More rows as needed -->
-            </tbody>
-        </table>
     </div>
 
-<!-- </main> -->
+    <!-- Thống Kê Doanh Thu -->
+    <div class="mb-4">
+        <h2>#2. Thống Kê Doanh Thu</h2>
+        <p>Doanh Thu: <?= number_format($doanhThu[0]['tong_tong_gia'], 0, ',', '.') ?> VNĐ</p>
+        <p>Số đơn: <?= $donHang[0]['tong_don_7'] ?> đơn</p>
+        <div class="d-flex justify-content-between">
+            <div class="bg-light p-3" style="flex: 1; margin-right: 10px;">Chart Placeholder</div>
+            <div class="bg-light p-3" style="flex: 1; margin-left: 10px;">
+                <div class="d-flex justify-content-between">
+                    <p>Theo Tháng</p>
+                    <select class="form-select form-select-sm" style="width: auto;">
+                        <option>07/2024</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Top 5 Sản Phẩm Doanh Thu Cao Nhất -->
+<div class="mb-4">
+    <h2># Top 5 Sản Phẩm Doanh Thu Cao Nhất</h2>
+    <div class="list-group">
+        <?php foreach ($sanPhamBanChay as $sanPham) : ?>
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <p><?= htmlspecialchars($sanPham['product_name'] ?? 'Không có tên sản phẩm') ?></p>
+                    <p class="text-muted"><?= htmlspecialchars($sanPham['product_id'] ?? 'Không có ID') ?></p>
+                </div>
+                <p><?= number_format($sanPham['tongtien'] ?? 0, 0, ',', '.') ?> VNĐ</p>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+
+
+    <!-- Top 5 Sản Phẩm Bán Chạy Nhất -->
+    <div>
+        <h2># Top 5 Sản Phẩm Bán Chạy Nhất</h2>
+        <div class="list-group">
+            <?php foreach ($sanPhamBanChay as $sanPham) : ?>
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <p><?= htmlspecialchars($sanPham['product_name']) ?></p>
+                        <p class="text-muted"><?= htmlspecialchars($sanPham['product_id']) ?></p>
+                    </div>
+                    <p><?= htmlspecialchars($sanPham['quantity']) ?></p>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>

@@ -35,42 +35,6 @@ function tongdoanhthu() {
   return pdo_query($sql);
 }
 
-// function loc_date_sp($a, $b) {
-//   $sql = "SELECT sanpham.name, sanpham.price, danhmuc.tendanhmuc, bill_item.quantity,
-//           (bill_item.quantity * sanpham.price) AS tongtien, bill.created_datetime AS order_date
-//           FROM sanpham
-//           JOIN bill_item ON sanpham.id = bill_item.product_id
-//           JOIN bill ON bill_item.bill_id = bill.bill_id
-//           JOIN danhmuc ON sanpham.iddm = danhmuc.iddm
-//           WHERE bill.bill_status = 3 AND bill.created_datetime BETWEEN '$a 00:00' AND '$b 23:59'
-//           ORDER BY bill_item.quantity DESC";
-//   return pdo_query($sql);
-// }
-
-// function loc_sp_theo_ngay($a) {
-//   $sql = "SELECT sanpham.name, sanpham.price, danhmuc.tendanhmuc, bill_item.quantity,
-//           (bill_item.quantity * sanpham.price) AS tongtien, bill.created_datetime AS order_date
-//           FROM sanpham
-//           JOIN bill_item ON sanpham.id = bill_item.product_id
-//           JOIN bill ON bill_item.bill_id = bill.bill_id
-//           JOIN danhmuc ON sanpham.iddm = danhmuc.iddm
-//           WHERE bill.bill_status = 3 AND bill.created_datetime < (CURRENT_DATE - INTERVAL $a DAY)
-//           ORDER BY bill_item.quantity DESC";
-//   return pdo_query($sql);
-// }
-
-// function sp_ban_chay() {
-//   $sql = "SELECT sanpham.name, sanpham.price, danhmuc.tendanhmuc, bill_item.quantity,
-//           (bill_item.quantity * sanpham.price) AS tongtien, bill.created_datetime AS order_date
-//           FROM sanpham
-//           JOIN bill_item ON sanpham.id = bill_item.product_id
-//           JOIN bill ON bill_item.bill_id = bill.bill_id
-//           JOIN danhmuc ON sanpham.iddm = danhmuc.iddm
-//           WHERE bill.bill_status = 3
-//           ORDER BY bill_item.quantity DESC";
-//   return pdo_query($sql);
-// }
-
 function tk_don() {
   $sql = "SELECT bill.bill_id, users.full_name, bill.created_datetime AS order_date, bill.bill_status AS process, bill.total_price,
           (SELECT COUNT(*) FROM bill) AS tong_don_7,
@@ -162,14 +126,26 @@ function loc_sp_theo_ngay($days_ago) {
   return pdo_query($sql);
 }
 
+// function sp_ban_chay() {
+//   $sql = "SELECT p.product_name, p.product_sale_price AS price, c.category_name AS tendanhmuc, bi.quantity,
+//           (bi.quantity * p.product_sale_price) AS tongtien, b.created_datetime AS order_date
+//           FROM product p
+//           JOIN bill_item bi ON p.product_id = bi.product_id
+//           JOIN bill b ON bi.bill_id = b.bill_id
+//           JOIN category c ON p.category_id = c.category_id
+//           WHERE b.bill_status = 3
+//           ORDER BY bi.quantity DESC";
+//   return pdo_query($sql);
+// }
+
 function sp_ban_chay() {
-  $sql = "SELECT p.product_name, p.product_sale_price AS price, c.category_name AS tendanhmuc, bi.quantity,
-          (bi.quantity * p.product_sale_price) AS tongtien, b.created_datetime AS order_date
+  $sql = "SELECT p.product_id, p.product_name, p.product_sale_price AS price, c.category_name AS tendanhmuc, bi.quantity,
+                 (bi.quantity * p.product_sale_price) AS tongtien, b.created_datetime AS order_date
           FROM product p
           JOIN bill_item bi ON p.product_id = bi.product_id
           JOIN bill b ON bi.bill_id = b.bill_id
           JOIN category c ON p.category_id = c.category_id
           WHERE b.bill_status = 3
-          ORDER BY bi.quantity DESC";
+          ORDER BY tongtien DESC";
   return pdo_query($sql);
 }
