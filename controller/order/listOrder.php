@@ -102,19 +102,24 @@
                                         <p>Không có chi tiết đơn hàng</p>
                                     <?php endif; ?>
                                     <div class="dropdown">
-                                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton<?= $bill_id ?>" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Thay đổi trạng thái
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<?= $bill_id ?>">
-                                            <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=0">Chờ xác nhận</a></li>
-                                            <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=1">Đã xác nhận</a></li>
-                                            <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=2">Đang giao hàng</a></li>
-                                            <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=3">Giao Hàng Thành Công</a></li>
-                                            <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=4">Giao Hàng Thất Bại</a></li>
-                                            <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=5">Hủy đơn(admin)</a></li>
-                                            <li><a class="dropdown-item disabled" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=6">Hủy đơn(khách hàng)</a></li>
-                                        </ul>
-                                    </div>
+    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton<?= $bill_id ?>" data-bs-toggle="dropdown" aria-expanded="false">
+        Thay đổi trạng thái
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<?= $bill_id ?>">
+        <?php if ($bill['bill_status'] == 0) : ?>
+            <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=1">Đã xác nhận</a></li>
+            <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=5">Hủy đơn(admin)</a></li>
+        <?php elseif ($bill['bill_status'] == 1) : ?>
+            <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=2">Đang giao hàng</a></li>
+        <?php elseif ($bill['bill_status'] == 2) : ?>
+            <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=3">Giao Hàng Thành Công</a></li>
+            <li><a class="dropdown-item" href="index.php?act=update_status&id=<?= urlencode($bill_id) ?>&status=4">Giao Hàng Thất Bại</a></li>
+        <?php elseif ($bill['bill_status'] == 3 || $bill['bill_status'] == 5 || $bill['bill_status'] == 6) : ?>
+            <li><a class="dropdown-item disabled" href="#">Không thể thay đổi trạng thái</a></li>
+        <?php endif; ?>
+    </ul>
+</div>
+
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>

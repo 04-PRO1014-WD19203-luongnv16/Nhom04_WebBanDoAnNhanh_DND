@@ -114,19 +114,6 @@ function loc_date_sp($start_date, $end_date) {
   return pdo_query($sql);
 }
 
-
-// function loc_sp_theo_ngay($days_ago) {
-//   $sql = "SELECT p.product_name, p.product_sale_price AS price, c.category_name AS tendanhmuc, bi.quantity,
-//           (bi.quantity * p.product_sale_price) AS tongtien, b.created_datetime AS order_date,
-//           FROM product p
-//           JOIN bill_item bi ON p.product_id = bi.product_id
-//           JOIN bill b ON bi.bill_id = b.bill_id
-//           JOIN category c ON p.category_id = c.category_id
-//           WHERE b.bill_status = 3 AND b.created_datetime >= (CURRENT_DATE - INTERVAL $days_ago DAY)
-//           ORDER BY bi.quantity DESC";
-//   return pdo_query($sql);
-// }
-
 function loc_sp_theo_ngay($days_ago) {
   $sql = "SELECT p.product_name, p.product_sale_price AS price, c.category_name AS tendanhmuc, bi.quantity,
           (bi.quantity * p.product_sale_price) AS tongtien, b.created_datetime AS order_date
@@ -138,19 +125,6 @@ function loc_sp_theo_ngay($days_ago) {
           ORDER BY bi.quantity DESC";
   return pdo_query($sql);
 }
-
-
-// function sp_ban_chay() {
-//   $sql = "SELECT p.product_name, p.product_sale_price AS price, c.category_name AS tendanhmuc, bi.quantity,
-//           (bi.quantity * p.product_sale_price) AS tongtien, b.created_datetime AS order_date
-//           FROM product p
-//           JOIN bill_item bi ON p.product_id = bi.product_id
-//           JOIN bill b ON bi.bill_id = b.bill_id
-//           JOIN category c ON p.category_id = c.category_id
-//           WHERE b.bill_status = 3
-//           ORDER BY bi.quantity DESC";
-//   return pdo_query($sql);
-// }
 
 function sp_ban_chay() {
   $sql = "SELECT p.product_id, p.product_name, p.product_sale_price AS price, c.category_name AS tendanhmuc, bi.quantity,
