@@ -167,10 +167,10 @@
                                 <a class="nav-link fw-bold" href="index.php?act=listProducts">Sản phẩm</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link fw-bold" href="#">Tin tức</a>
+                                <a class="nav-link fw-bold" href="index.php?act=news">Tin tức</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link fw-bold" href="#">Giới Thiệu</a>
+                                <a class="nav-link fw-bold" href="index.php?act=introduce">Giới Thiệu</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link fw-bold" href="index.php?act=contect">Liên hệ</a>

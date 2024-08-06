@@ -62,16 +62,30 @@ function select_sp($page = null)
     return $linkProduct;
 }
 
-function count_pages()
+// function count_pages()
+// {
+//     $sql = "SELECT COUNT(*) as total FROM product";
+//     $result = pdo_query_one($sql);
+//     $total = $result['total'];
+//     $pages = ceil($total / 12);
+
+//     return $pages;
+// }
+
+function count_pages($products_one_page = null)
 {
     $sql = "SELECT COUNT(*) as total FROM product";
     $result = pdo_query_one($sql);
     $total = $result['total'];
-    $pages = ceil($total / 12);
+
+    if (!empty($products_one_page) && $products_one_page > 0) {
+        $pages = ceil($total / $products_one_page);
+    } else {
+        $pages = ceil($total / 12);
+    }
 
     return $pages;
 }
-
 
 // Hàm lọc sản phẩm theo khoảng giá
 function getProductsByPriceRange($minPrice, $maxPrice) {

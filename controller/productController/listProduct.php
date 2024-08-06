@@ -47,8 +47,10 @@
             } ?>
         </tbody>
     </table>
-    <?php for ($i = 1; $i <= $pages; $i++): ?>
-        <a href="?act=listProducts&page=<?= $i ?>"
-            class="btn <?php if (isset($_GET['page']) && $_GET['page'] == $i): ?> btn-primary <?php else: ?> btn-secondary <?php endif; ?> me-2"><?= $i ?></a>
-    <?php endfor; ?>
+    <?php if (isset($pages)): ?>
+        <?php for ($i = 1; $i <= $pages; $i++): ?>
+            <a href="?act=listProducts&page=<?= $i ?>"
+                class="btn <?php if (isset($_GET['page']) && $_GET['page'] == $i): ?> btn-primary <?php else: ?> btn-secondary <?php endif; ?> me-2"><?= $i ?></a>
+        <?php endfor; ?>
+    <?php endif; ?>
 </div>

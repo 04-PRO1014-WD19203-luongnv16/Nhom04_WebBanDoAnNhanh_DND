@@ -195,41 +195,41 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             }
             include_once("./view/cart/viewCart.php");
             break;
-            
-            case 'addToCartMain':
-                if (isset($_POST['add_cart'])) {
-                    $product_id = $_POST['product_id'];
-                    $product_name = $_POST['product_name'];
-                    $product_sale_price = $_POST['product_sale_price'];
-                    $image_url = $_POST['image_url'];
-                    $quantity = 1; // Số lượng mặc định là 1
-    
-                    // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-                    $found = false;
-                    foreach ($_SESSION['myCart'] as $key => $item) {
-                        if ($item[0] == $product_id) {
-                            // Nếu đã có sản phẩm này trong giỏ hàng, cập nhật số lượng
-                            $_SESSION['myCart'][$key][3]++;
-                            $found = true;
-                            break;
-                        }
+
+        case 'addToCartMain':
+            if (isset($_POST['add_cart'])) {
+                $product_id = $_POST['product_id'];
+                $product_name = $_POST['product_name'];
+                $product_sale_price = $_POST['product_sale_price'];
+                $image_url = $_POST['image_url'];
+                $quantity = 1; // Số lượng mặc định là 1
+
+                // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+                $found = false;
+                foreach ($_SESSION['myCart'] as $key => $item) {
+                    if ($item[0] == $product_id) {
+                        // Nếu đã có sản phẩm này trong giỏ hàng, cập nhật số lượng
+                        $_SESSION['myCart'][$key][3]++;
+                        $found = true;
+                        break;
                     }
-    
-                    if (!$found) {
-                        // Nếu chưa có thì thêm mới vào giỏ hàng
-                        $totalAmount = $product_sale_price * $quantity; // Tính tổng tiền
-                        $productAdd = [$product_id, $product_name, $product_sale_price, $quantity, $totalAmount, $image_url];
-                        $_SESSION['myCart'][] = $productAdd;
-                    }
-                    // Set session variable to show toast
-                    // $_SESSION['toast_message'] = 'Sản phẩm đã được thêm vào giỏ hàng!';
-                    
-                    // Redirect lại đến trang giỏ hàng sau khi thêm sản phẩm
-                    header("Location: index.php?act=addToCartMain");
-                    exit();
                 }
-                include_once("./view/main.php");
-                break;
+
+                if (!$found) {
+                    // Nếu chưa có thì thêm mới vào giỏ hàng
+                    $totalAmount = $product_sale_price * $quantity; // Tính tổng tiền
+                    $productAdd = [$product_id, $product_name, $product_sale_price, $quantity, $totalAmount, $image_url];
+                    $_SESSION['myCart'][] = $productAdd;
+                }
+                // Set session variable to show toast
+                // $_SESSION['toast_message'] = 'Sản phẩm đã được thêm vào giỏ hàng!';
+
+                // Redirect lại đến trang giỏ hàng sau khi thêm sản phẩm
+                header("Location: index.php?act=addToCartMain");
+                exit();
+            }
+            include_once("./view/main.php");
+            break;
         case 'addToCart':
             if (isset($_POST['add_cart'])) {
                 $product_id = $_POST['product_id'];
@@ -257,7 +257,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 }
                 // Set session variable to show toast
                 // $_SESSION['toast_message'] = 'Sản phẩm đã được thêm vào giỏ hàng!';
-                
+
                 // Redirect lại đến trang giỏ hàng sau khi thêm sản phẩm
                 header("Location: index.php?act=listProducts");
                 exit();
@@ -491,6 +491,12 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             include_once("./view/main.php");
             break;
         case "confirmBill":
+            break;
+        case "news":
+            include_once("./view/news.php");
+            break;
+        case "introduce":
+            include_once("./view/introduce.php");
             break;
         default:
             include_once './view/main.php';

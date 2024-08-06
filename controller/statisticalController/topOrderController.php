@@ -2,33 +2,35 @@
     <div class="row">
         <!-- Statistics Form -->
         <div class="col-12">
-            <form style="line-height:30px; display:flex; padding:12px; margin-bottom: 20px;" action="index.php?act=topOrder" method="post">
-                <div class="mb-3 me-3">
-                    <label for="status" class="form-label">Trạng Thái Đơn Hàng</label>
-                    <select name="chon_ngay" id="status" class="form-select">
-                        <option value="6"><?php echo isset($_trang_thai) ? sw_chon($_trang_thai) : 'Tất Cả'; ?></option>
-                        <option value="0">Chờ xác nhận</option>
-                        <option value="1">Đã xác nhận</option>
-                        <option value="2">Đang Giao Hàng</option>
-                        <option value="3">Giao Hàng Thành Công</option>
-                        <option value="4">Giao Hàng Thất Bại</option>
-                        <option value="5">Đã Hủy (admin)</option>
-                        <option value="6">Đã Hủy (khách hàng)</option>
-                    </select>
-                </div>
-                <div class="mb-3 me-3">
-                    <label for="startDate" class="form-label">Ngày Bắt Đầu</label>
-                    <input type="date" name="start_date" id="startDate" class="form-control">
-                </div>
-                <div class="mb-3 me-3">
-                    <label for="endDate" class="form-label">Ngày Kết Thúc</label>
-                    <input type="date" name="end_date" id="endDate" class="form-control">
-                </div>
-                <div>
-                    <input type="submit" value="Lọc" name="done_date" class="btn btn-primary">
-                </div>
-            </form>
+    <form class="d-flex flex-wrap align-items-center gap-3 p-3 mb-4" action="index.php?act=topOrder" method="post">
+        <div class="mb-3 flex-fill">
+            <label for="status" class="form-label">Trạng Thái Đơn Hàng</label>
+            <select name="chon_ngay" id="status" class="form-select">
+                <option value="6"><?php echo isset($_trang_thai) ? sw_chon($_trang_thai) : 'Tất Cả'; ?></option>
+                <option value="0">Chờ xác nhận</option>
+                <option value="1">Đã xác nhận</option>
+                <option value="2">Đang Giao Hàng</option>
+                <option value="3">Giao Hàng Thành Công</option>
+                <option value="4">Giao Hàng Thất Bại</option>
+                <option value="5">Đã Hủy (admin)</option>
+                <option value="6">Đã Hủy (khách hàng)</option>
+            </select>
         </div>
+        <div class="mb-3 flex-fill">
+            <label for="startDate" class="form-label">Ngày Bắt Đầu</label>
+            <input type="date" name="start_date" id="startDate" class="form-control">
+        </div>
+        <div class="mb-3 flex-fill">
+            <label for="endDate" class="form-label">Ngày Kết Thúc</label>
+            <input type="date" name="end_date" id="endDate" class="form-control">
+        </div>
+        <div class="mt-3 d-flex align-items-end">
+            <label for=""></label>
+            <input type="submit" value="Lọc" name="done_date" class="btn btn-primary">
+        </div>
+    </form>
+</div>
+
 
         <!-- Orders Table -->
         <div class="col-12">

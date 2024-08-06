@@ -33,39 +33,40 @@ if (isset($_GET['act'])) {
                 }
                 require_once("./accountController/editAccount.php");
                 break;
-            case 'updateAccount':
-                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                    $user_id = $_POST['user_id'];
-                    $full_name = $_POST['full_name'];
-                    $email = $_POST['email'];
-                    $phone_number = $_POST['phone_number'];
-                    $password = $_POST['password'];
-                    $address = $_POST['address'];
-                    $role = $_POST['role'];
-                    $avatar_url = ''; // Mặc định không có ảnh mới được tải lên
-
-                    // Kiểm tra nếu người dùng đã tải lên ảnh mới
-                    if ($_FILES['avatar_url']['name']) {
-                        $avatar_url = $_FILES['avatar_url']['name'];
-                        $target_file = "../upload/" . basename($avatar_url);
-                        move_uploaded_file($_FILES['avatar_url']['tmp_name'], $target_file);
-                    } else {
-                        // Nếu không có file tải lên, giữ nguyên ảnh đại diện hiện tại
-                        $user = select_user_by_id($user_id); // Lấy thông tin tài khoản hiện tại
-                        $avatar_url = $user['avatar_url']; // Sử dụng lại đường dẫn ảnh đại diện cũ
+                case 'updateAccount':
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        $user_id = $_POST['user_id'];
+                        $full_name = $_POST['full_name'];
+                        $email = $_POST['email'];
+                        $phone_number = $_POST['phone_number'];
+                        $password = $_POST['password'];
+                        $address = $_POST['address'];
+                        $role = isset($_POST['role']) ? $_POST['role'] : 0; // Default role
+                        $avatar_url = ''; // Default for avatar_url
+                
+                        // Handle file upload
+                        if ($_FILES['avatar_url']['name']) {
+                            $avatar_url = $_FILES['avatar_url']['name'];
+                            $target_file = "../upload/" . basename($avatar_url);
+                            move_uploaded_file($_FILES['avatar_url']['tmp_name'], $target_file);
+                        } else {
+                            $user = select_user_by_id($user_id);
+                            $avatar_url = $user['avatar_url'];
+                        }
+                
+                        if (empty($errors)) {
+                            update_user($user_id, $full_name, $email, $phone_number, $password, $address, $avatar_url, $role);
+                            $message = "Cập nhật thành công";
+                            $listAccount = select_all_users();
+                            include_once './accountController/listAccount.php';
+                            exit();
+                        } else {
+                            $user = select_user_by_id($user_id);
+                            require_once("./accountController/editAccount.php");
+                        }
                     }
-                    if (empty($errors)) {
-                        update_user($user_id, $full_name, $email, $phone_number, $password, $address, $avatar_url, $role);
-                        $message = "Cập nhật thành công";
-                        $listAccount = select_all_users();
-                        include_once './accountController/listAccount.php';
-                        exit();
-                    } else {
-                        // Nếu có lỗi, hiển thị form chỉnh sửa tài khoản với thông tin và lỗi đã nhập
-                        $user = select_user_by_id($user_id);
-                        require_once("./accountController/editAccount.php");
-                    }
-                }
+                    break;
+                
             case 'deleteAccount':
                 if (isset($_GET['user_id']) && $_GET['user_id'] > 0) {
                     delete_users($_GET['user_id']);

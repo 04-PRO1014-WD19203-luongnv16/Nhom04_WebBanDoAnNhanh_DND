@@ -4,22 +4,6 @@
     <div class="row">
         <div class="col-md-2">
             <div id="carouselTopProducts" class="carousel slide carousel-vertical" data-bs-ride="carousel">
-                <!-- <div class="mt-2">
-                    <h6 class="text-center">Top 10 sản phẩm lượt xem nhiều nhât</h6>
-                    <div class="top10-container">
-                        <?php $listTop10 = load_product_top10() ?>
-                        <?php foreach ($listTop10 as $product) : ?>
-                            <div class="product-item">
-                                <img src="<?php echo './upload/' . $product['product_avatar_url']; ?>" alt="<?php echo $product['product_name']; ?>" class="img-thumbnail">
-                                <div>
-                                    <h6><?php echo $product['product_name']; ?></h6>
-                                    <p class="text-danger"><?php echo $product['product_listed_price']; ?> VND</p>
-                                    <p>Views: <?php echo htmlspecialchars($product['view_count']); ?></p>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                </div> -->
             </div>
         </div>
         <!-- Slideshow -->

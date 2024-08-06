@@ -33,7 +33,8 @@ function select_user_by_id($user_id) {
 // Edit Account (Cập nhật thông tin tài khoản)
 function update_user($user_id, $full_name, $email, $phone_number, $password, $address, $avatar_url, $role) {
     $sql = "UPDATE users SET full_name = :full_name, email = :email, phone_number = :phone_number, 
-            password = :password, address = :address, avatar_url = :avatar_url, role = :role WHERE user_id = :user_id";
+            password = :password, address = :address, avatar_url = :avatar_url, role = :role 
+            WHERE user_id = :user_id";
     $params = array(
         ':user_id' => $user_id,
         ':full_name' => $full_name,
@@ -46,6 +47,7 @@ function update_user($user_id, $full_name, $email, $phone_number, $password, $ad
     );
     pdo_execute($sql, $params);
 }
+
 
 // Delete Account (Xóa tài khoản)
 function delete_users($user_id) {

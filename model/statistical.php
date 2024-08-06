@@ -137,3 +137,16 @@ function sp_ban_chay() {
           ORDER BY tongtien DESC";
   return pdo_query($sql);
 }
+
+function sp_doanhthu_cao() {
+  $sql = "SELECT p.product_id, p.product_name, SUM(bi.quantity * p.product_sale_price) AS tongtien
+          FROM product p
+          JOIN bill_item bi ON p.product_id = bi.product_id
+          JOIN bill b ON bi.bill_id = b.bill_id
+          WHERE b.bill_status = 3
+          GROUP BY p.product_id, p.product_name
+          ORDER BY tongtien DESC
+          LIMIT 5"; // Giới hạn chỉ lấy top 5 sản phẩm
+  return pdo_query($sql);
+}
+
