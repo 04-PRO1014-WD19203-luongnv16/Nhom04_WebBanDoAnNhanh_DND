@@ -86,29 +86,3 @@
             </div>
         </section>
     </main>
-<!-- Toast Notification
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="addToCartToast" class="toast hide bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <strong class="me-auto">Thông báo</strong>
-            <small>Vừa xong</small>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            <?php echo isset($_SESSION['toast_message']) ? $_SESSION['toast_message'] : ''; ?>
-        </div>
-    </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    var toastEl = document.getElementById('addToCartToast');
-    var toast = new bootstrap.Toast(toastEl);
-
-    // Check if session variable is set
-    <?php if (isset($_SESSION['toast_message'])): ?>
-        toast.show();
-        <?php unset($_SESSION['toast_message']); // Clear the session variable ?>
-    <?php endif; ?>
-});
-</script> -->
